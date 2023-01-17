@@ -1,15 +1,25 @@
-# Software Engineering 2
-COSC-4P02
+# COSC 4P02 Software Engineering 2
+Museums Assistance Application Project Proposal
 Instructor: Naser Ezzati-Jivan
-nezzati@brocku.ca
-Winter 2023
 
-Description
+## Members and Roles
+| Name | Brock ID | Email | Roles |
+| --- | --- | --- | --- |
+| Vincent Zhang | 6697114 | vz18iu@brocku.ca | Dev team |
+| Hi Leung | 6799969 | hl19wl@brocku.ca | Dev team |
+| Louis Wang | 6116271 | lw16bn@brocku.ca | Dev team|
+| Yujia Zuo | 6567150 | yz18fa@brocku.ca | Scrum Master, Dev team |
+| Hang Li | 7319957 | hl21bi@brocku.ca | Product Owner, Dev team |
+| Ziyuan Xu | 5476650 | tx13al@brocku.ca | Dev team |
+| Yifeng Zhang | 6593487 | yz18el@brocku.ca | Dev team |
+| Jiahao Pang | 6366173 | jp17gh@brocku.ca | Dev team|
 
-How to Install and Run
+## Description
 
-How to Use
+## How to Install and Run
 
-Credits
+## How to Use
 
-License
+## Credits
+
+## License
