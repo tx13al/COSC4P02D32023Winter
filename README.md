@@ -14,6 +14,9 @@ Instructor: Naser Ezzati-Jivan
 | Yifeng Zhang | 6593487 | yz18el@brocku.ca | Dev team |
 | Jiahao Pang | 6366173 | jp17gh@brocku.ca | Dev team|
 
+## Jira Project Page
+https://cosc4p022023d3winter.atlassian.net/jira/software/projects/NOT/boards/1/backlog
+
 ## Description
 
 ## How to Install and Run
