@@ -1,49 +1,71 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+
 first_url = "https://niagarahistorical.pastperfectonline.com"
 
-# Send a GET request to the URL
 response = requests.get(first_url + "/WebObject")
 url = first_url + "/WebObject"
+page_Number = 1
+data = []
 
-def webcrawler(url):
-    print(url + ";")
-    response = requests.get(url)
+def item_details(itemurl):
+    response = requests.get(itemurl)
     if response.status_code == 200:
-        # Create a BeautifulSoup object with the HTML content
         soup = BeautifulSoup(response.content, "html.parser")
 
-        # Find the `div` element with the ID "searchresultsdisplay"
+        table = soup.find('table')
+
+        cells = []
+        for row in table.find_all('tr'):
+            for cell in row.find_all('td', class_="display"):
+                cells.append(cell.text.strip())
+                column_line = ";".join(cells)
+
+        return column_line
+
+
+def webcrawler(url, page_Number):
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, "html.parser")
+
         search_results = soup.find("div", id="searchresultsdisplay")
 
-        # Find all the `div` elements with the class "row"
         items = search_results.find_all("div", class_="indvImage")
-        images = []
-        titles = []
-        # Loop through each item
         for item in items:
-            # Find the `a` element that contains the image
             image_link = item.find("img")
-
-            # Extract the image URL from the `a` element's `href` attribute
             image_url = image_link["src"]
-            image_title = image_link["title"]
-            # Do something with the image URL, such as printing it or saving it to a file
-            print(image_url+" ; "+image_title+" ; ")
-            images.append(image_url)
-            titles.append(image_title)
-
-
+            item_detail_link = item.find("a")
+            item_link = item_detail_link["href"]
+            item_url = first_url + item_link
+            table_col = item_details(item_url)
+            data_text = image_url + ";" + item_url + ";" + table_col
+            data.append(data_text)
     else:
-        # If the response is not successful, raise an exception
         raise Exception(f"Request failed with status code {response.status_code}")
-    soup = BeautifulSoup(response.content, "html.parser")
-    next_link = soup.find('a', class_="actionLinkButton", string="Next")
-    next_url = next_link['href']
-    url_1 = first_url + next_url
-    while next_link:
-        webcrawler(url_1)
-    else:
-        url_1 = None
 
-webcrawler(url)
+    while True:
+        response = requests.get(url)
+        content = response.content
+        soup = BeautifulSoup(content, "html.parser")
+        next_link = soup.find("a", class_="actionLinkButton", string="Next")
+        print(page_Number)
+        if page_Number != 89:
+            next_url = next_link["href"]
+            page_Number += 1
+            webcrawler(first_url + next_url, page_Number)
+        else:
+            break
+        return
+
+    df = pd.DataFrame(data, columns=['Data'])
+    df.to_csv('/Users/Terry/Downloads/museum map/data/data_4.csv', index=False)
+
+
+def main():
+    webcrawler(url, page_Number)
+
+
+if __name__ == '__main__':
+    main()
