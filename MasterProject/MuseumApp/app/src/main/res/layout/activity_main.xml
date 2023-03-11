@@ -35,8 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:maxWidth="300dp"
+                android:maxWidth="290dp"
                 android:padding="10dp"
+                app:iconifiedByDefault="false"
                 app:layout_constraintBottom_toBottomOf="@id/toolbar"
                 app:layout_constraintEnd_toStartOf="@id/loginButton"
                 app:layout_constraintTop_toTopOf="parent" />

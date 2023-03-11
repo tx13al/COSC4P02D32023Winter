@@ -84,60 +84,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dimView = inflater.inflate(R.layout.dim_layout, null);
         drawerLayout.addView(dimView);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
-        
-        //add a dimmed view to blacken the background when the popup window is showed
-
-
-
     }
 
     @Override
     public void onClick(View view){
         switch (view.getId()){
-//            // case 1 log in button is pressed, popup window shows the login dialog
-//            case R.id.loginButton:
-//                DisplayMetrics displayMetrics = new DisplayMetrics();
-//                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//                int height = displayMetrics.heightPixels;
-//                int width = displayMetrics.widthPixels;
-//                int x = width/5;
-//                int y = height/5;
-//                PopupWindow popupWindow = new PopupWindow(this);
-//                View popView = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
-//                popupWindow.setContentView(popView);
-//                popupWindow.setWidth(width*2/3);
-//                popupWindow.setHeight(height*2/5);
-//                popupWindow.setFocusable(true);
-//                popupWindow.setOutsideTouchable(true);
-//                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#CFCFC1")));
-//                popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,x,y);
-//                dimView.setVisibility(View.VISIBLE);
-//
-//                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss() {
-//                        dimView.setVisibility(View.GONE);
-//                    }
-//                });
-//                ImageView popup_back_button = popView.findViewById(R.id.loginCancel);
-//                popup_back_button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        popupWindow.dismiss();
-//                    }
-//                });
-//                Button login = popView.findViewById(R.id.buttonLogin);
-//                login.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //TODO
-//                    }
-//                });
-//                break;
+            //press Level 1 button change to level 1 floor plan
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
                 floor_2.setVisibility(View.GONE);
                 break;
+            //press Level 2 button change to level 2 floor plan
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);

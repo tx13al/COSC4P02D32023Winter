@@ -28,6 +28,7 @@ public class Login  implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        //popup window settings
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -43,20 +44,21 @@ public class Login  implements View.OnClickListener {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#CFCFC1")));
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, x, y);
+        //add a dimmed view to darken the background while the popup window showing
         dimView.setVisibility(View.VISIBLE);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);
-            }
+            }//dimView gone when close the popup window
         });
         ImageView popup_back_button = popView.findViewById(R.id.loginCancel);
         popup_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-            }
+            }//click on close button, popup window closes
         });
         Button login = popView.findViewById(R.id.buttonLogin);
         login.setOnClickListener(new View.OnClickListener() {
