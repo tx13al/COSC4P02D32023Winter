@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/back_button"
+        android:title="Back"
+        android:icon="@drawable/baseline_close_black_48dp"/>
+    <item android:id="@+id/museum_visit_info"
+        android:title="VISIT"/>
+    <item android:id="@+id/exihibition"
+        android:title="OUR EXHIBITIONS"/>
+    <item android:id="@+id/contact"
+        android:title="CONTACT"/>
+    <item android:id="@+id/settings"
+        android:title="SETTINGS"/>
+
+
+
+</menu>

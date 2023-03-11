@@ -1,24 +1,149 @@
 package com.example.museumapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.navigation.NavigationView;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private View dimView, floor_1, floor_2;
+    private FrameLayout mainContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        Intent intent = new Intent(MainActivity.this, FloorOne.class);
-                        startActivity(intent);
-                        finish();
-                    }
+
+        //create a toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);//toolbar click listener to handle the menu click
+        //create a drawer layout
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        //create a navigation view
+        NavigationView navigationView = findViewById(R.id.navigation_bar);
+        //create a drawer menu
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        //put the logo on the top of the drawer
+        ImageView logo = navigationView.getHeaderView(0).findViewById(R.id.logo_image);
+        logo.setImageResource(R.drawable.logo);
+        //drawer menu selection listener
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.back_button:
+                        onBackPressed();
+                        break;
+                    case R.id.museum_visit_info:
+                    case R.id.contact:
+                    case R.id.exihibition:
+                    case R.id.settings:
+                        break;
                 }
-                ,3*100);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+        //main container and two floor views
+        mainContainer = findViewById(R.id.main_container);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
+        floor_1.setVisibility(View.VISIBLE);
+        mainContainer.addView(floor_1);
+        floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
+        mainContainer.addView(floor_2);
+        //create floor buttons
+        Button level_1 = findViewById(R.id.floorOneButton);
+        Button level_2 = findViewById(R.id.floorTwoButton);
+        level_1.setOnClickListener(this);
+        level_2.setOnClickListener(this);
+        //create Login button
+        Button login = findViewById(R.id.loginButton);
+        dimView = inflater.inflate(R.layout.dim_layout, null);
+        drawerLayout.addView(dimView);
+        login.setOnClickListener(new Login(MainActivity.this, dimView));
+        
+        //add a dimmed view to blacken the background when the popup window is showed
+
+
+
     }
+
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+//            // case 1 log in button is pressed, popup window shows the login dialog
+//            case R.id.loginButton:
+//                DisplayMetrics displayMetrics = new DisplayMetrics();
+//                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//                int height = displayMetrics.heightPixels;
+//                int width = displayMetrics.widthPixels;
+//                int x = width/5;
+//                int y = height/5;
+//                PopupWindow popupWindow = new PopupWindow(this);
+//                View popView = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
+//                popupWindow.setContentView(popView);
+//                popupWindow.setWidth(width*2/3);
+//                popupWindow.setHeight(height*2/5);
+//                popupWindow.setFocusable(true);
+//                popupWindow.setOutsideTouchable(true);
+//                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#CFCFC1")));
+//                popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,x,y);
+//                dimView.setVisibility(View.VISIBLE);
+//
+//                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss() {
+//                        dimView.setVisibility(View.GONE);
+//                    }
+//                });
+//                ImageView popup_back_button = popView.findViewById(R.id.loginCancel);
+//                popup_back_button.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        popupWindow.dismiss();
+//                    }
+//                });
+//                Button login = popView.findViewById(R.id.buttonLogin);
+//                login.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        //TODO
+//                    }
+//                });
+//                break;
+            case R.id.floorOneButton:
+                floor_1.setVisibility(View.VISIBLE);
+                floor_2.setVisibility(View.GONE);
+                break;
+            case R.id.floorTwoButton:
+                floor_1.setVisibility(View.GONE);
+                floor_2.setVisibility(View.VISIBLE);
+                break;
+        }
+
+    }
+
 }

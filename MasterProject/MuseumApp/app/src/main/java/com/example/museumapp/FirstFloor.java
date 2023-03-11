@@ -2,6 +2,7 @@ package com.example.museumapp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -36,10 +37,7 @@ public class FirstFloor extends View {
     private void init() {
         paint = new Paint();
         paint.setStrokeWidth(5f);
-    }
-    public void setPaintColor(int color) {
-        paint.setColor(color);
-        invalidate();
+        paint.setColor(Color.rgb(0,24,69));
     }
 
     @Override

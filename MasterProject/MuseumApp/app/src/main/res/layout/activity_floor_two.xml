@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="gone"
     tools:context=".FloorTwo">
 
     <com.example.museumapp.SecondFloor
@@ -12,41 +13,6 @@
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/floorOneButton"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <SearchView
-        android:id="@+id/listSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/loginButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/floorOneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Floor One"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSearch" />
-
-    <Button
-        android:id="@+id/floorTwoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="Floor Two"
-        app:layout_constraintBottom_toBottomOf="@+id/floorOneButton"
-        app:layout_constraintStart_toEndOf="@+id/floorOneButton"
-        app:layout_constraintTop_toBottomOf="@+id/listSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

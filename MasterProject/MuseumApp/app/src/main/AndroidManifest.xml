@@ -10,11 +10,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MuseumApp"
+        android:theme="@style/MuseumTheme"
         tools:targetApi="31">
         <activity android:name=".Login" />
-        <activity android:name=".FloorTwo" />
-        <activity android:name=".FloorOne" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

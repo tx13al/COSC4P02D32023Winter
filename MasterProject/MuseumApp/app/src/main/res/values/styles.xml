@@ -1,0 +1,6 @@
+<resources>
+    <style name="MuseumTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="fontFamily">@font/josefin_sans_bold</item>
+        <item name="android:textColor">@color/navy_blue</item>
+    </style>
+</resources>

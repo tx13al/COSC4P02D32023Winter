@@ -2,6 +2,7 @@ package com.example.museumapp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,10 +20,7 @@ public class SecondFloor extends View {
     private void init() {
         paint = new Paint();
         paint.setStrokeWidth(5f);
-    }
-    public void setPaintColor(int color) {
-        paint.setColor(color);
-        invalidate();
+        paint.setColor(Color.rgb(0,24,69));
     }
 
     @Override
@@ -31,7 +29,7 @@ public class SecondFloor extends View {
 
         width = getWidth() - 20;
         height = getHeight() - 20;  // reserve some space
-        float ratio = (float)56.7 / height;
+        float ratio = (float)56.9 / height;
         float main_wall_starting_X = 16/ratio,
                 mail_wall_width = (float)26.9/ratio,
                 main_wall_starting_Y = 20,
