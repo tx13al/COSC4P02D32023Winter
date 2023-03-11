@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_screen"
     >
 
     <FrameLayout
@@ -17,7 +18,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></FrameLayout>
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,35 +30,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/shape_searchbar"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
 
         >
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_bar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:hint="Try Sir Isaac Brock"
-            android:padding="2dp"
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/location"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/loginButton"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="30dp"
             app:layout_constraintWidth_percent="0.7"
             />
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/shape_oval_button"
             android:fontFamily="@font/josefin_sans_regular"
             android:onClick="onClick"
-            android:padding="10dp"
             android:text="M"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -187,6 +189,17 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:visibility="gone"
+    android:id="@+id/dim_layout"
+    android:clickable="true"
+    android:focusable="true"
+    />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

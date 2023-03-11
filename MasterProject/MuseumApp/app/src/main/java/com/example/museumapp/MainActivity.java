@@ -1,10 +1,8 @@
 package com.example.museumapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +12,9 @@ import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private View dimView, floor_1, floor_2;
+    private View floor_1, floor_2, dimView;
     private FrameLayout mainContainer;
+    private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
 
     @Override
@@ -23,7 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        //main container and two floor views
+        mainScreen = findViewById(R.id.main_screen);
+        //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
         LayoutInflater inflater = LayoutInflater.from(this);
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
@@ -37,11 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level_1.setOnClickListener(this);
         level_1.setTextColor(getColor(R.color.red));//set the text color as red becuase level 1 is selected by default
         level_2.setOnClickListener(this);
-        //create Login button
-        login = findViewById(R.id.loginButton);
-        dimView = inflater.inflate(R.layout.dim_layout, null);
-        mainContainer.addView(dimView);
-        login.setOnClickListener(new Login(MainActivity.this, dimView));
         //create home button
         home = findViewById(R.id.home);
         home.setOnClickListener(this);
@@ -55,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //create setting button
         setting = findViewById(R.id.settings);
         setting.setOnClickListener(this);
+        //create Login button
+        login = findViewById(R.id.loginButton);
+        dimView = findViewById(R.id.dim_layout);
+        login.setOnClickListener(new Login(MainActivity.this, dimView));
 
     }
 

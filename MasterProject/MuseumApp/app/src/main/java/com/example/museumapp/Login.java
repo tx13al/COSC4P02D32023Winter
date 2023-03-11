@@ -28,13 +28,15 @@ public class Login  implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        //add a dimmed view to darken the background while the popup window showing
+        dimView.setVisibility(View.VISIBLE);
         //popup window settings
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         int x = width / 15;
-        int y = height / 5;
+        int y = height / 6;
         PopupWindow popupWindow = new PopupWindow(context);
         View popView = LayoutInflater.from(context).inflate(R.layout.activity_login, null);
         popupWindow.setContentView(popView);
@@ -44,8 +46,7 @@ public class Login  implements View.OnClickListener {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, x, y);
-        //add a dimmed view to darken the background while the popup window showing
-        dimView.setVisibility(View.VISIBLE);
+
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
