@@ -33,7 +33,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="22dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="10dp"
             app:srcCompat="@drawable/baseline_close_black_48dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,9 +47,10 @@
             app:layout_constraintStart_toStartOf="parent"
             android:padding="10dp"
             android:layout_marginTop="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
