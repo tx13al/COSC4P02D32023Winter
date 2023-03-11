@@ -1,6 +1,10 @@
 package com.example.museumapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private View dimView, floor_1, floor_2;
     private FrameLayout mainContainer;
+    private Button login, level_1, level_2, home, info, arts, setting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +32,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         mainContainer.addView(floor_2);
         //create floor buttons
-        Button level_1 = findViewById(R.id.floorOneButton);
-        Button level_2 = findViewById(R.id.floorTwoButton);
+        level_1 = findViewById(R.id.floorOneButton);
+        level_2 = findViewById(R.id.floorTwoButton);
         level_1.setOnClickListener(this);
         level_2.setOnClickListener(this);
         //create Login button
-        Button login = findViewById(R.id.loginButton);
+        login = findViewById(R.id.loginButton);
         dimView = inflater.inflate(R.layout.dim_layout, null);
         mainContainer.addView(dimView);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
+        //create home button
+        home = findViewById(R.id.home);
+        home.setOnClickListener(this);
+        //create info button
+        info = findViewById(R.id.info);
+        info.setOnClickListener(this);
+        //create arts button
+        arts = findViewById(R.id.art);
+        arts.setOnClickListener(this);
+        //create setting button
+        setting = findViewById(R.id.settings);
+        setting.setOnClickListener(this);
+
     }
 
     @Override
@@ -50,6 +68,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);
+                break;
+            //press home button to back to home page
+            case R.id.home:
+                home.setTextColor(getColor(R.color.red));
+                info.setTextColor(getColor(R.color.navy_blue));//TODO need to make it more efficient when the button is not clicked the text color back to default
+                arts.setTextColor(getColor(R.color.navy_blue));
+                setting.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press info button to show the information about the museum like operating hours and admission
+            case R.id.info:
+                info.setTextColor(getColor(R.color.red));
+                home.setTextColor(getColor(R.color.navy_blue));
+                arts.setTextColor(getColor(R.color.navy_blue));
+                setting.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press art button to browse all the art
+            case R.id.art:
+                info.setTextColor(getColor(R.color.navy_blue));
+                home.setTextColor(getColor(R.color.navy_blue));
+                arts.setTextColor(getColor(R.color.red));
+                setting.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press setting button to show settings page. Change font size
+            case R.id.settings:
+                info.setTextColor(getColor(R.color.navy_blue));
+                home.setTextColor(getColor(R.color.navy_blue));
+                arts.setTextColor(getColor(R.color.navy_blue));
+                setting.setTextColor(getColor(R.color.red));
                 break;
         }
 
