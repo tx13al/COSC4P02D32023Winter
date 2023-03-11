@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level_1 = findViewById(R.id.floorOneButton);
         level_2 = findViewById(R.id.floorTwoButton);
         level_1.setOnClickListener(this);
+        level_1.setTextColor(getColor(R.color.red));//set the text color as red becuase level 1 is selected by default
         level_2.setOnClickListener(this);
         //create Login button
         login = findViewById(R.id.loginButton);
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //create home button
         home = findViewById(R.id.home);
         home.setOnClickListener(this);
+        home.setTextColor(getColor(R.color.red));//set the text color as red because home is selected by default
         //create info button
         info = findViewById(R.id.info);
         info.setOnClickListener(this);
@@ -63,11 +65,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
                 floor_2.setVisibility(View.GONE);
+                level_1.setTextColor(getColor(R.color.red));
+                level_2.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press Level 2 button change to level 2 floor plan
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);
+                level_1.setTextColor(getColor(R.color.navy_blue));
+                level_2.setTextColor(getColor(R.color.red));
                 break;
             //press home button to back to home page
             case R.id.home:
