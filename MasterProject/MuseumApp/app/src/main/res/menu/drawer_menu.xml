@@ -6,7 +6,7 @@
         android:icon="@drawable/baseline_close_black_48dp"/>
     <item android:id="@+id/museum_visit_info"
         android:title="VISIT"/>
-    <item android:id="@+id/exihibition"
+    <item android:id="@+id/art"
         android:title="OUR EXHIBITIONS"/>
     <item android:id="@+id/contact"
         android:title="CONTACT"/>
