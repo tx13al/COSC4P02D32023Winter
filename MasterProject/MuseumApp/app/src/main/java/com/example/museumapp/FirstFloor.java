@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class FirstFloor extends View {
 
     private Paint paint;
@@ -74,6 +76,11 @@ public class FirstFloor extends View {
         canvas.scale(mScaleFactor, mScaleFactor);
         canvas.save();
 
+        //draw all vertex
+        //point A
+        canvas.drawPoint(20,20,paint);
+        //
+
         canvas.drawLine(450, 200,450+110, 200, paint);
 
         canvas.drawLine(450+110, 200, 450+110+110, 200, paint);
@@ -129,6 +136,8 @@ public class FirstFloor extends View {
             return true;
         }
     }
+
+
 
     public float getOffsetX() {
         return offsetX;
