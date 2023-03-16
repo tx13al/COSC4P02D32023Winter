@@ -20,14 +20,10 @@ public class FirstFloor extends View {
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.f;
 
-
     private float lastX, lastY;
     private float offsetX, offsetY;
     private float startX= 300, startY = 100;
     private float translateX, translateY;
-
-
-
 
     public FirstFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -78,7 +74,7 @@ public class FirstFloor extends View {
 
         //draw all vertex
         //point A
-        canvas.drawPoint(20,20,paint);
+        //canvas.drawPoint(20,20,paint);
         //
 
         canvas.drawLine(450, 200,450+110, 200, paint);

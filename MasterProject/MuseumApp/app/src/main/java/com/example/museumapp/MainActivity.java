@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View floor_1, floor_2, dimView;
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = findViewById(R.id.loginButton);
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
-
     }
 
     @Override
@@ -103,7 +101,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setting.setTextColor(getColor(R.color.red));
                 break;
         }
-
     }
-
 }

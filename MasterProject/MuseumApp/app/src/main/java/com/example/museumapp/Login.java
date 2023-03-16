@@ -47,7 +47,6 @@ public class Login  implements View.OnClickListener {
         popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, x, y);
 
-
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -65,7 +64,7 @@ public class Login  implements View.OnClickListener {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                //TODO Login Success
             }
         });
     }
