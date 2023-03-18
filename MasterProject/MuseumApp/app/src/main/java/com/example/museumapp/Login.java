@@ -64,6 +64,9 @@ public class Login  implements View.OnClickListener {
                 popupWindow.dismiss();
             }//click on close button, popup window closes
         });
+
+        //login function after clicking the login button
+        // Button on the top right id=loginbutton, button for confirm login id=buttonLogin
         login = popView.findViewById(R.id.buttonLogin);
         username= popView.findViewById(R.id.loginID);
         userpassword=popView.findViewById(R.id.loginPass);
