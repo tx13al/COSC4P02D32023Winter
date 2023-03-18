@@ -65,7 +65,7 @@ public class Login  implements View.OnClickListener {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO put login code here
+                //TODO
             }
         });
     }
