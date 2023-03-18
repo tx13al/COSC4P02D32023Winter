@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 public class Login  implements View.OnClickListener {
     private Context context;
     View dimView;
+    Button login;
 
     public Login(Context context, View dimView) {
         this.context = context;
@@ -61,7 +62,7 @@ public class Login  implements View.OnClickListener {
                 popupWindow.dismiss();
             }//click on close button, popup window closes
         });
-        Button login = popView.findViewById(R.id.buttonLogin);
+        login = popView.findViewById(R.id.buttonLogin);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
