@@ -26,7 +26,7 @@ android {
             buildConfigField("String", "DB_Name", "\"" + getDBInf(2) + "\"")
             buildConfigField("String", "DB_User", "\"" + getDBInf(3) + "\"")
             buildConfigField("String", "DB_Pass", "\"" + getDBInf(4) + "\"")
-            buildConfigField("String", "DB_Port", "\"" + getDBInf(5) + "\"")
+            buildConfigField("int", "DB_Port", "" + getDBInf(5) + "")
         }
 
         debug {
@@ -34,7 +34,7 @@ android {
             buildConfigField("String", "DB_Name", "\"" + getDBInf(2) + "\"")
             buildConfigField("String", "DB_User", "\"" + getDBInf(3) + "\"")
             buildConfigField("String", "DB_Pass", "\"" + getDBInf(4) + "\"")
-            buildConfigField("String", "DB_Port", "\"" + getDBInf(5) + "\"")
+            buildConfigField("int", "DB_Port", "" + getDBInf(5) + "")
         }
     }
     compileOptions {
@@ -51,7 +51,7 @@ def getDBInf(int i) {
     def DB_Name = keysProperties['DB_Name']
     def DB_User = keysProperties['DB_User']
     def DB_Pass = keysProperties['DB_Pass']
-    def DB_Port = keysProperties['DB_Port']
+    def DB_Port = Integer.parseInt(keysProperties['DB_Port'])
 
     if (i == 1) return DB_URL
     else if (i == 2) return DB_Name
@@ -68,4 +68,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'org.postgresql:postgresql:42.2.5'
+
 }

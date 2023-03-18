@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = findViewById(R.id.loginButton);
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
+
+        new SQLCommandTester();
     }
 
     @Override
