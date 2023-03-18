@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
-
 }
 
 android {
@@ -22,12 +21,43 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "DB_URL", "\"" + getDBInf(1) + "\"")
+            buildConfigField("String", "DB_Name", "\"" + getDBInf(2) + "\"")
+            buildConfigField("String", "DB_User", "\"" + getDBInf(3) + "\"")
+            buildConfigField("String", "DB_Pass", "\"" + getDBInf(4) + "\"")
+            buildConfigField("String", "DB_Port", "\"" + getDBInf(5) + "\"")
+        }
+
+        debug {
+            buildConfigField("String", "DB_URL", "\"" + getDBInf(1) + "\"")
+            buildConfigField("String", "DB_Name", "\"" + getDBInf(2) + "\"")
+            buildConfigField("String", "DB_User", "\"" + getDBInf(3) + "\"")
+            buildConfigField("String", "DB_Pass", "\"" + getDBInf(4) + "\"")
+            buildConfigField("String", "DB_Port", "\"" + getDBInf(5) + "\"")
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+def getDBInf(int i) {
+    def keysFile = file("keys.properties")
+    def keysProperties = new Properties()
+    keysProperties.load(new FileInputStream(keysFile))
+    def DB_URL = keysProperties['DB_URL']
+    def DB_Name = keysProperties['DB_Name']
+    def DB_User = keysProperties['DB_User']
+    def DB_Pass = keysProperties['DB_Pass']
+    def DB_Port = keysProperties['DB_Port']
+
+    if (i == 1) return DB_URL
+    else if (i == 2) return DB_Name
+    else if (i == 3) return DB_User
+    else if (i == 4) return DB_Pass
+    else if (i == 5) return DB_Port
 }
 
 dependencies {
