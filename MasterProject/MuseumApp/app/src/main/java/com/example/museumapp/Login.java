@@ -16,10 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class Login  implements View.OnClickListener {
     private Context context;
     View dimView;
+    EditText  username,userpassword;
     Button login;
 
     public Login(Context context, View dimView) {
@@ -63,9 +65,18 @@ public class Login  implements View.OnClickListener {
             }//click on close button, popup window closes
         });
         login = popView.findViewById(R.id.buttonLogin);
+        username= popView.findViewById(R.id.loginID);
+        userpassword=popView.findViewById(R.id.loginPass);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(username.getText().toString().equals("a") && userpassword.getText().toString().equals("a")){
+                    Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show();
+                    popupWindow.dismiss();
+                }else{
+                    Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
+                }
+
                 //TODO
             }
         });
