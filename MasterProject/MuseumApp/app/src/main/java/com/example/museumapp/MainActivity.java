@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConnectionHelper.connect(); //make connection with database
+        //ConnectionHelper.connect(); //make connection with database
         mainScreen = findViewById(R.id.main_screen);
         //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = findViewById(R.id.loginButton);
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
-        ConnectionHelper.disconnect();  //disconnect with database.
+        //ConnectionHelper.disconnect();  //disconnect with database.
     }
 
     @Override
