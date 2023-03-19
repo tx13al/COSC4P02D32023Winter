@@ -5,15 +5,50 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 public class SecondFloor extends View {
     private Paint paint;
-    private int width;
-    private int height;
+
+    private final float vertical_wall = 679.f / 12.f,    // feet
+                        hori_wall = 513.f / 12.f,
+                        wall_diagonal = (float)Math.sqrt(vertical_wall*vertical_wall + hori_wall*hori_wall);
+
+    ScaleGestureDetector mScaleGestureDetector;
+    private float mScaleFactor = 1.f;
+
+    private float lastX, lastY;
+    private float offsetX, offsetY;
+    private float startX, startY;
+    private float translateX, translateY;
 
     public SecondFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(@NonNull ScaleGestureDetector detector) {
+                mScaleFactor *= detector.getScaleFactor();
+                mScaleFactor = Math.max(0.7f, Math.min(mScaleFactor, 5.0f)); // 设置缩放范围为 0.7 到 5
+                invalidate();
+                return true;
+            }
+
+            @Override
+            public boolean onScaleBegin(@NonNull ScaleGestureDetector detector) {
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
+
+            }
+
+        });
         init();
     }
 
@@ -24,87 +59,121 @@ public class SecondFloor extends View {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mScaleGestureDetector.onTouchEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                lastY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float x = event.getX();
+                float y = event.getY();
+                float dx = x - lastX;
+                float dy = y - lastY;
+                translateX += dx;
+                translateY += dy;
+                invalidate();
+                lastX = x;
+                lastY = y;
+                break;
+        }
+        return true;
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        width = getWidth() - 20;
-        height = getHeight() - 20;  // reserve some space
-        float ratio = (float)56.9 / height;
-        float main_wall_starting_X = 16/ratio,
-                mail_wall_width = (float)26.9/ratio,
-                main_wall_starting_Y = 20,
-                mail_wall_height = (float)56.7/ratio,
+        final int width = getWidth() - 20,      // screen width and height
+                  height = getHeight() - 20;   // reserve boarder
+        final float screen_diagonal = (float)Math.sqrt(width*width + height*height);
 
-                inner_starting_X = main_wall_starting_X + (float)6.4/ratio,
-                inner_width = (float)14.1/ratio,
-                inner_starting_Y = (float)17.95/ratio,
-                inner_height = (float)28/ratio,
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int dpi = metrics.densityDpi;
 
-                widthOfStair = (float)4.3/ratio,
+        float top_reserve = 100 * (dpi / 160f),
+                bottom_reserve = 150 * (dpi / 160f);
 
-                stair1_starting_X = main_wall_starting_X + mail_wall_width-(float)4.8/ratio,
-                stair1_starting_y = 20,
-                stair1_height = (float)8/ratio,
+        canvas.translate(translateX, translateY);
+        canvas.scale(mScaleFactor, mScaleFactor);
+        canvas.save();
 
-                stair2_starting_X = 20,
-                stair2_heigt = (float)6.2/ratio,
-                stair2_width = (float)16/ratio,
-                stair2_starting_Y = height-(float)9.3/ratio;
+        float ratio = wall_diagonal / (screen_diagonal * 0.7f);
+        float main_wall_starting_X = 16.f/ratio,
+                mail_wall_width = 26.75f/ratio,
+                main_wall_starting_Y = height - bottom_reserve,      // y coordinate is upside down,
+                mail_wall_height = 56.58332f/ratio,
+
+                inner_starting_X = main_wall_starting_X + 6.3333f/ratio,
+                inner_width = 14.0833f/ratio,
+                inner_starting_Y = main_wall_starting_Y - 13.3333f/ratio,
+                inner_height = 28f/ratio,
+
+                widthOfStair = 4f/ratio,
+
+                stair1_starting_X = main_wall_starting_X + mail_wall_width - 4f/ratio,
+                stair1_starting_y = main_wall_starting_Y - mail_wall_height,
+                stair1_height = 8f/ratio,
+
+                stair2_starting_X = 20f,
+                stair2_heigt = 6.1667f/ratio,
+                stair2_width = 16.f/ratio,
+                stair2_starting_Y = height - 9.25f/ratio - bottom_reserve;
 
 
         // outer wall
-        canvas.drawLine(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X, mail_wall_height, paint);
-        canvas.drawLine(main_wall_starting_X, mail_wall_height, main_wall_starting_X + mail_wall_width, mail_wall_height, paint);
-        canvas.drawLine(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, main_wall_starting_Y, paint);
-        canvas.drawLine(main_wall_starting_X + mail_wall_width, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, mail_wall_height, paint);
+        canvas.drawLine(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X, main_wall_starting_Y - mail_wall_height, paint);  // left
+        canvas.drawLine(main_wall_starting_X, main_wall_starting_Y - mail_wall_height, main_wall_starting_X + mail_wall_width, main_wall_starting_Y - mail_wall_height, paint); // top
+        canvas.drawLine(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, main_wall_starting_Y, paint);   // bottom
+        canvas.drawLine(main_wall_starting_X + mail_wall_width, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, main_wall_starting_Y - mail_wall_height, paint); // right
 
         // inner rail
-        canvas.drawLine(inner_starting_X , inner_starting_Y, inner_starting_X, inner_starting_Y + inner_height, paint);
-        canvas.drawLine(inner_starting_X , inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y, paint);
-        canvas.drawLine(inner_starting_X + inner_width, inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y + inner_height, paint);
-        canvas.drawLine(inner_starting_X , inner_starting_Y + inner_height, inner_starting_X + inner_width, inner_starting_Y + inner_height, paint);
+        canvas.drawLine(inner_starting_X , inner_starting_Y, inner_starting_X, inner_starting_Y - inner_height, paint); // left
+        canvas.drawLine(inner_starting_X , inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y, paint);  // bottom
+        canvas.drawLine(inner_starting_X + inner_width, inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y - inner_height, paint);  // right
+        canvas.drawLine(inner_starting_X , inner_starting_Y - inner_height, inner_starting_X + inner_width, inner_starting_Y - inner_height, paint);    // top
 
         // stair 1
         paint.setStrokeWidth(2f);
         canvas.drawLine(stair1_starting_X, stair1_starting_y, stair1_starting_X, stair1_starting_y + stair1_height, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height, stair1_starting_X + widthOfStair, stair1_starting_y + stair1_height, paint);
         canvas.drawLine(main_wall_starting_X + mail_wall_width, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y + widthOfStair, paint);
         canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y, paint);
 
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + (float)0.48/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + (float)0.48/ratio, stair1_starting_y, paint);
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 2*(float)0.48/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 2*(float)0.48/ratio, stair1_starting_y, paint);
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 3*(float)0.48/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 3*(float)0.48/ratio, stair1_starting_y, paint);
+        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 0.73f/ratio, stair1_starting_y, paint);
+        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 2*0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 2*0.73f/ratio, stair1_starting_y, paint);
+        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 3*0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 3*0.73f/ratio, stair1_starting_y, paint);
 
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - (float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - (float)0.48/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 2*(float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 2*(float)0.48/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 3*(float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 3*(float)0.48/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 4*(float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 4*(float)0.48/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 5*(float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 5*(float)0.48/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 6*(float)0.48/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 6*(float)0.48/ratio, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 0.73f/ratio, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 2*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 2*0.73f/ratio, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 3*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 3*0.73f/ratio, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 4*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 4*0.73f/ratio, paint);
+        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 5*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 5*0.73f/ratio, paint);
 
 
         // stair 2
         paint.setStrokeWidth(5f);
-        canvas.drawLine(stair2_starting_X, stair2_starting_Y, stair2_width, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X, stair2_starting_Y, stair2_starting_X, stair2_starting_Y - stair2_heigt, paint);
-        canvas.drawLine(stair2_starting_X, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + (float)7.4/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + (float)7.4/ratio , stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + (float)7.4/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio - (float)2.1/ratio, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + (float)7.4/ratio , stair2_starting_Y - stair2_heigt + (float)1.1/ratio - (float)2.1/ratio, widthOfStair + (float)7.4/ratio + widthOfStair, stair2_starting_Y - stair2_heigt + (float)1.1/ratio - (float)2.1/ratio, paint);
+        canvas.drawLine(stair2_starting_X, stair2_starting_Y, stair2_width, stair2_starting_Y, paint);  // bottom
+        canvas.drawLine(stair2_starting_X, stair2_starting_Y, stair2_starting_X, stair2_starting_Y - stair2_heigt, paint);  // left
+        canvas.drawLine(stair2_starting_X, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt, paint);    // top_left
+        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio, paint);    // top_mid_left
+        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7.3333f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, paint); // top_mid_width
+        canvas.drawLine(stair2_starting_X + widthOfStair + 7.3333f/ratio , stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7.3333f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio, paint);  // top_mid_right
+        canvas.drawLine(stair2_starting_X + widthOfStair + 7.3333f/ratio , stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio, widthOfStair + 7.3333f/ratio + 4.42f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio, paint);   // top_right
 
         paint.setStrokeWidth(2f);
-        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + (float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + (float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 2*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 2*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 3*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 3*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 4*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 4*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 5*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 5*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 6*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 6*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 7*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 7*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 8*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 8*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 9*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 9*(float)0.48/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 10*(float)0.48/ratio, stair2_starting_Y - stair2_heigt + (float)1.1/ratio, stair2_starting_X + widthOfStair + 10*(float)0.48/ratio, stair2_starting_Y, paint);
-
+        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 2*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 2*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 3*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 3*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 4*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 4*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 5*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 5*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 6*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 6*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y, paint);
+        canvas.drawLine(stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y, paint);
     }
+
+
 }
