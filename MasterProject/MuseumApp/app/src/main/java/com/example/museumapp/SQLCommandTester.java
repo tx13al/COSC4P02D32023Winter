@@ -29,7 +29,6 @@ public class SQLCommandTester {
         System.out.println("Connecting to database");
         connect();
         System.out.println("Connection status: " + status);
-
         System.out.println("Disconnecting from database");
         disconnect();
         System.out.println("Connection status: " + status);

@@ -9,18 +9,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import java.sql.SQLException;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View floor_1, floor_2, dimView;
     private FrameLayout mainContainer;
     private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ConnectionHelper.connect(); //make connection with database
         mainScreen = findViewById(R.id.main_screen);
         //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
@@ -53,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = findViewById(R.id.loginButton);
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
-
-        new SQLCommandTester();
+        ConnectionHelper.disconnect();  //disconnect with database.
     }
 
     @Override
