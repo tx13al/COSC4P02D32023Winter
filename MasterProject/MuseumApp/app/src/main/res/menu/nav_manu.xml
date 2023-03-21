@@ -5,7 +5,8 @@
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_search_bar"
-        app:actionViewClass="android.webkit.findViewById"
+        android:title = "Search"
+        app:actionViewClass="android.webkit.SearchView"
         app:showAsAction="ifRoom|withText" />
 
 
