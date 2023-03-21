@@ -1,11 +1,17 @@
 package com.example.museumapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -56,6 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
         //ConnectionHelper.disconnect();  //disconnect with database.
+
+
+
+        //search bar
+        String[] stringArray = getResources().getStringArray(R.array.countries_array);
+        SearchView searchView = findViewById(R.id.search_bar);
+        SearchBar searchBar = new SearchBar(this, stringArray, searchView);
     }
 
     @Override

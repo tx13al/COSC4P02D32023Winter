@@ -1,45 +1,76 @@
 package com.example.museumapp;
 
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import android.os.Bundle;
+import androidx.appcompat.widget.SearchView;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.CursorAdapter;
+import android.widget.TextView;
 
-public class SearchBar {
-    private final Object searchBar;
+public class SearchBar extends AppCompatActivity {
 
-    public SearchBar() {
+    public SearchBar(Context context, String[] arr, SearchView View) {
         //search bar
-        this.searchBar = getResources().getStringArray(R.array.countries_array);;
+        String[] stringArray = arr;;
 
-        ArrayAdapter<String> completion=new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line,searchBar
+        ArrayAdapter<String> completion = new ArrayAdapter<>(
+                context, android.R.layout.simple_dropdown_item_1line, stringArray
         );
 
-        AutoCompleteTextView actv=(AutoCompleteTextView)findViewById(R.id.finishmythought);
-        actv.setThreshold(1);
-        actv.setAdapter(completion);
+        SearchView searchView = View;
 
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = (String) parent.getItemAtPosition(position); // 获取选中的联想结果
+            public boolean onQueryTextSubmit(String query) {
+                // Perform search action here
+                return true;
+            }
 
-                AlertDialog.Builder firstDialog=new AlertDialog.Builder(getApplicationContext());
-                firstDialog.setTitle("Attention!");
-                firstDialog.setIcon(R.mipmap.ic_launcher);
-                firstDialog.setMessage("");
-                firstDialog.show();
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "text"});
+
+                for (int i = 0; i < completion.getCount(); i++) {
+                    if (completion.getItem(i).toLowerCase().startsWith(newText.toLowerCase())) {
+                        cursor.addRow(new Object[] {i, completion.getItem(i)});
+                    }
+                }
+                searchView.getSuggestionsAdapter().changeCursor(cursor);
+                if (newText.isEmpty()) {
+                    searchView.getSuggestionsAdapter().changeCursor(null);
+                }
+                return true;
             }
         });
     }
+
+    /*public class CustomSuggestionsAdapter extends CursorAdapter {
+
+        public CustomSuggestionsAdapter(Context context, Cursor cursor) {
+            super(context, cursor, 0);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
+            return view;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(cursor.getString(cursor.getColumnIndex("text")));
+        }
+    }*/
 
 }
