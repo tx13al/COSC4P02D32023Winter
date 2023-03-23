@@ -69,5 +69,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'org.postgresql:postgresql:42.6.0'
-    implementation 'mysql:mysql-connector-java:5.1.49'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 }
