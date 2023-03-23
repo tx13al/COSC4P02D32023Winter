@@ -6,10 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConnectionHelper {
-    static private final String URL = "mapdb4p02.cda8cggjr3rt.us-east-1.rds.amazonaws.com";
-    static private final String DatabaseName = "MapDB4P02";
-    static private final String UserName = "dbadmin4p02";
-    static private final String Password = "4p02dbadmin";
+    static private final String URL = "mapdb4p02.cda8cggjr3rt.us-east-1.rds.amazonaws.com:5432/MapDB4P02";
+    static private final String UserName = "dbadmin4P02";
+    static private final String Password = "4p02password";
     static private Connection connection;
     public static void connect() {
         try{
