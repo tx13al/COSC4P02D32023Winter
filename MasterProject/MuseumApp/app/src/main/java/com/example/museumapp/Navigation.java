@@ -1,15 +1,18 @@
+package com.example.museumapp;
+
 import java.util.*;
 
 public class Navigation {
     private static final int NO_PARENT = -1;
-    public  Navigation(int[][] adjMatrix,int startVertex) {
-        dijkstra(adjMatrix, startVertex);
+    static ArrayList<Integer> pathPoints = new ArrayList<Integer>();
+    public  Navigation(double[][] adjMatrix,int startVertex, int endVertex) {
+        dijkstra(adjMatrix, startVertex,endVertex);
     }
 
-    private static void dijkstra(int[][] adjacencyMatrix, int startVertex) {
+    private static void dijkstra(double[][] adjacencyMatrix, int startVertex,int endVertex) {
         int nVertices = adjacencyMatrix[0].length;
 
-        int[] shortestDistances = new int[nVertices];
+        double[] shortestDistances = new double[nVertices];
         boolean[] visited = new boolean[nVertices];
         int[] parents = new int[nVertices];
 
@@ -23,7 +26,7 @@ public class Navigation {
 
         for (int i = 1; i < nVertices; i++) {
             int nearestVertex = -1;
-            int shortestDistance = Integer.MAX_VALUE;
+            double shortestDistance = Integer.MAX_VALUE;
             for (int vertex = 0; vertex < nVertices; vertex++) {
                 if (!visited[vertex] && shortestDistances[vertex] < shortestDistance) {
                     nearestVertex = vertex;
@@ -34,35 +37,28 @@ public class Navigation {
             visited[nearestVertex] = true;
 
             for (int vertex = 0; vertex < nVertices; vertex++) {
-                int edgeDistance = adjacencyMatrix[nearestVertex][vertex];
+                double edgeDistance = adjacencyMatrix[nearestVertex][vertex];
                 if (edgeDistance > 0 && ((shortestDistance + edgeDistance) < shortestDistances[vertex])) {
                     parents[vertex] = nearestVertex;
                     shortestDistances[vertex] = shortestDistance + edgeDistance;
                 }
             }
         }
-
-        //printShortestPaths(startVertex, shortestDistances, parents);
+        printPath(endVertex,parents);
     }
 
-    private static void printShortestPaths(int startVertex, int[] distances, int[] parents) {
-        int nVertices = distances.length;
-        System.out.print("Vertex\t Distance\tPath");
 
-        for (int vertex = 0; vertex < nVertices; vertex++) {
-            if (vertex != startVertex) {
-                System.out.print("\n" + startVertex + " -> " + vertex + " \t\t " + distances[vertex] + "\t\t");
-                printPath(vertex, parents);
-            }
-        }
-    }
-
-    private static void printPath(int currentVertex, int[] parents) {
-        if (currentVertex == NO_PARENT) {
+    private static void printPath(int endVertex, int[] parents) {
+        if (endVertex == NO_PARENT) {
             return;
         }
-        printPath(parents[currentVertex], parents);
-        System.out.print(currentVertex + " ");
+        printPath(parents[endVertex], parents);
+        //System.out.print(endVertex + " ");
+        pathPoints.add(endVertex);
+    }
+
+    public ArrayList<Integer> getPathPoints(){
+        return pathPoints;
     }
 }
 
