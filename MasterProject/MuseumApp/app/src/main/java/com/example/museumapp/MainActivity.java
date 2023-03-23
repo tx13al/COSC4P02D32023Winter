@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
         //ConnectionHelper.disconnect();  //disconnect with database.
-        new SQLCommandTester();
 
 
 

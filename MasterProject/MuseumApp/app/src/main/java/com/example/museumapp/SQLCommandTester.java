@@ -35,20 +35,36 @@ public class SQLCommandTester {
     }
 
     private void connect() {
-        try
-        {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(pgURL, DB_User, DB_Pass);
-            status = true;
-        }
-        catch (Exception e) {
-            status = false;
-            System.out.print(e.getMessage());
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Class.forName("org.postgresql.Driver");
+                    connection = DriverManager.getConnection(DB_URL, DB_User, DB_Pass);
+                    status = true;
+                }
+                catch (Exception e)
+                {
+                    status = false;
+                    System.out.print(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception e) {
             e.printStackTrace();
+            this.status = false;
         }
     }
 
     private void disconnect() {
+        thread.interrupt();
         status = false;
     }
 
