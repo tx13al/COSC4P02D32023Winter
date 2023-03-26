@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
         //ConnectionHelper.disconnect();  //disconnect with database.
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         new SQLCommandTester();
 
 

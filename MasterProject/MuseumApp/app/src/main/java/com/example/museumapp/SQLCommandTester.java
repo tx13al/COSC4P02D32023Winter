@@ -1,6 +1,10 @@
 package com.example.museumapp;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SQLCommandTester {
     // Login credentials
@@ -11,7 +15,7 @@ public class SQLCommandTester {
     int DB_Port;
 
     // Connection
-    private Connection connection;
+    private Connection connection = null;
     private String pgURL = "jdbc:postgresql://%s:%d/%s";
     private boolean status = false;
     Thread thread;
@@ -29,26 +33,74 @@ public class SQLCommandTester {
         System.out.println("Connecting to database");
         connect();
         System.out.println("Connection status: " + status);
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM staff";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(1));
+                System.out.println(resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+            e.printStackTrace();
+        }
+
         System.out.println("Disconnecting from database");
         disconnect();
         System.out.println("Connection status: " + status);
     }
 
     private void connect() {
-        try
-        {
-            Class.forName("org.postgresql.Driver");
+
+        try {
             connection = DriverManager.getConnection(pgURL, DB_User, DB_Pass);
-            status = true;
-        }
-        catch (Exception e) {
-            status = false;
-            System.out.print(e.getMessage());
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getClass().getName()+ ":  "+ e.getMessage());
         }
+
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try
+//                {
+//                    Class.forName("org.postgresql.Driver");
+//                    connection = DriverManager.getConnection(pgURL, DB_User, DB_Pass);
+//                    status = true;
+//                }
+//                catch (Exception e) {
+//                    status = false;
+//                    System.out.print(e.getMessage());
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        thread.start();
+//
+//        try{
+//            thread.join();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            this.status = false;
+//        }
+
     }
 
     private void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getClass().getName()+ ":  "+ e.getMessage());
+        }
         status = false;
     }
 
