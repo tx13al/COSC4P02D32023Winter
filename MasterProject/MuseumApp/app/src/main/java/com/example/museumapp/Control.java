@@ -53,13 +53,13 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         home.setOnClickListener(this);
         home.setTextColor(getColor(R.color.red));//set the text color as red because home is selected by default
         //create info button
-        info = findViewById(R.id.info);
+        info = findViewById(R.id.control_delete);
         info.setOnClickListener(this);
         //create arts button
-        arts = findViewById(R.id.art);
+        arts = findViewById(R.id.control_change);
         arts.setOnClickListener(this);
         //create setting button
-        setting = findViewById(R.id.settings);
+        setting = findViewById(R.id.control_more);
         setting.setOnClickListener(this);
 
         //logout
