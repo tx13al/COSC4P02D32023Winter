@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -74,6 +75,9 @@ public class Login  implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 if(username.getText().toString().equals("a") && userpassword.getText().toString().equals("a")){
+                    Intent intent=new Intent();
+                    intent.setClass(context.getApplicationContext(),Control.class);
+                    context.startActivity(intent);
                     Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show();
                     popupWindow.dismiss();
                 }else{

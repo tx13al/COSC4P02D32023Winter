@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/control">
+
+    <FrameLayout
+        android:id="@+id/control_main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/beige"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/control_control_search_bar_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/shape_searchbar"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/control_search_bar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:hint="Try Sir Isaac Brock"
+            app:iconifiedByDefault="false"
+            app:searchIcon="@drawable/location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/control_loginButton"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <Button
+            android:id="@+id/control_loginButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/shape_oval_button"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:onClick="onClick"
+            android:text="M"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/control_control_search_bar_container"
+            app:layout_constraintTop_toTopOf="@id/control_control_search_bar_container"
+            app:layout_constraintBottom_toBottomOf="@id/control_control_search_bar_container"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/control_constraint_1"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/control_control_search_bar_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/control_floorOneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/navy_blue"
+            android:text="Level 1"
+            android:fontFamily="@font/josefin_sans_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/control_floorTwoButton"
+            android:padding="10dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/shape_round_button_white"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onClick" />
+
+        <Button
+            android:id="@+id/control_floorTwoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/navy_blue"
+            android:fontFamily="@font/josefin_sans_medium"
+            android:text="Level 2"
+            app:layout_constraintStart_toEndOf="@id/control_floorOneButton"
+            android:padding="10dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onClick"
+            android:background="@drawable/shape_round_button_white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:id="@+id/bottom_bar">
+
+        <Button
+            android:id="@+id/control_add"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="5dp"
+            android:drawableTop="@mipmap/icon_museum"
+            android:text="Add"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:id="@+id/info"
+            android:text="Delete"
+            app:layout_constraintStart_toEndOf="@id/control_add"
+            android:drawableTop="@mipmap/icon_info"
+            android:background="@drawable/shape_round_button_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            app:layout_constraintWidth_percent="0.25"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:id="@+id/art"
+            android:text="Change"
+            app:layout_constraintStart_toEndOf="@id/info"
+            android:drawableTop="@mipmap/icon_art"
+            android:background="@drawable/shape_round_button_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            app:layout_constraintWidth_percent="0.25"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:id="@+id/settings"
+            android:text="More"
+            android:layout_marginEnd="5dp"
+            android:drawableTop="@mipmap/icon_settings"
+            android:background="@drawable/shape_round_button_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/art"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            app:layout_constraintWidth_percent="0.25"
+            android:onClick="onClick" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:id="@+id/dim_layout"
+        android:clickable="true"
+        android:focusable="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
