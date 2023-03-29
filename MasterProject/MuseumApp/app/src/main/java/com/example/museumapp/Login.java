@@ -19,11 +19,16 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Login  implements View.OnClickListener {
     private Context context;
     View dimView;
     EditText  username,userpassword;
     Button login;
+
+    SQLCommandTester db;
 
     public Login(Context context, View dimView) {
         this.context = context;
@@ -74,18 +79,27 @@ public class Login  implements View.OnClickListener {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(username.getText().toString().equals("a") && userpassword.getText().toString().equals("a")){
+                SQLCommandTester db = new SQLCommandTester();
+                int outcome = db.tryLogin(username.getText().toString(), userpassword.getText().toString());
+                db.disconnect();
+                if(outcome == 3){
                     Intent intent=new Intent();
                     intent.setClass(context.getApplicationContext(),Control.class);
                     context.startActivity(intent);
-                    Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
                     popupWindow.dismiss();
-                }else{
-                    Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
+                } else if (outcome == 2) {
+                    Toast.makeText(context, "Login Failed. Incorrect Password.", Toast.LENGTH_SHORT).show();
+                } else if (outcome == 1) {
+                    Toast.makeText(context, "Login Failed. User does not exist.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Login Failed. Please enter a username/password.", Toast.LENGTH_SHORT).show();
                 }
+                db.disconnect();
 
                 //TODO
             }
         });
     }
+
 }
