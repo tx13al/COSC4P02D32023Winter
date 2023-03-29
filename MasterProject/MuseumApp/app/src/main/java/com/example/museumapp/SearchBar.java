@@ -34,6 +34,32 @@ public class SearchBar extends AppCompatActivity {
 
         SearchView searchView = View;
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // Override onQueryTextSubmit method which is call when submit query is searched
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // If the list contains the search query than filter the adapter
+                // using the filter method with the query as its argument
+                if (list.contains(query)) {
+                    completion.getFilter().filter(query);
+                } else {
+                    // Search query not found in List View
+                    Toast.makeText(context, "Not found", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+
+            // This method is overridden to filter the adapter according
+            // to a search query when the user is typing search
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                completion.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+    }
+
 /*        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -57,35 +83,6 @@ public class SearchBar extends AppCompatActivity {
                 return true;
             }
         });*/
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // Override onQueryTextSubmit method which is call when submit query is searched
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // If the list contains the search query than filter the adapter
-                // using the filter method with the query as its argument
-                if (list.contains(query)) {
-                    completion.getFilter().filter(query);
-                } else {
-                    // Search query not found in List View
-                    Toast.makeText(getApplicationContext(), "Not found", Toast.LENGTH_LONG).show();
-                }
-                return false;
-            }
-
-            // This method is overridden to filter the adapter according
-            // to a search query when the user is typing search
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                completion.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-    }
-
-
 
     /*public class CustomSuggestionsAdapter extends CursorAdapter {
 
