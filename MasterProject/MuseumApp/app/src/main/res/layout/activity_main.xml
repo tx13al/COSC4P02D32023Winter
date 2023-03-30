@@ -48,8 +48,8 @@
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/shape_oval_button"
             android:fontFamily="@font/josefin_sans_regular"
             android:onClick="onClick"

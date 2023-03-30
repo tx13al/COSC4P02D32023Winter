@@ -29,20 +29,6 @@ public class SQLCommandTester {
         DB_Pass = BuildConfig.DB_Pass;
         DB_Port = BuildConfig.DB_Port;
         this.pgURL = String.format(this.pgURL,this.DB_URL, this.DB_Port, this.DB_Name);
-
-//        System.out.println("URL:          " + pgURL);
-
-//        System.out.println("Connecting to database");
-        connect();
-//        System.out.println("Connection status: " + status);
-
-//        String query = "SELECT * FROM staff";
-//        System.out.println(query);
-//        testQuery(query);
-
-//        System.out.println("Disconnecting from database");
-//        disconnect();
-//        System.out.println("Connection status: " + status);
     }
 
     private void connect() {
@@ -71,11 +57,11 @@ public class SQLCommandTester {
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
 
-//            while (resultSet.next()) {
-//                System.out.println(resultSet.getString(1));
-//                System.out.println(resultSet.getString(2));
-//                System.out.println(resultSet.getString(3));
-//            }
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(1));
+                System.out.println(resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+            }
 
             statement.close();
         } catch (SQLException e) {
@@ -84,6 +70,7 @@ public class SQLCommandTester {
         }
     }
 
+    // Need to implement in another thread.
     public int tryLogin(String username, String password) {
         int outcome = 0;
         if (username != null && password != null) {
