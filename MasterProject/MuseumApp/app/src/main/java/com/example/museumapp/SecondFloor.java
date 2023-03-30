@@ -12,6 +12,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SecondFloor extends View {
     private Paint paint;
 
@@ -23,9 +26,13 @@ public class SecondFloor extends View {
     private float mScaleFactor = 1.f;
 
     private float lastX, lastY;
-    private float offsetX, offsetY;
-    private float startX, startY;
+    //private float offsetX, offsetY;
+    //private float startX, startY;
     private float translateX, translateY;
+
+
+    // Create the pins
+    List<MapPin> pinList = null;
 
     public SecondFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -173,7 +180,20 @@ public class SecondFloor extends View {
         canvas.drawLine(stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y, paint);
         canvas.drawLine(stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y, paint);
         canvas.drawLine(stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y, paint);
+
+
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.draw(canvas);
+            }
+        }
+
     }
 
+    public void drawPins(List<MapPin> list) {
+        this.pinList = list;
+        // Update the view with the new list here
+        invalidate(); // This will trigger a redraw of the view
+    }
 
 }

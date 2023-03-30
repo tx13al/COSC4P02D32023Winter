@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.database.MatrixCursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
@@ -16,7 +17,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout mainContainer;
     private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
+
+    List<MapPin> pinList = new ArrayList<>();    // storing the map pin objects
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +40,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
         LayoutInflater inflater = LayoutInflater.from(this);
+
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
         floor_1.setVisibility(View.VISIBLE);
         mainContainer.addView(floor_1);
+
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         mainContainer.addView(floor_2);
+
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
         level_2 = findViewById(R.id.floorTwoButton);
@@ -68,6 +78,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] stringArray = getResources().getStringArray(R.array.countries_array);
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
         SearchBar searchBar = new SearchBar(this, stringArray, actv);
+
+
+        // assuming loading data from database here
+        Item item1 = new Item("123",
+                               "item",
+                           "this is an item. ",
+                             1999,
+                              2000,
+                              "www",
+                             "www.",
+                              1);
+        List<Item> list = new ArrayList<>();
+        list.add(item1);
+        ShowCase showCase1 = new ShowCase(1, 5, 5, 1200, 1200, 2, list);
+        Drawable drawable = getResources().getDrawable(R.drawable.location);
+        MapPin pin = new MapPin(drawable, showCase1);
+        pinList.add(pin);
+
     }
 
     @Override
@@ -84,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);
+
+                // draw pins
+                SecondFloor secondFloor = floor_2.findViewById(R.id.secondFloor);
+                secondFloor.drawPins(pinList);
+
                 level_1.setTextColor(getColor(R.color.navy_blue));
                 level_2.setTextColor(getColor(R.color.red));
                 break;
