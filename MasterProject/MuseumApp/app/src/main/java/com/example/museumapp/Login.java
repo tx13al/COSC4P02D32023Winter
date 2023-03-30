@@ -1,14 +1,7 @@
 package com.example.museumapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,9 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Login  implements View.OnClickListener {
     private Context context;
@@ -77,7 +67,7 @@ public class Login  implements View.OnClickListener {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int outcome = SQLCommandTester.tryLogin
+                int outcome = DatabaseHelper.tryLogin
                         (username.getText().toString(), userpassword.getText().toString());
                 if(outcome == 3){
                     Intent intent=new Intent();

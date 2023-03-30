@@ -1,14 +1,12 @@
 package com.example.museumapp;
-import com.mysql.cj.protocol.a.BinaryResultsetReader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLCommandTester {
+public class DatabaseHelper {
     static String DB_User = BuildConfig.DB_User;
     static String DB_Pass = BuildConfig.DB_Pass;
     static private String pgURL =
