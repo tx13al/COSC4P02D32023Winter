@@ -25,10 +25,8 @@ import java.sql.SQLException;
 public class Login  implements View.OnClickListener {
     private Context context;
     View dimView;
-    EditText  username,userpassword;
+    EditText  username, userpassword;
     Button login;
-
-    SQLCommandTester db;
 
     public Login(Context context, View dimView) {
         this.context = context;
@@ -79,9 +77,8 @@ public class Login  implements View.OnClickListener {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SQLCommandTester db = new SQLCommandTester();
-                int outcome = db.tryLogin(username.getText().toString(), userpassword.getText().toString());
-                db.disconnect();
+                int outcome = SQLCommandTester.tryLogin
+                        (username.getText().toString(), userpassword.getText().toString());
                 if(outcome == 3){
                     Intent intent=new Intent();
                     intent.setClass(context.getApplicationContext(),Control.class);
@@ -95,7 +92,6 @@ public class Login  implements View.OnClickListener {
                 } else {
                     Toast.makeText(context, "Login Failed. Please enter a username/password.", Toast.LENGTH_SHORT).show();
                 }
-                db.disconnect();
 
                 //TODO
             }
