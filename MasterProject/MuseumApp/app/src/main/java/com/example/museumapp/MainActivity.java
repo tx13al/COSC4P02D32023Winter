@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //ConnectionHelper.connect(); //make connection with database
         mainScreen = findViewById(R.id.main_screen);
         //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level_1 = findViewById(R.id.floorOneButton);
         level_2 = findViewById(R.id.floorTwoButton);
         level_1.setOnClickListener(this);
-        level_1.setTextColor(getColor(R.color.red));//set the text color as red becuase level 1 is selected by default
+        level_1.setTextColor(getColor(R.color.red));//set the text color as red because level 1 is selected by default
         level_2.setOnClickListener(this);
         //create home button
         home = findViewById(R.id.home);
@@ -62,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = findViewById(R.id.loginButton);
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
-        //ConnectionHelper.disconnect();  //disconnect with database.
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        new SQLCommandTester();
 
 
 
