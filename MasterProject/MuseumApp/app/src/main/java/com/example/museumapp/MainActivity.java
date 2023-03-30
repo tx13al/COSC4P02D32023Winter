@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //search bar
         String[] stringArray = getResources().getStringArray(R.array.countries_array);
-        SearchView searchView = findViewById(R.id.search_bar);
-        SearchBar searchBar = new SearchBar(this, stringArray, searchView);
+        AutoCompleteTextView actv = findViewById(R.id.search_bar);
+        SearchBar searchBar = new SearchBar(this, stringArray, actv);
     }
 
     @Override

@@ -1,107 +1,60 @@
 package com.example.museumapp;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-
 import android.content.Context;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.view.LayoutInflater;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class SearchBar extends AppCompatActivity {
 
-    public SearchBar(Context context, String[] arr, SearchView View) {
+    public SearchBar(Context context, String[] arr, AutoCompleteTextView View) {
         //search bar
-        List<String> list = new ArrayList<>(Arrays.asList(arr));
-        //String[] stringArray = arr;
+        String[] stringArray = arr;
 
         ArrayAdapter<String> completion = new ArrayAdapter<>(
-                context, android.R.layout.simple_dropdown_item_1line, list
+                context, android.R.layout.simple_dropdown_item_1line, arr
         );
 
-        SearchView searchView = View;
+        AutoCompleteTextView actv = View;
+        actv.setAdapter(completion);
+        actv.setThreshold(1);
+        actv.setInputType(InputType.TYPE_CLASS_TEXT);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // Override onQueryTextSubmit method which is call when submit query is searched
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                // If the list contains the search query than filter the adapter
-                // using the filter method with the query as its argument
-                if (list.contains(query)) {
-                    completion.getFilter().filter(query);
-                } else {
-                    // Search query not found in List View
-                    Toast.makeText(context, "Not found", Toast.LENGTH_LONG).show();
-                }
-                return false;
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = (String) adapterView.getItemAtPosition(i);
+                Toast.makeText(context, "Item "+selectedItem+ " found. ", Toast.LENGTH_SHORT).show();
             }
+        });
 
-            // This method is overridden to filter the adapter according
-            // to a search query when the user is typing search
+
+        actv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                completion.getFilter().filter(newText);
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                    String enteredText = textView.getText().toString();
+                    int position = ((ArrayAdapter<String>) actv.getAdapter()).getPosition(enteredText);
+                    if (position >= 0) {
+                        // The entered text is in the adapter
+                        Toast.makeText(context, "Item "+enteredText+ " found. ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // The entered text is not in the adapter
+                        Toast.makeText(context, enteredText+" is NOT found", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
                 return false;
             }
         });
 
     }
-
-/*        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Perform search action here
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "text"});
-
-                for (int i = 0; i < completion.getCount(); i++) {
-                    if (completion.getItem(i).toLowerCase().startsWith(newText.toLowerCase())) {
-                        cursor.addRow(new Object[] {i, completion.getItem(i)});
-                    }
-                }
-                searchView.getSuggestionsAdapter().changeCursor(cursor);
-                if (newText.isEmpty()) {
-                    searchView.getSuggestionsAdapter().changeCursor(null);
-                }
-                return true;
-            }
-        });*/
-
-    /*public class CustomSuggestionsAdapter extends CursorAdapter {
-
-        public CustomSuggestionsAdapter(Context context, Cursor cursor) {
-            super(context, cursor, 0);
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View view = inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
-            return view;
-        }
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
-            textView.setText(cursor.getString(cursor.getColumnIndex("text")));
-        }
-    }*/
 
 }

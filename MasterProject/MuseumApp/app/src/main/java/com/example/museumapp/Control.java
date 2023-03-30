@@ -84,10 +84,10 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         });
 
 
-        //search bar
+/*        //search bar
         String[] stringArray = getResources().getStringArray(R.array.countries_array);
         SearchView searchView = findViewById(R.id.control_search_bar);
-        SearchBar searchBar = new SearchBar(this, stringArray, searchView);
+        SearchBar searchBar = new SearchBar(this, stringArray, searchView);*/
 
 
     }
