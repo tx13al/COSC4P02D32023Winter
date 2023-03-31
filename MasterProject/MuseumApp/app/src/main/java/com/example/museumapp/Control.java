@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -23,7 +24,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private View floor_1, floor_2, dimView;
     private FrameLayout control_mainContainer;
     private ConstraintLayout control_mainScreen;
-    private Button logout, level_1, level_2, home, info, arts, setting;
+    ImageButton logout;
+    private Button level_1, level_2, home, info, arts, setting;
 
     AlertDialog.Builder abuilder;
 
@@ -62,7 +64,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         setting.setOnClickListener(this);
 
         //logout
-        logout=findViewById(R.id.control_loginButton);
+        logout=findViewById(R.id.control_logoutButton);
         abuilder=new AlertDialog.Builder(this);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
