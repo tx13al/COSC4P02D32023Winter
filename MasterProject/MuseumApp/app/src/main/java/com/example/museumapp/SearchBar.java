@@ -35,7 +35,6 @@ public class SearchBar extends AppCompatActivity {
             }
         });
 
-
         actv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -54,7 +53,7 @@ public class SearchBar extends AppCompatActivity {
                 return false;
             }
         });
-
     }
-
 }
+
+

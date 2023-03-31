@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button login, level_1, level_2, home, info, arts, setting;
 
     List<MapPin> pinList = new ArrayList<>();    // storing the map pin objects
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,4 +151,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+   // search filter
+    private void filterSearchItems(String query) {
+        List<SearchItem> filteredSearchItems = new ArrayList<>();
+        SearchItem[] allSearchItems = new SearchItem[0];
+
+        for (SearchItem searchItem : allSearchItems) {
+            if (searchItem.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredSearchItems.add(searchItem);
+            }
+        }
+        searchAdapter.setSearchItems(filteredSearchItems);
+    }
+
 }
