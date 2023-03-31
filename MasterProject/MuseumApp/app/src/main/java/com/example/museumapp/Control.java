@@ -34,7 +34,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
         control_mainScreen = findViewById(R.id.control);
         //main container and two floor views
-        control_mainContainer = findViewById(R.id.control_main_container);
+        control_mainContainer = findViewById(R.id.control_staff_control_container);
         LayoutInflater inflater = LayoutInflater.from(this);
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
         floor_1.setVisibility(View.VISIBLE);

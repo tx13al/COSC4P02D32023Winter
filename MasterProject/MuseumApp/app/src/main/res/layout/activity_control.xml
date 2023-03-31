@@ -8,7 +8,7 @@
     android:id="@+id/control">
 
     <FrameLayout
-        android:id="@+id/control_main_container"
+        android:id="@+id/control_staff_control_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/beige"
