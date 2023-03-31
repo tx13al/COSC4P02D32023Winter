@@ -35,7 +35,7 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/control_search_bar"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:hint="Try Sir Isaac Brock"
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/location"
@@ -48,8 +48,8 @@
 
         <Button
             android:id="@+id/control_loginButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/shape_oval_button"
             android:fontFamily="@font/josefin_sans_regular"
             android:onClick="onClick"

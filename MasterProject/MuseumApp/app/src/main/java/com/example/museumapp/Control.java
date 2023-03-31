@@ -32,7 +32,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
 
-        //ConnectionHelper.connect(); //make connection with database
         control_mainScreen = findViewById(R.id.control);
         //main container and two floor views
         control_mainContainer = findViewById(R.id.control_main_container);

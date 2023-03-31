@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseHelper {
     static String DB_User = BuildConfig.DB_User;
@@ -17,7 +18,7 @@ public class DatabaseHelper {
             return DriverManager.getConnection(pgURL, DB_User, DB_Pass);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
         }
         return null;
     }
@@ -28,33 +29,14 @@ public class DatabaseHelper {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
         }
     }
-
-    /*
-    public void testQuery(String query) {
-        try {
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(1));
-                System.out.println(resultSet.getString(2));
-                System.out.println(resultSet.getString(3));
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            System.out.print(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    */
 
     static class TryLoginThread extends Thread {
         private String username, password;
         private int outcome;
+
         public TryLoginThread(String username, String password) {
             super();
             this.username = username;
@@ -72,23 +54,18 @@ public class DatabaseHelper {
                 SQL_command = String.format(SQL_command, '\'',username,'\'');
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(SQL_command);
-                try {
-                    if (resultSet.next()) {
-                        if (resultSet.getString("passcode").equals(password)) {
-                            this.outcome = 3;    //Correct password
-                        }
-                        else {
-                            this.outcome = 2;    //Wrong password
-                        }
+                if (resultSet.next()) { //if we have matched passcode for this username.
+                    if (resultSet.getString("passcode").equals(password)) {
+                        this.outcome = 3;    //Correct password
                     }
                     else {
-                        this.outcome = 1;    //Wrong username OR user does not exist
+                        this.outcome = 2;    //Wrong password
                     }
-                    disconnect(resultSet, connection);
-                } catch (SQLException e) {
-                    System.err.print(e.getMessage());
-                    e.printStackTrace();
                 }
+                else {
+                    this.outcome = 1;    //Wrong username OR user does not exist
+                }
+                disconnect(resultSet, connection);
             } catch (SQLException e) {
                 System.err.print(e.getMessage());
                 e.printStackTrace();
@@ -101,15 +78,53 @@ public class DatabaseHelper {
         TryLoginThread thread = new TryLoginThread(username, password);
         thread.start();
         try {
-            thread.join();
+            thread.join();  //wait for the thread to stop.
         }
         catch (InterruptedException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
         outcome = thread.getOutcome();
-        thread.interrupt();
+        thread.interrupt(); //thread terminates
         return outcome;
     }
 
+    static class GetAllNoDuplicateNamesThread extends Thread {
+        private ArrayList<String> names = new ArrayList<String>();
+
+        public ArrayList<String> getNames() {
+            return names;
+        }
+
+        public void run() {
+            try {
+                Connection connection = connect();
+                String SQL_command = "SELECT DISTINCT obj_name FROM item";
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    names.add(resultSet.getString("obj_name"));
+                }
+                disconnect(resultSet, connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            }
+        }
+    }
+
+    public static ArrayList<String> getAllNoDuplicateNames() {
+        ArrayList<String> names;
+        GetAllNoDuplicateNamesThread thread = new GetAllNoDuplicateNamesThread();
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        names = thread.getNames();
+        thread.interrupt(); //thread terminates
+        return names;
+    }
 }
