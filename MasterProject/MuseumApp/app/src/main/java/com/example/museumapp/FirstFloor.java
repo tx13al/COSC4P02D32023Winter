@@ -77,6 +77,10 @@ public class FirstFloor extends View {
         //
 
         //TODO use a for loop to draw lines.
+        for(Edge e: edges) {
+            canvas.drawLine(e.from_x + 450, e.from_y + 200,
+                    e.to_x + 450 ,e.to_y + 200, paint);
+        }
         canvas.drawLine(450, 200,450+110, 200, paint);
 
         canvas.drawLine(450+110, 200, 450+110+110, 200, paint);
