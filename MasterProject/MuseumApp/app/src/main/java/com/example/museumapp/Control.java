@@ -154,7 +154,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     public void Showpopup(View v){
         ImageView txtclose;
         Button preview;
-        mydialog.setContentView(R.layout.activity_add);
+        mydialog.setContentView(R.layout.adding_closet);
         txtclose =(ImageView) mydialog.findViewById(R.id.closeadd);
 
         preview = (Button) mydialog.findViewById(R.id.p);

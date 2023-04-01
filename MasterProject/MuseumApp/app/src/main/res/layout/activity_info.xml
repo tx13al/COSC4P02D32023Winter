@@ -11,11 +11,18 @@
     android:layout_height="wrap_content"
 
     >
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tool_info"
+        />
+
     <TextView
         android:id="@+id/visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_info"
         android:gravity="center"
         android:padding="10dp"
         android:text="VISIT"
@@ -110,6 +117,7 @@
         android:layout_marginStart="10dp"
         android:padding="10dp"
         android:textSize="20sp"
+        android:lineSpacingExtra="10dp"
         />
     <TextView
         android:layout_width="match_parent"
