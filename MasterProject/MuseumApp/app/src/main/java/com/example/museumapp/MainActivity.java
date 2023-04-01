@@ -6,7 +6,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -74,12 +77,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dimView = findViewById(R.id.dim_layout);
         login.setOnClickListener(new Login(MainActivity.this, dimView));
 
-
-
-        //search bar
-        String[] stringArray = getResources().getStringArray(R.array.countries_array);
+        // Find the AutoCompleteTextView view
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
-        SearchBar searchBar = new SearchBar(this, stringArray, actv);
+        // Create a new instance of SearchBar and pass the necessary arguments
+        SearchBar searchBar = new SearchBar(this, actv);
+
+
+// String.xml using below
+
+    //    String[] stringArray = getResources().getStringArray(R.array.countries_array);
+ //       AutoCompleteTextView actv = findViewById(R.id.search_bar);
+  //      SearchBar searchBar = new SearchBar(this, stringArray, actv);
 
 
         // assuming loading data from database here
