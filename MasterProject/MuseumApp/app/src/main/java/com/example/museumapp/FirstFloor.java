@@ -12,14 +12,10 @@ import android.view.View;
 import java.util.ArrayList;
 
 public class FirstFloor extends View {
-
+    ArrayList<Edge> edges;
     private Paint paint;
-    private int width;
-    private int height;
-
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.f;
-
     private float lastX, lastY;
     private float offsetX, offsetY;
     private float startX= 300, startY = 100;
@@ -61,14 +57,17 @@ public class FirstFloor extends View {
         return true;
     }
 
+    private void initEdges() {
+        edges = new ArrayList<Edge>();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
+        initEdges();
         super.onDraw(canvas);
         offsetX = lastX - startX;
         offsetY = lastY - startY;
         canvas.translate(translateX, translateY);
-        width = getWidth();
-        height = getHeight();
         canvas.scale(mScaleFactor, mScaleFactor);
         canvas.save();
 
@@ -77,6 +76,11 @@ public class FirstFloor extends View {
         //canvas.drawPoint(20,20,paint);
         //
 
+        //TODO use a for loop to draw lines.
+        for(Edge e: edges) {
+            canvas.drawLine(e.from_x + 450, e.from_y + 200,
+                    e.to_x + 450 ,e.to_y + 200, paint);
+        }
         canvas.drawLine(450, 200,450+110, 200, paint);
 
         canvas.drawLine(450+110, 200, 450+110+110, 200, paint);
