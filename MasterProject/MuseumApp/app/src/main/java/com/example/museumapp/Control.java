@@ -1,14 +1,18 @@
 package com.example.museumapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -22,14 +26,18 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private FrameLayout control_mainContainer;
     private ConstraintLayout control_mainScreen;
     ImageButton logout;
-    private Button level_1, level_2, add, info, arts, setting;
+    private Button level_1, level_2, add, delete, change, more;
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    Dialog mydialog;
+
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
+        mydialog= new Dialog(this);
+
 
         control_mainScreen = findViewById(R.id.control);
         //main container and two floor views
@@ -48,16 +56,21 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         level_2.setOnClickListener(this);
         //create add button
         add = findViewById(R.id.control_add);
-        add.setOnClickListener(this);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Showpopup(view);
+            }
+        });
         //create info button
-        info = findViewById(R.id.control_delete);
-        info.setOnClickListener(this);
+        delete = findViewById(R.id.control_delete);
+        delete.setOnClickListener(this);
         //create arts button
-        arts = findViewById(R.id.control_change);
-        arts.setOnClickListener(this);
+        change = findViewById(R.id.control_change);
+        change.setOnClickListener(this);
         //create setting button
-        setting = findViewById(R.id.control_more);
-        setting.setOnClickListener(this);
+        more = findViewById(R.id.control_more);
+        more.setOnClickListener(this);
 
         //logout
         logout=findViewById(R.id.control_logoutButton);
@@ -109,32 +122,55 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             //press home button to back to home page
             case R.id.control_add:
                 add.setTextColor(getColor(R.color.red));
-                info.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                delete.setTextColor(getColor(R.color.navy_blue));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press info button to show the information about the museum like operating hours and admission
-            case R.id.info:
-                info.setTextColor(getColor(R.color.red));
+            case R.id.control_delete:
                 add.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                delete.setTextColor(getColor(R.color.red));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press art button to browse all the art
-            case R.id.art:
-                info.setTextColor(getColor(R.color.navy_blue));
+            case R.id.control_change:
+                delete.setTextColor(getColor(R.color.navy_blue));
                 add.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.red));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                change.setTextColor(getColor(R.color.red));
+                more.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press setting button to show settings page. Change font size
-            case R.id.settings:
-                info.setTextColor(getColor(R.color.navy_blue));
+            case R.id.control_more:
+                delete.setTextColor(getColor(R.color.navy_blue));
                 add.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.red));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.red));
                 break;
         }
     }
+
+    //popup window for add function
+    public void Showpopup(View v){
+        ImageView txtclose;
+        Button preview;
+        mydialog.setContentView(R.layout.activity_add);
+        txtclose =(ImageView) mydialog.findViewById(R.id.closeadd);
+
+        preview = (Button) mydialog.findViewById(R.id.p);
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydialog.dismiss();
+            }
+        });
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mydialog.show();
+    }
+
+
+
+
+
 
 }

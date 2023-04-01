@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper {
     static String DB_User = BuildConfig.DB_User;
@@ -127,4 +128,62 @@ public class DatabaseHelper {
         thread.interrupt(); //thread terminates
         return names;
     }
+
+
+    static class printcasethread extends Thread{
+        private int sid,x,y,floor;
+        private float length,width;
+        private List<Item> items;
+
+        ArrayList<ShowCase> scase ;
+        public ArrayList<ShowCase> getcase() {
+            return scase;
+        }
+
+        public void run() {
+            try {
+                Connection connection = connect();
+                String SQL_command = "SELECT DISTINCT obj_name FROM item";
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    sid = resultSet.getInt("sid");
+                    length = resultSet.getInt("length");
+                    width = resultSet.getInt("width");
+                    x = resultSet.getInt("x");
+                    y = resultSet.getInt("y");
+                    floor = resultSet.getInt("floor");
+                    scase.add(new ShowCase(sid, length, width, x, y, floor,null));
+                }
+                disconnect(resultSet, connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            }
+        }
+
+
+
+    }
+
+    public static ArrayList<ShowCase> printcase(){
+        ArrayList sc;
+        printcasethread thread=new printcasethread();
+        thread.start();
+        try {
+            thread.join();  //wait for the thread to stop.
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        sc=thread.getcase();
+        thread.interrupt();
+
+        return sc;
+    }
+
+
+
+
 }
