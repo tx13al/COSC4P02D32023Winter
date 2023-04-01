@@ -56,12 +56,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         level_2.setOnClickListener(this);
         //create add button
         add = findViewById(R.id.control_add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Showpopup(view);
-            }
-        });
+        add.setOnClickListener(this);
         //create info button
         delete = findViewById(R.id.control_delete);
         delete.setOnClickListener(this);
@@ -125,6 +120,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 delete.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.navy_blue));
                 more.setTextColor(getColor(R.color.navy_blue));
+                Showpopup(view);
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.control_delete:
@@ -154,8 +150,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     public void Showpopup(View v){
         ImageView txtclose;
         Button preview;
-        mydialog.setContentView(R.layout.activity_add);
-        txtclose =(ImageView) mydialog.findViewById(R.id.closeadd);
+        mydialog.setContentView(R.layout.adding_closet);
+        txtclose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
 
         preview = (Button) mydialog.findViewById(R.id.p);
         txtclose.setOnClickListener(new View.OnClickListener() {

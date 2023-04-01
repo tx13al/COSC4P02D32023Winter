@@ -4,6 +4,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="address"><u>43 Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</u></string>
 
+    <string-array name="add_floor_selection">
+        <item>Floor 1</item>
+        <item>Floor 2</item>
+        </string-array>
+
     <string-array name="countries_array">
         <item>a</item>
         <item>Albania</item>
