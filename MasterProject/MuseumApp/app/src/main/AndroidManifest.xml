@@ -29,7 +29,13 @@
         <activity android:name=".Control" />
         <activity
             android:name=".InfoPage"
-            android:label="Info Page"/>
+            android:label="Info Page"
+            android:parentActivityName=".MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
+
 
     </application>
 

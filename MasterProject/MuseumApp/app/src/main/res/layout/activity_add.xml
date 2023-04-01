@@ -31,7 +31,68 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="65dp" />
+        tools:layout_editor_absoluteY="39dp" />
+
+    <EditText
+        android:id="@+id/length"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/josefin_sans_light"
+        android:hint="length"
+        android:inputType="text"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/width"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/josefin_sans_light"
+        android:hint="width"
+        android:inputType="text"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/xaxis"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="202dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/josefin_sans_light"
+        android:hint="x-axis"
+        android:inputType="text"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/yaxis"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="262dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/josefin_sans_light"
+        android:hint="y-axis"
+        android:inputType="text"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/p"

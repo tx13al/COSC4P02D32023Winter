@@ -130,12 +130,13 @@ public class DatabaseHelper {
     }
 
 
+    //getting case info
     static class printcasethread extends Thread{
         private int sid,x,y,floor;
         private float length,width;
         private List<Item> items;
 
-        ArrayList<ShowCase> scase ;
+        ArrayList<ShowCase> scase =new ArrayList<ShowCase>();
         public ArrayList<ShowCase> getcase() {
             return scase;
         }
@@ -143,17 +144,19 @@ public class DatabaseHelper {
         public void run() {
             try {
                 Connection connection = connect();
-                String SQL_command = "SELECT DISTINCT obj_name FROM item";
+                String SQL_command = "SELECT * FROM showcase";
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 while (resultSet.next()) {
                     sid = resultSet.getInt("sid");
-                    length = resultSet.getInt("length");
-                    width = resultSet.getInt("width");
+                    length = resultSet.getFloat("length_m");
+                    width = resultSet.getFloat("width_m");
                     x = resultSet.getInt("x");
                     y = resultSet.getInt("y");
-                    floor = resultSet.getInt("floor");
+                    floor = resultSet.getInt("floor_no");
                     scase.add(new ShowCase(sid, length, width, x, y, floor,null));
+//                    System.out.println(sid);
+//                    System.out.println("_____________________________");
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {

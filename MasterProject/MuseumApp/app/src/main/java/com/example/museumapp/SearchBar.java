@@ -1,6 +1,7 @@
 package com.example.museumapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Context;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -12,17 +13,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class SearchBar extends AppCompatActivity {
 
-    public SearchBar(Context context, String[] arr, AutoCompleteTextView View) {
-        //search bar
-        String[] stringArray = arr;
+    public SearchBar(Context context, AutoCompleteTextView view) {
+        // Retrieve data from database using getAllNoDuplicateNames() method
+
+        ArrayList<String> arr = DatabaseHelper.getAllNoDuplicateNames();
 
         ArrayAdapter<String> completion = new ArrayAdapter<>(
                 context, android.R.layout.simple_dropdown_item_1line, arr
         );
 
-        AutoCompleteTextView actv = View;
+        AutoCompleteTextView actv = view;
         actv.setAdapter(completion);
         actv.setThreshold(1);
         actv.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -55,5 +59,3 @@ public class SearchBar extends AppCompatActivity {
         });
     }
 }
-
-
