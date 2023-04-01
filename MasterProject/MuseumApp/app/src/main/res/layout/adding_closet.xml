@@ -81,7 +81,8 @@
                 app:layout_constraintEnd_toStartOf="@id/add_floor_selection"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/add_constraint2"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                />
 
             <Spinner
                 android:id="@+id/add_floor_selection"
@@ -95,14 +96,130 @@
                 app:layout_constraintStart_toEndOf="@+id/add_floor"
                 app:layout_constraintTop_toTopOf="@+id/add_constraint2"
                 />
+
             <TextView
-                android:id="@+id/add_x"
+                android:id="@+id/add_X"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/josefin_sans_bold"
+                android:padding="10dp"
+                android:text="X:"
+                android:textColor="@color/navy_blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/add_X_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_floor"
                 />
 
+            <EditText
+                android:id="@+id/add_X_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="x in inches"
+                android:fontFamily="@font/josefin_sans_light"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/add_X"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_floor"
+                />
 
+            <TextView
+                android:id="@+id/add_Y"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/josefin_sans_bold"
+                android:padding="10dp"
+                android:text="Y:"
+                android:textColor="@color/navy_blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/add_Y_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_X"
+                />
 
+            <EditText
+                android:id="@+id/add_Y_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="y in inches"
+                android:fontFamily="@font/josefin_sans_light"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/add_Y"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_X"
+                />
+
+            <TextView
+                android:id="@+id/add_width"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/josefin_sans_bold"
+                android:padding="10dp"
+                android:text="Width:"
+                android:textColor="@color/navy_blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/add_width_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_Y"
+                />
+
+            <EditText
+                android:id="@+id/add_width_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="width in inches"
+                android:fontFamily="@font/josefin_sans_light"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/add_width"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_Y"
+                />
+
+            <TextView
+                android:id="@+id/add_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/josefin_sans_bold"
+                android:padding="10dp"
+                android:text="Length:"
+                android:textColor="@color/navy_blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/add_length_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_width"
+                />
+
+            <EditText
+                android:id="@+id/add_length_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="length in inches"
+                android:fontFamily="@font/josefin_sans_light"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/add_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_width"
+                />
+
+            <Button
+                android:id="@+id/add_OK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:background="@drawable/shape_round_button_blue"
+                android:text="OK"
+                android:textSize="20dp"
+                android:fontFamily="@font/josefin_sans_bold"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/add_length"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

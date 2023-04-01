@@ -153,7 +153,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         mydialog.setContentView(R.layout.adding_closet);
         txtclose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
 
-        preview = (Button) mydialog.findViewById(R.id.p);
+        //preview = (Button) mydialog.findViewById(R.id.add_OK);
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
