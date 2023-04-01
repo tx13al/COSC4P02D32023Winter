@@ -25,7 +25,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private FrameLayout control_mainContainer;
     private ConstraintLayout control_mainScreen;
     ImageButton logout;
-    private Button level_1, level_2, home, info, arts, setting;
+    private Button level_1, level_2, add, info, arts, setting;
 
     AlertDialog.Builder abuilder;
 
@@ -47,12 +47,11 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         level_1 = findViewById(R.id.control_floorOneButton);
         level_2 = findViewById(R.id.control_floorTwoButton);
         level_1.setOnClickListener(this);
-        level_1.setTextColor(getColor(R.color.red));//set the text color as red becuase level 1 is selected by default
+        level_1.setTextColor(getColor(R.color.red));//set the text color as red because level 1 is selected by default
         level_2.setOnClickListener(this);
-        //create home button
-        home = findViewById(R.id.control_add);
-        home.setOnClickListener(this);
-        home.setTextColor(getColor(R.color.red));//set the text color as red because home is selected by default
+        //create add button
+        add = findViewById(R.id.control_add);
+        add.setOnClickListener(this);
         //create info button
         info = findViewById(R.id.control_delete);
         info.setOnClickListener(this);
@@ -111,30 +110,30 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 level_2.setTextColor(getColor(R.color.red));
                 break;
             //press home button to back to home page
-            case R.id.home:
-                home.setTextColor(getColor(R.color.red));
-                info.setTextColor(getColor(R.color.navy_blue));//TODO need to make it more efficient when the button is not clicked the text color back to default
+            case R.id.control_add:
+                add.setTextColor(getColor(R.color.red));
+                info.setTextColor(getColor(R.color.navy_blue));
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.info:
                 info.setTextColor(getColor(R.color.red));
-                home.setTextColor(getColor(R.color.navy_blue));
+                add.setTextColor(getColor(R.color.navy_blue));
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press art button to browse all the art
             case R.id.art:
                 info.setTextColor(getColor(R.color.navy_blue));
-                home.setTextColor(getColor(R.color.navy_blue));
+                add.setTextColor(getColor(R.color.navy_blue));
                 arts.setTextColor(getColor(R.color.red));
                 setting.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press setting button to show settings page. Change font size
             case R.id.settings:
                 info.setTextColor(getColor(R.color.navy_blue));
-                home.setTextColor(getColor(R.color.navy_blue));
+                add.setTextColor(getColor(R.color.navy_blue));
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.red));
                 break;
