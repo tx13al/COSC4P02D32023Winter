@@ -1,7 +1,5 @@
 package com.example.museumapp;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class Control extends AppCompatActivity implements View.OnClickListener{
@@ -27,7 +24,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     ImageButton logout;
     private Button level_1, level_2, add, info, arts, setting;
 
-    AlertDialog.Builder abuilder;
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,11 +61,11 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
         //logout
         logout=findViewById(R.id.control_logoutButton);
-        abuilder=new AlertDialog.Builder(this);
+        builder =new AlertDialog.Builder(this);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abuilder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(Control.this, MainActivity.class);
