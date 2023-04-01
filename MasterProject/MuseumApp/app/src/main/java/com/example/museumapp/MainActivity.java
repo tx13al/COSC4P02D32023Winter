@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.database.MatrixCursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -134,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 home.setTextColor(getColor(R.color.navy_blue));
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.navy_blue));
+                Intent infoIntent = new Intent(MainActivity.this, InfoPage.class);
+                startActivity(infoIntent);
                 break;
             //press art button to browse all the art
             case R.id.art:

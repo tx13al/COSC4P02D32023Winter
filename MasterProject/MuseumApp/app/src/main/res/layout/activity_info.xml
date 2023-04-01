@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <TextView
+        android:id="@+id/visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="VISIT"
+        android:textSize="40sp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/hours"
+        app:layout_constraintTop_toBottomOf="@+id/visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="left"
+        android:padding="10dp"
+        android:text="Hours of Operation:"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/hours_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10dp"
+        android:padding="10dp"
+        android:text="Open every day from 1 pm - 5 pm November through April \n(10 am - 5 pm May through October) \nThe Museum is closed on the following holidays: Good Friday, Easter Sunday, Thanksgiving Day, and during the Christmas season between December 18th and January 1st. "
+        android:textSize="18sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/hours"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <TextView
+        android:id="@+id/adm"
+        app:layout_constraintTop_toBottomOf="@+id/hours_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="left"
+        android:padding="10dp"
+        android:text="Admissions:"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/ticketprice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/adm"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        android:text="Adults - $5\nSeniors (60+) - $3\nStudents (full-time) - $2 \nAge 18 and Under - FREE"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:textSize="25sp"
+        android:id="@+id/location_info"
+        app:layout_constraintTop_toBottomOf="@+id/ticketprice"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/address"
+        app:layout_constraintTop_toBottomOf="@+id/location_info"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:id="@+id/location_address"
+        android:autoLink="map"
+        android:linksClickable="true"
+        android:textColor="@color/dark_blue"
+
+        >
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PARKING: Free street parking in available out front for Museum patrons, but it is limited.  More free street parking can be found on both Castlereagh and Davy Streets. Paid parking lots are available on Platoff Street, at Fort George and at the Court House."
+        app:layout_constraintTop_toBottomOf="@+id/location_address"
+        android:id="@+id/parking"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        android:textSize="20sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact us:"
+        android:id="@+id/contact_us"
+        app:layout_constraintTop_toBottomOf="@+id/parking"
+        android:textSize="25dp"
+        android:gravity="left"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_phone"
+        android:text="PHONE: 905-468-3912 "
+        app:layout_constraintTop_toBottomOf="@+id/contact_us"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="10dp"
+        android:autoLink="phone"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_fax"
+        android:text="FAX: 905-468-1728"
+        android:autoLink="phone"
+        app:layout_constraintTop_toBottomOf="@+id/contact_phone"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_email"
+        android:text="EMAIL: contact@nhsm.ca"
+        android:autoLink="email"
+        app:layout_constraintTop_toBottomOf="@+id/contact_fax"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Other Information Please Visit Our Website"
+        app:layout_constraintTop_toBottomOf="@id/contact_email"
+        android:textSize="22sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        android:id="@+id/other_information"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="https://www.notlmuseum.ca/"
+        app:layout_constraintTop_toBottomOf="@id/other_information"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        android:autoLink="web"
+        android:id="@+id/web"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
