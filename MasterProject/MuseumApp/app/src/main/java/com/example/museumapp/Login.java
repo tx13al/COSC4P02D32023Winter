@@ -1,5 +1,7 @@
 package com.example.museumapp;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.InputType;
@@ -8,6 +10,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,52 +28,24 @@ public class Login  implements View.OnClickListener {
     EditText  username, userpassword;
     Button login;
 
-    public Login(Context context, View dimView) {
+    public Login(Context context){
         this.context = context;
-        this.dimView = dimView;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onClick(View view) {
-        //add a dimmed view to darken the background while the popup window showing
-        dimView.setVisibility(View.VISIBLE);
-        //popup window settings
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        int x = width / 15;
-        int y = height / 6;
-        PopupWindow popupWindow = new PopupWindow(context);
-        View popView = LayoutInflater.from(context).inflate(R.layout.activity_login, null);
-        popupWindow.setContentView(popView);
-        popupWindow.setWidth(width * 7 / 8);
-        popupWindow.setHeight(height * 2 / 3);
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
-        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, x, y);
-
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dimView.setVisibility(View.GONE);
-            }//dimView gone when close the popup window
-        });
-        ImageView popup_back_button = popView.findViewById(R.id.loginCancel);
-        popup_back_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }//click on close button, popup window closes
-        });
-
-        //login function after clicking the login button
-        // Button on the top right id=loginbutton, button for confirm login id=buttonLogin
-        login = popView.findViewById(R.id.buttonLogin);
-        username= popView.findViewById(R.id.loginID);
-        userpassword=popView.findViewById(R.id.loginPass);
+        //dialog window settings
+        Dialog dialog = new Dialog(context);
+        View DialogView = LayoutInflater.from(context).inflate(R.layout.activity_login, null);
+        dialog.setContentView(DialogView);
+        dialog.setTitle("Login");
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
+        Button login = DialogView.findViewById(R.id.buttonLogin);
+        EditText username = DialogView.findViewById(R.id.loginID);
+        EditText userpassword = DialogView.findViewById(R.id.loginPass);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +56,7 @@ public class Login  implements View.OnClickListener {
                     intent.setClass(context.getApplicationContext(),Control.class);
                     context.startActivity(intent);
                     Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
-                    popupWindow.dismiss();
+                    dialog.dismiss();
                 } else if (outcome == 2) {
                     Toast.makeText(context, "Login Failed. Incorrect Password.", Toast.LENGTH_SHORT).show();
                 } else if (outcome == 1) {

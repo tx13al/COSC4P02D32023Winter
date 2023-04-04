@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setting.setOnClickListener(this);
         //create Login button
         login = findViewById(R.id.loginButton);
-        dimView = findViewById(R.id.dim_layout);
-        login.setOnClickListener(new Login(MainActivity.this, dimView));
+        login.setOnClickListener(new Login(MainActivity.this));
 
         // Find the AutoCompleteTextView view
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
