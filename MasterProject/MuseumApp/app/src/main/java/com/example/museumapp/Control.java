@@ -122,7 +122,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 delete.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.navy_blue));
                 more.setTextColor(getColor(R.color.navy_blue));
-                ShowPopup(view);
+                AddDialog(view);
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.control_delete:
@@ -149,7 +149,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     }
 
     //popup window for add function
-    public void ShowPopup(View v){
+    public void AddDialog(View v){
         mydialog.setContentView(R.layout.adding_closet);
         ImageView txtClose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
         Button OK = mydialog.findViewById(R.id.add_OK);
@@ -180,8 +180,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 mydialog.dismiss();
             }
         });
-        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mydialog.show();
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
 

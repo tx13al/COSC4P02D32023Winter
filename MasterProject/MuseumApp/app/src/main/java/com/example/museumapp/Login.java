@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -43,7 +45,7 @@ public class Login  implements View.OnClickListener {
         dialog.setTitle("Login");
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-        dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Button login = DialogView.findViewById(R.id.buttonLogin);
         EditText username = DialogView.findViewById(R.id.loginID);
         EditText userpassword = DialogView.findViewById(R.id.loginPass);
