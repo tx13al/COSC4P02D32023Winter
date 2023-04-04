@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -166,8 +167,15 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 float y = Float.parseFloat(addYNumber.getText().toString());
                 float length = Float.parseFloat(addLengthNumber.getText().toString());
                 float width = Float.parseFloat(addWidthNumber.getText().toString());
-                DatabaseHelper.addCase(floor, x, y, length, width);
-                mydialog.dismiss();
+                if (DatabaseHelper.addCase(floor, x, y, length, width)) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Adding successfully!", Toast.LENGTH_SHORT).show();
+                    mydialog.dismiss();
+                }
+                else {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mydialog.show();

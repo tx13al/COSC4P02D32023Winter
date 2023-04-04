@@ -215,6 +215,7 @@ public class DatabaseHelper {
                 SQL_command += (", " + y);
                 SQL_command += (", " + floor + ");");
                 Statement statement = connection.createStatement();
+                statement.executeUpdate(SQL_command);
                 disconnect(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -223,7 +224,8 @@ public class DatabaseHelper {
         }
     }
 
-    public static void addCase(int floor, float x, float y, float length, float width) {
+    //TODO If the case position cannot be put at that position, return false.
+    public static boolean addCase(int floor, float x, float y, float length, float width) {
         addCaseThread thread = new addCaseThread(floor, x, y, length, width);
         thread.start();
         try {
@@ -233,6 +235,7 @@ public class DatabaseHelper {
             System.err.print(e.getMessage());
         }
         thread.interrupt();
+        return true;
     }
 
 
