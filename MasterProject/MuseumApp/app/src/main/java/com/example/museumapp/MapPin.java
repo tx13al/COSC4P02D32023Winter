@@ -1,6 +1,7 @@
 package com.example.museumapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -11,8 +12,6 @@ import android.widget.Toast;
 
 public class MapPin {
     private ImageView pinView;
-    //private int pinWidth;
-    //private int pinHeight;
     private float x, y;
     private ShowCase showCase;      // Need to decide pin and showcase are one-to-one, or one-to-many
 
@@ -24,6 +23,8 @@ public class MapPin {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "You clicked the icon! Good job! ", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, ItemList.class);
+                context.startActivity(intent);
             }
         });
 
