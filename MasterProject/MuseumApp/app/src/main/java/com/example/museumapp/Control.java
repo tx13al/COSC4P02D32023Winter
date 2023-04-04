@@ -40,6 +40,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         mydialog= new Dialog(this);
+        builder =new AlertDialog.Builder(this);
 
 
         control_mainScreen = findViewById(R.id.control);
@@ -60,19 +61,41 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         //create add button
         add = findViewById(R.id.control_add);
         add.setOnClickListener(this);
-        //create info button
+        //create delete button
         delete = findViewById(R.id.control_delete);
-        delete.setOnClickListener(this);
-        //create arts button
+        //delete function: delete the closet that been choose
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(false) {
+                    builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //DatabaseHelper.deleteCase(sid);
+                            dialogInterface.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).show();
+                }
+                else{
+                    Toast.makeText(Control.this.getApplicationContext(), "No closet choose", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //create change button
         change = findViewById(R.id.control_change);
         change.setOnClickListener(this);
-        //create setting button
+        //create more button
         more = findViewById(R.id.control_more);
         more.setOnClickListener(this);
 
         //logout
         logout=findViewById(R.id.control_logoutButton);
-        builder =new AlertDialog.Builder(this);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
