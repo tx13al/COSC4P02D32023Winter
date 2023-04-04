@@ -17,8 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-    </FrameLayout>
+        app:layout_constraintVertical_bias="0.0"></FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -116,7 +115,7 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_marginStart="5dp"
-            android:drawableTop="@drawable/add"
+            android:drawableTop="@mipmap/add_image"
             android:text="Add"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -131,7 +130,7 @@
             android:id="@+id/control_delete"
             android:text="Delete"
             app:layout_constraintStart_toEndOf="@id/control_add"
-            android:drawableTop="@mipmap/icon_info"
+            android:drawableTop="@mipmap/delete_image"
             android:background="@drawable/shape_round_button_white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -145,7 +144,7 @@
             android:id="@+id/control_change"
             android:text="Change"
             app:layout_constraintStart_toEndOf="@id/control_delete"
-            android:drawableTop="@mipmap/icon_art"
+            android:drawableTop="@mipmap/edit_image"
             android:background="@drawable/shape_round_button_white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
