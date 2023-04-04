@@ -27,6 +27,7 @@ public class Login  implements View.OnClickListener {
     View dimView;
     EditText  username, userpassword;
     Button login;
+    ImageView loginCancel;
 
     public Login(Context context){
         this.context = context;
@@ -46,6 +47,13 @@ public class Login  implements View.OnClickListener {
         Button login = DialogView.findViewById(R.id.buttonLogin);
         EditText username = DialogView.findViewById(R.id.loginID);
         EditText userpassword = DialogView.findViewById(R.id.loginPass);
+        ImageView loginCancel = DialogView.findViewById(R.id.loginCancel);
+        loginCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
