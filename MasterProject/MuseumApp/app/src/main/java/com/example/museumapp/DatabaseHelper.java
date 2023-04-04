@@ -19,7 +19,7 @@ public class DatabaseHelper {
             return DriverManager.getConnection(pgURL, DB_User, DB_Pass);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            System.err.println(e.getClass().getName() + ":  " + e.getMessage());
         }
         return null;
     }
@@ -30,7 +30,7 @@ public class DatabaseHelper {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            System.err.println(e.getClass().getName() + ":  " + e.getMessage());
         }
     }
 
@@ -52,18 +52,16 @@ public class DatabaseHelper {
             try {
                 Connection connection = connect();
                 String SQL_command = "SELECT passcode FROM staff WHERE username = %c%s%c";
-                SQL_command = String.format(SQL_command, '\'',username,'\'');
+                SQL_command = String.format(SQL_command, '\'', username, '\'');
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 if (resultSet.next()) { //if we have matched passcode for this username.
                     if (resultSet.getString("passcode").equals(password)) {
                         this.outcome = 3;    //Correct password
-                    }
-                    else {
+                    } else {
                         this.outcome = 2;    //Wrong password
                     }
-                }
-                else {
+                } else {
                     this.outcome = 1;    //Wrong username OR user does not exist
                 }
                 disconnect(resultSet, connection);
@@ -80,8 +78,7 @@ public class DatabaseHelper {
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
@@ -109,7 +106,7 @@ public class DatabaseHelper {
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
             }
         }
     }
@@ -131,12 +128,13 @@ public class DatabaseHelper {
 
 
     //getting case info
-    static class printcasethread extends Thread{
-        private int sid,x,y,floor;
-        private float length,width;
+    static class printcasethread extends Thread {
+        private int sid, floor;
+        private float length, width, x, y;
         private List<Item> items;
 
-        ArrayList<ShowCase> scase =new ArrayList<ShowCase>();
+        ArrayList<ShowCase> scase = new ArrayList<ShowCase>();
+
         public ArrayList<ShowCase> getcase() {
             return scase;
         }
@@ -151,42 +149,36 @@ public class DatabaseHelper {
                     sid = resultSet.getInt("sid");
                     length = resultSet.getFloat("length_m");
                     width = resultSet.getFloat("width_m");
-                    x = resultSet.getInt("x");
-                    y = resultSet.getInt("y");
+                    x = resultSet.getFloat("x");
+                    y = resultSet.getFloat("y");
                     floor = resultSet.getInt("floor_no");
-                    scase.add(new ShowCase(sid, length, width, x, y, floor,null));
+                    scase.add(new ShowCase(sid, length, width, x, y, floor, null));
 //                    System.out.println(sid);
 //                    System.out.println("_____________________________");
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
             }
         }
-
-
-
     }
 
-    public static ArrayList<ShowCase> printcase(){
+    public static ArrayList<ShowCase> printcase() {
         ArrayList sc;
-        printcasethread thread=new printcasethread();
+        printcasethread thread = new printcasethread();
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
-        sc=thread.getcase();
+        sc = thread.getcase();
         thread.interrupt();
 
         return sc;
     }
-
-
 
 
 }

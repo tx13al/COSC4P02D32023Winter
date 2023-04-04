@@ -6,11 +6,12 @@ public class ShowCase {
     private int closetID;
     private float length;
     private float width;
-    private int x, y;
+    private float x;
+    private float y;
     private int floorNum;
     private List<Item> items;
 
-    public ShowCase(int closetID, float length, float width, int x, int y, int floorNum, List<Item> items) {
+    public ShowCase(int closetID, float length, float width, float x, float y, int floorNum, List<Item> items) {
         this.closetID = closetID;
         this.length = length;
         this.width = width;
@@ -44,7 +45,7 @@ public class ShowCase {
         this.width = width;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
@@ -52,7 +53,7 @@ public class ShowCase {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

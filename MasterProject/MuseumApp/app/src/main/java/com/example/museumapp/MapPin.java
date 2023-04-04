@@ -9,7 +9,7 @@ public class MapPin {
     private Drawable pin;
     private int pinWidth;
     private int pinHeight;
-    private int x, y;
+    private float x, y;
     private ShowCase showCase;      // Need to decide pin and showcase are one-to-one, or one-to-many
 
     public MapPin(Drawable icon, ShowCase sc) {
