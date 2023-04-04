@@ -131,22 +131,12 @@ public class DatabaseHelper {
 
 
     //getting case info
-<<<<<<< HEAD
     static class printCaseThread extends Thread {
         private int sid, floor;
         private float length, width, x, y;
         private List<Item> items;
         ArrayList<ShowCase> scase = new ArrayList<ShowCase>();
         public ArrayList<ShowCase> getCase() {
-=======
-    static class printcasethread extends Thread{
-        private int sid,x,y,floor;
-        private float length,width;
-        private List<Item> items;
-
-        ArrayList<ShowCase> scase =new ArrayList<ShowCase>();
-        public ArrayList<ShowCase> getcase() {
->>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
             return scase;
         }
 
@@ -163,13 +153,8 @@ public class DatabaseHelper {
                     x = resultSet.getInt("x");
                     y = resultSet.getInt("y");
                     floor = resultSet.getInt("floor_no");
-<<<<<<< HEAD
                     scase.add(new ShowCase(sid, length, width, x, y, floor, null));
-=======
                     scase.add(new ShowCase(sid, length, width, x, y, floor,null));
-//                    System.out.println(sid);
-//                    System.out.println("_____________________________");
->>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
@@ -182,15 +167,9 @@ public class DatabaseHelper {
 
     }
 
-<<<<<<< HEAD
     public static ArrayList<ShowCase> printCase() {
         ArrayList sc;
         printCaseThread thread = new printCaseThread();
-=======
-    public static ArrayList<ShowCase> printcase(){
-        ArrayList sc;
-        printcasethread thread=new printcasethread();
->>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
@@ -199,13 +178,9 @@ public class DatabaseHelper {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
-<<<<<<< HEAD
         sc = thread.getCase();
-=======
-        sc=thread.getcase();
->>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
+        sc=thread.getCase();
         thread.interrupt();
-
         return sc;
     }
 
