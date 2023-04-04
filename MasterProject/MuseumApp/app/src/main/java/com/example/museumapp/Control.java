@@ -90,13 +90,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
-
-/*        //search bar
-        String[] stringArray = getResources().getStringArray(R.array.countries_array);
-        SearchView searchView = findViewById(R.id.control_search_bar);
-        SearchBar searchBar = new SearchBar(this, stringArray, searchView);*/
-
-
     }
 
     @Override
@@ -167,16 +160,13 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.print("-------------------------------------------------------------------------------------");
                 String addFloorSelectionString = addFloorSelection.getSelectedItem().toString();
                 int floor = Integer.parseInt(addFloorSelectionString.substring(6));
-                System.out.print("-------------------------------------------------------------------------------------");
-                System.out.print(floor);
-                float x = addXNumber.getX();
-                System.out.print(x);
-                float y;
-                float length;
-                float width;
+                float x = Float.parseFloat(addXNumber.getText().toString());
+                float y = Float.parseFloat(addYNumber.getText().toString());
+                float length = Float.parseFloat(addLengthNumber.getText().toString());
+                float width = Float.parseFloat(addWidthNumber.getText().toString());
+                DatabaseHelper.addCase(floor, x, y, length, width);
                 mydialog.dismiss();
             }
         });

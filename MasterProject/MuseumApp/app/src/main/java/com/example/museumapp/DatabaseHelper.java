@@ -34,6 +34,15 @@ public class DatabaseHelper {
         }
     }
 
+    public static void disconnect(Connection connection) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+        }
+    }
+
     static class TryLoginThread extends Thread {
         private String username, password;
         private int outcome;
@@ -184,9 +193,38 @@ public class DatabaseHelper {
         return sc;
     }
 
-/*
-    public static void addCase(ShowCase scase) {
-        addCaseThread thread = new addCaseThread();
+    static class addCaseThread extends Thread {
+        int floor;
+        float x, y, length, width;
+        public addCaseThread(int floor, float x, float y, float length, float width) {
+            super();
+            this.floor = floor;
+            this.x = x;
+            this.y = y;
+            this.length = length;
+            this.width = width;
+        }
+        public void run() {
+            try {
+                Connection connection = connect();
+                String SQL_command =
+                        "INSERT INTO showcase (length_m, width_m, x, y, floor_no) VALUES ";
+                SQL_command += ("(" + this.length);
+                SQL_command += (", " + width);
+                SQL_command += (", " + x);
+                SQL_command += (", " + y);
+                SQL_command += (", " + floor + ");");
+                Statement statement = connection.createStatement();
+                disconnect(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            }
+        }
+    }
+
+    public static void addCase(int floor, float x, float y, float length, float width) {
+        addCaseThread thread = new addCaseThread(floor, x, y, length, width);
         thread.start();
         try {
             thread.join();
@@ -195,7 +233,7 @@ public class DatabaseHelper {
             System.err.print(e.getMessage());
         }
         thread.interrupt();
-    }*/
+    }
 
 
 
