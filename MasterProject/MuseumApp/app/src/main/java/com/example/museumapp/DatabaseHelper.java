@@ -19,7 +19,7 @@ public class DatabaseHelper {
             return DriverManager.getConnection(pgURL, DB_User, DB_Pass);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
         }
         return null;
     }
@@ -30,7 +30,7 @@ public class DatabaseHelper {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
         }
     }
 
@@ -52,16 +52,18 @@ public class DatabaseHelper {
             try {
                 Connection connection = connect();
                 String SQL_command = "SELECT passcode FROM staff WHERE username = %c%s%c";
-                SQL_command = String.format(SQL_command, '\'', username, '\'');
+                SQL_command = String.format(SQL_command, '\'',username,'\'');
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 if (resultSet.next()) { //if we have matched passcode for this username.
                     if (resultSet.getString("passcode").equals(password)) {
                         this.outcome = 3;    //Correct password
-                    } else {
+                    }
+                    else {
                         this.outcome = 2;    //Wrong password
                     }
-                } else {
+                }
+                else {
                     this.outcome = 1;    //Wrong username OR user does not exist
                 }
                 disconnect(resultSet, connection);
@@ -78,7 +80,8 @@ public class DatabaseHelper {
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
@@ -106,7 +109,7 @@ public class DatabaseHelper {
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
             }
         }
     }
@@ -128,12 +131,22 @@ public class DatabaseHelper {
 
 
     //getting case info
+<<<<<<< HEAD
     static class printCaseThread extends Thread {
         private int sid, floor;
         private float length, width, x, y;
         private List<Item> items;
         ArrayList<ShowCase> scase = new ArrayList<ShowCase>();
         public ArrayList<ShowCase> getCase() {
+=======
+    static class printcasethread extends Thread{
+        private int sid,x,y,floor;
+        private float length,width;
+        private List<Item> items;
+
+        ArrayList<ShowCase> scase =new ArrayList<ShowCase>();
+        public ArrayList<ShowCase> getcase() {
+>>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
             return scase;
         }
 
@@ -147,30 +160,50 @@ public class DatabaseHelper {
                     sid = resultSet.getInt("sid");
                     length = resultSet.getFloat("length_m");
                     width = resultSet.getFloat("width_m");
-                    x = resultSet.getFloat("x");
-                    y = resultSet.getFloat("y");
+                    x = resultSet.getInt("x");
+                    y = resultSet.getInt("y");
                     floor = resultSet.getInt("floor_no");
+<<<<<<< HEAD
                     scase.add(new ShowCase(sid, length, width, x, y, floor, null));
+=======
+                    scase.add(new ShowCase(sid, length, width, x, y, floor,null));
+//                    System.out.println(sid);
+//                    System.out.println("_____________________________");
+>>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
             }
         }
+
+
+
     }
 
+<<<<<<< HEAD
     public static ArrayList<ShowCase> printCase() {
         ArrayList sc;
         printCaseThread thread = new printCaseThread();
+=======
+    public static ArrayList<ShowCase> printcase(){
+        ArrayList sc;
+        printcasethread thread=new printcasethread();
+>>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
+<<<<<<< HEAD
         sc = thread.getCase();
+=======
+        sc=thread.getcase();
+>>>>>>> d79c92905764dd69d33dcee631e16a5b7d09b292
         thread.interrupt();
 
         return sc;
@@ -188,5 +221,7 @@ public class DatabaseHelper {
         }
         thread.interrupt();
     }*/
+
+
 
 }

@@ -6,8 +6,7 @@ public class ShowCase {
     private int closetID;
     private float length;
     private float width;
-    private float x;
-    private float y;
+    private float x, y;
     private int floorNum;
     private List<Item> items;
 
