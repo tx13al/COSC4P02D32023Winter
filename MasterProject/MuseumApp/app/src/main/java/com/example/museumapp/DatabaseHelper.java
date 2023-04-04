@@ -209,7 +209,7 @@ public class DatabaseHelper {
                 Connection connection = connect();
                 String SQL_command =
                         "INSERT INTO showcase (length_m, width_m, x, y, floor_no) VALUES ";
-                SQL_command += ("(" + this.length);
+                SQL_command += ("(" + length);
                 SQL_command += (", " + width);
                 SQL_command += (", " + x);
                 SQL_command += (", " + y);
