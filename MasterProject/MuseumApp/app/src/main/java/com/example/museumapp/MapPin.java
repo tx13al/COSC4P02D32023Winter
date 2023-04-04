@@ -4,39 +4,56 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MapPin {
-    private Drawable pin;
-    private int pinWidth;
-    private int pinHeight;
-    private int x, y;
+    private ImageView pinView;
+    //private int pinWidth;
+    //private int pinHeight;
+    private float x, y;
     private ShowCase showCase;      // Need to decide pin and showcase are one-to-one, or one-to-many
 
-    public MapPin(Drawable icon, ShowCase sc) {
-        pin = icon;
-        pinWidth = 100;//pin.getIntrinsicWidth();
-        pinHeight = 100;//pin.getIntrinsicHeight();
+    public MapPin(Drawable icon, ShowCase sc, Context context) {
+        pinView = new ImageView(context);
+        pinView.setImageDrawable(icon);
+        pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+        pinView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "You clicked the icon! Good job! ", Toast.LENGTH_LONG).show();
+            }
+        });
+
         showCase = sc;
         this.x = showCase.getX();
         this.y = showCase.getY();
+        pinView.setX(x);
+        pinView.setY(y);
     }
 
     public void setPinLocation(int x, int y) {
         this.x = x;
         this.y = y;
+        pinView.setX(x);
+        pinView.setY(y);
     }
 
-    public void draw(Canvas canvas) {
-        if (pin == null) {
+    public void create(ViewGroup parentView) {
+        if (pinView == null) {
             return;
         }
+        pinView.setVisibility(View.GONE);
+        parentView.addView(pinView);
+    }
 
-        // Calculate the position of the pin based on the location on the SecondFloor view
-        int pinX = 500;
-        int pinY = 1500;
+    public void setInvisible() {
+        pinView.setVisibility(View.GONE);
+    }
 
-        // Draw the pin at the calculated position
-        pin.setBounds(pinX, pinY, pinX+pinWidth, pinY+pinHeight);
-        pin.draw(canvas);
+    public void setVisible() {
+        pinView.setVisibility(View.VISIBLE);
     }
 }

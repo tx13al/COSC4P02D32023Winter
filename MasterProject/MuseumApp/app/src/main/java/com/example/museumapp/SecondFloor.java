@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
@@ -180,20 +181,35 @@ public class SecondFloor extends View {
         canvas.drawLine(stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y, paint);
         canvas.drawLine(stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y, paint);
         canvas.drawLine(stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y, paint);
+    }
 
+    // Initiate map pins, but not display on the map. Only create them in the memory
+    public void createPins(List<MapPin> list, ViewGroup parentView) {
+        this.pinList = list;
+        // Update the view with the new list here
 
         if (pinList != null) {
             for (MapPin pin : pinList) {
-                pin.draw(canvas);
+                pin.create(parentView);
             }
         }
-
     }
 
-    public void drawPins(List<MapPin> list) {
-        this.pinList = list;
-        // Update the view with the new list here
-        invalidate(); // This will trigger a redraw of the view
+    // Set all pins in the second floor pin list to be invisible
+    public void pinInvisible() {
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.setInvisible();
+            }
+        }
     }
 
+    // Set all pins in the second floor pin list to be visible
+    public void pinVisible() {
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.setVisible();
+            }
+        }
+    }
 }

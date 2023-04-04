@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout mainContainer;
     private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
+    private FirstFloor firstFloor;
+    private SecondFloor secondFloor;
 
-    List<MapPin> pinList = new ArrayList<>();    // storing the map pin objects
+    List<MapPin> floor2PinList = new ArrayList<>();    // storing the map pin objects
     private SearchAdapter searchAdapter;
 
     @Override
@@ -100,10 +102,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                               1);
         List<Item> list = new ArrayList<>();
         list.add(item1);
-        ShowCase showCase1 = new ShowCase(1, 5, 5, 1200, 1200, 2, list);
-        Drawable drawable = getResources().getDrawable(R.drawable.location);
-        MapPin pin = new MapPin(drawable, showCase1);
-        pinList.add(pin);
+        ShowCase showCase1 = new ShowCase(1, 5, 5, 500, 500, 2, list);
+
+        // Initiate pins
+        Drawable pinIcon = getResources().getDrawable(R.drawable.location);
+        MapPin pin = new MapPin(pinIcon, showCase1, this);
+        floor2PinList.add(pin);
+
+        secondFloor = floor_2.findViewById(R.id.secondFloor);
+        secondFloor.createPins(floor2PinList, mainContainer);
 
     }
 
@@ -114,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
                 floor_2.setVisibility(View.GONE);
+
+                secondFloor.pinInvisible();
+
                 level_1.setTextColor(getColor(R.color.red));
                 level_2.setTextColor(getColor(R.color.navy_blue));
                 break;
@@ -122,9 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);
 
-                // draw pins
-                SecondFloor secondFloor = floor_2.findViewById(R.id.secondFloor);
-                secondFloor.drawPins(pinList);
+                secondFloor.pinVisible();
 
                 level_1.setTextColor(getColor(R.color.navy_blue));
                 level_2.setTextColor(getColor(R.color.red));
