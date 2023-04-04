@@ -209,7 +209,7 @@ public class DatabaseHelper {
                 Connection connection = connect();
                 String SQL_command =
                         "INSERT INTO showcase (length_m, width_m, x, y, floor_no) VALUES ";
-                SQL_command += ("(" + this.length);
+                SQL_command += ("(" + length);
                 SQL_command += (", " + width);
                 SQL_command += (", " + x);
                 SQL_command += (", " + y);
@@ -237,6 +237,42 @@ public class DatabaseHelper {
         thread.interrupt();
         return true;
     }
+
+//delete case from database
+//    static class deleteCaseThread extends Thread {
+//        int sid;
+//        public deleteCaseThread(int sid) {
+//            super();
+//            this.sid = sid;
+//        }
+//        public void run() {
+//            try {
+//                Connection connection = connect();
+//                String SQL_command =
+//                        "DELETE FROM showcase WHERE sid=";
+//                SQL_command += ("(" + sid +");");
+//                Statement statement = connection.createStatement();
+//                statement.executeUpdate(SQL_command);
+//                disconnect(connection);
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+//            }
+//        }
+//    }
+//
+//    public static boolean deleteCase(int sid) {
+//        deleteCaseThread thread = new deleteCaseThread(sid);
+//        thread.start();
+//        try {
+//            thread.join();
+//        }
+//        catch (InterruptedException e) {
+//            System.err.print(e.getMessage());
+//        }
+//        thread.interrupt();
+//        return true;
+//    }
 
 
 
