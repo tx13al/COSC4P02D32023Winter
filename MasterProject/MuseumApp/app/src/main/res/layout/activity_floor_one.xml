@@ -9,7 +9,7 @@
     >
 
     <com.example.museumapp.FirstFloor
-        android:id="@+id/secondFloor"
+        android:id="@+id/firstFloor"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"

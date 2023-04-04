@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -120,7 +122,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 delete.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.navy_blue));
                 more.setTextColor(getColor(R.color.navy_blue));
-                Showpopup(view);
+                ShowPopup(view);
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.control_delete:
@@ -147,16 +149,34 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     }
 
     //popup window for add function
-    public void Showpopup(View v){
-        ImageView txtclose;
-        Button preview;
+    public void ShowPopup(View v){
         mydialog.setContentView(R.layout.adding_closet);
-        txtclose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
-
-        //preview = (Button) mydialog.findViewById(R.id.add_OK);
-        txtclose.setOnClickListener(new View.OnClickListener() {
+        ImageView txtClose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
+        Button OK = mydialog.findViewById(R.id.add_OK);
+        Spinner addFloorSelection = mydialog.findViewById(R.id.add_floor_selection);
+        EditText addXNumber = mydialog.findViewById(R.id.add_X_number);
+        EditText addYNumber = mydialog.findViewById(R.id.add_Y_number);
+        EditText addLengthNumber = mydialog.findViewById(R.id.add_length_number);
+        EditText addWidthNumber = mydialog.findViewById(R.id.add_width_number);
+        txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mydialog.dismiss();
+            }
+        });
+        OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.print("-------------------------------------------------------------------------------------");
+                String addFloorSelectionString = addFloorSelection.getSelectedItem().toString();
+                int floor = Integer.parseInt(addFloorSelectionString.substring(6));
+                System.out.print("-------------------------------------------------------------------------------------");
+                System.out.print(floor);
+                float x = addXNumber.getX();
+                System.out.print(x);
+                float y;
+                float length;
+                float width;
                 mydialog.dismiss();
             }
         });

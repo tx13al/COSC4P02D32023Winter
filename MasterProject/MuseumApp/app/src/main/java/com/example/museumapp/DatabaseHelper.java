@@ -128,14 +128,12 @@ public class DatabaseHelper {
 
 
     //getting case info
-    static class printcasethread extends Thread {
+    static class printCaseThread extends Thread {
         private int sid, floor;
         private float length, width, x, y;
         private List<Item> items;
-
         ArrayList<ShowCase> scase = new ArrayList<ShowCase>();
-
-        public ArrayList<ShowCase> getcase() {
+        public ArrayList<ShowCase> getCase() {
             return scase;
         }
 
@@ -153,8 +151,6 @@ public class DatabaseHelper {
                     y = resultSet.getFloat("y");
                     floor = resultSet.getInt("floor_no");
                     scase.add(new ShowCase(sid, length, width, x, y, floor, null));
-//                    System.out.println(sid);
-//                    System.out.println("_____________________________");
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
@@ -164,9 +160,9 @@ public class DatabaseHelper {
         }
     }
 
-    public static ArrayList<ShowCase> printcase() {
+    public static ArrayList<ShowCase> printCase() {
         ArrayList sc;
-        printcasethread thread = new printcasethread();
+        printCaseThread thread = new printCaseThread();
         thread.start();
         try {
             thread.join();  //wait for the thread to stop.
@@ -174,11 +170,23 @@ public class DatabaseHelper {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
-        sc = thread.getcase();
+        sc = thread.getCase();
         thread.interrupt();
 
         return sc;
     }
 
+/*
+    public static void addCase(ShowCase scase) {
+        addCaseThread thread = new addCaseThread();
+        thread.start();
+        try {
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            System.err.print(e.getMessage());
+        }
+        thread.interrupt();
+    }*/
 
 }
