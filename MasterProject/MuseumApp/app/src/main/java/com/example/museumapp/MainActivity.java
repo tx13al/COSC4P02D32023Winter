@@ -83,14 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Create a new instance of SearchBar and pass the necessary arguments
         SearchBar searchBar = new SearchBar(this, actv);
 
-
-// String.xml using below
-
-    //    String[] stringArray = getResources().getStringArray(R.array.countries_array);
- //       AutoCompleteTextView actv = findViewById(R.id.search_bar);
-  //      SearchBar searchBar = new SearchBar(this, stringArray, actv);
-
-
         // assuming loading data from database here
         Item item1 = new Item("123",
                                "item",
@@ -111,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         secondFloor = floor_2.findViewById(R.id.secondFloor);
         secondFloor.createPins(floor2PinList, mainContainer);
-
     }
 
     @Override
