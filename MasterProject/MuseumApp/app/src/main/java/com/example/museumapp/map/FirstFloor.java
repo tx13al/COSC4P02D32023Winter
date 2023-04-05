@@ -375,4 +375,8 @@ public class FirstFloor extends View {
     public float getOffsetY() {
         return offsetY;
     }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
 }

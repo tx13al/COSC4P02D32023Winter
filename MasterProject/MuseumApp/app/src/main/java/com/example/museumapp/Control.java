@@ -22,6 +22,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.museumapp.map.FirstFloor;
+import com.example.museumapp.map.SecondFloor;
+
 public class Control extends AppCompatActivity implements View.OnClickListener{
 
     private Context context;
@@ -31,6 +34,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     ImageButton logout;
     private Button level_1, level_2, add, delete, change, more;
 
+    FirstFloor firstFloor;
+    SecondFloor secondFloor;
     Dialog mydialog;
 
     AlertDialog.Builder builder;
@@ -50,8 +55,11 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
         floor_1.setVisibility(View.VISIBLE);
         control_mainContainer.addView(floor_1);
+        firstFloor = floor_1.findViewById(R.id.firstFloor);
+
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         control_mainContainer.addView(floor_2);
+        secondFloor = floor_2.findViewById(R.id.secondFloor);
         //create floor buttons
         level_1 = findViewById(R.id.control_floorOneButton);
         level_2 = findViewById(R.id.control_floorTwoButton);
@@ -190,14 +198,26 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 float y = Float.parseFloat(addYNumber.getText().toString());
                 float length = Float.parseFloat(addLengthNumber.getText().toString());
                 float width = Float.parseFloat(addWidthNumber.getText().toString());
-                if (DatabaseHelper.addCase(floor, x, y, length, width)) {
-                    Toast.makeText(Control.this.getApplicationContext(),
-                            "Adding successfully!", Toast.LENGTH_SHORT).show();
-                    mydialog.dismiss();
+                if (floor == 1) {
+                    if (DatabaseHelper.addCase(floor, x, y, length, width, firstFloor.getEdges())) {
+                        Toast.makeText(Control.this.getApplicationContext(),
+                                "Adding successfully!", Toast.LENGTH_SHORT).show();
+                        mydialog.dismiss();
+                    }
+                    else {
+                        Toast.makeText(Control.this.getApplicationContext(),
+                                "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(Control.this.getApplicationContext(),
-                            "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                if (floor == 2) {
+                    if (DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges())) {
+                        Toast.makeText(Control.this.getApplicationContext(),
+                                "Adding successfully!", Toast.LENGTH_SHORT).show();
+                        mydialog.dismiss();
+                    } else {
+                        Toast.makeText(Control.this.getApplicationContext(),
+                                "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
