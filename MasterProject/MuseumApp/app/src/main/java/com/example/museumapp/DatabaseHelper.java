@@ -162,8 +162,8 @@ public class DatabaseHelper {
                     x = resultSet.getInt("x");
                     y = resultSet.getInt("y");
                     floor = resultSet.getInt("floor_no");
-                    scase.add(new ShowCase(sid, length, width, x, y, floor, null));
-                    scase.add(new ShowCase(sid, length, width, x, y, floor,null));
+                    scase.add(new ShowCase(sid, floor, x, y, length, width, null));
+                    scase.add(new ShowCase(sid, floor, x, y, length, width,null));
                 }
                 disconnect(resultSet, connection);
             } catch (SQLException e) {
@@ -232,10 +232,52 @@ public class DatabaseHelper {
             thread.join();
         }
         catch (InterruptedException e) {
-            System.err.print(e.getMessage());
+            System.err.println(e.getMessage());
         }
         thread.interrupt();
         return true;
+    }
+
+    static class getAllEmptyCasesThread extends Thread {
+        ArrayList<ShowCase> cases = new ArrayList<ShowCase>();
+        public void run() {
+            try {
+                Connection connection = connect();
+                String SQL_command = "SELECT * FROM showcase";
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    ShowCase showCase = new ShowCase(resultSet.getInt("sid"),
+                            resultSet.getInt("floor_no"),
+                            resultSet.getFloat("x"),
+                            resultSet.getFloat("y"),
+                            resultSet.getFloat("length_m"),
+                            resultSet.getFloat("width_m"),
+                            null);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
+            }
+        }
+        public ArrayList<ShowCase> getCases() {
+            return cases;
+        }
+    }
+
+    public static ArrayList<ShowCase> getAllEmptyCases() {
+        ArrayList<ShowCase> cases = null;
+        getAllEmptyCasesThread thread = new getAllEmptyCasesThread();
+        thread.start();
+        try {
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        cases = thread.getCases();
+        thread.interrupt();
+        return cases;
     }
 
 //delete case from database

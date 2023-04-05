@@ -10,7 +10,7 @@ public class ShowCase {
     private int floorNum;
     private List<Item> items;
 
-    public ShowCase(int closetID, float length, float width, float x, float y, int floorNum, List<Item> items) {
+    public ShowCase(int closetID, int floorNum, float x, float y, float length, float width, List<Item> items) {
         this.closetID = closetID;
         this.length = length;
         this.width = width;
@@ -66,6 +66,14 @@ public class ShowCase {
 
     public void setFloorNum(int floorNum) {
         this.floorNum = floorNum;
+    }
+
+    public float getCenterX() {
+        return x + length / 2;
+    }
+
+    public float getCenterY() {
+        return y + width / 2;
     }
 
     public List<Item> getItems() {
