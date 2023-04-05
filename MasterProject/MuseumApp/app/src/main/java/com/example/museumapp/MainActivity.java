@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -24,10 +25,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout mainContainer;
     private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
+
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
-
+    List<MapPin> floor1PinList = new ArrayList<>();
     List<MapPin> floor2PinList = new ArrayList<>();    // storing the map pin objects
+
     private SearchAdapter searchAdapter;
 
     @Override
@@ -43,9 +46,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
         floor_1.setVisibility(View.VISIBLE);
         mainContainer.addView(floor_1);
+        firstFloor = floor_1.findViewById(R.id.firstFloor);
 
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         mainContainer.addView(floor_2);
+        secondFloor = floor_2.findViewById(R.id.secondFloor);
 
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
@@ -84,17 +89,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                               "www",
                              "www.",
                               1);
-        List<Item> list = new ArrayList<>();
-        list.add(item1);
-        ShowCase showCase1 = new ShowCase(1, 5, 5, 500, 500, 2, list);
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(item1);
 
-        // Initiate pins
-        Drawable pinIcon = getResources().getDrawable(R.drawable.location);
-        MapPin pin = new MapPin(pinIcon, showCase1, this);
-        floor2PinList.add(pin);
+        List<ShowCase> showcaseList = new ArrayList<>();
+        ShowCase showCase1 = new ShowCase(1, 2, 500, 500, 100, 100, itemList);
+        showcaseList.add(showCase1);
+        ShowCase showCase2 = new ShowCase(1, 1, 500, 1000, 100, 100, itemList);
+        showcaseList.add(showCase2);
 
-        secondFloor = floor_2.findViewById(R.id.secondFloor);
-        secondFloor.createPins(floor2PinList, mainContainer);
+        initiatePin(showcaseList);
     }
 
     @Override
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 floor_1.setVisibility(View.VISIBLE);
                 floor_2.setVisibility(View.GONE);
 
+                firstFloor.pinVisible();
                 secondFloor.pinInvisible();
 
                 level_1.setTextColor(getColor(R.color.red));
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 floor_1.setVisibility(View.GONE);
                 floor_2.setVisibility(View.VISIBLE);
 
+                firstFloor.pinInvisible();
                 secondFloor.pinVisible();
 
                 level_1.setTextColor(getColor(R.color.navy_blue));
@@ -163,6 +169,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         searchAdapter.setSearchItems(filteredSearchItems);
+    }
+
+    private void initiatePin(List<ShowCase> list) {
+        // Initiate pins
+        Drawable pinIcon = getResources().getDrawable(R.drawable.location);
+
+        for (ShowCase sc: list) {
+            MapPin pin = new MapPin(pinIcon, sc, this);
+            if (sc.getFloorNum() == 2) {
+                floor2PinList.add(pin);
+            } else if (sc.getFloorNum() == 1) {
+                floor1PinList.add(pin);
+            }
+        }
+        firstFloor.createPins(floor1PinList, mainContainer);
+        secondFloor.createPins(floor2PinList, mainContainer);
     }
 
 }

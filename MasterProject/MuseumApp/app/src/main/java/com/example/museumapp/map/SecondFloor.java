@@ -18,11 +18,11 @@ import com.example.museumapp.objects.MapPin;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecondFloor extends View {
+public class SecondFloor extends View implements Floor {
     private Paint paint;
     ArrayList<Edge> outerEdges;
     ArrayList<Edge> innerEdges;
-    private ScaleGestureDetector mScaleGestureDetector;
+    private final ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.f;
     private float lastX, lastY;
     //private float offsetX, offsetY;
@@ -247,6 +247,13 @@ public class SecondFloor extends View {
         canvas.restore();
     }
 
+    @Override
+    public List<Edge> getEdges() {
+        return outerEdges;
+    }
+
+
+    @Override
     // Initiate map pins, but not display on the map. Only create them in the memory
     public void createPins(List<MapPin> list, ViewGroup parentView) {
         this.pinList = list;
@@ -259,6 +266,7 @@ public class SecondFloor extends View {
         }
     }
 
+    @Override
     // Set all pins in the second floor pin list to be invisible
     public void pinInvisible() {
         if (pinList != null) {
@@ -268,6 +276,7 @@ public class SecondFloor extends View {
         }
     }
 
+    @Override
     // Set all pins in the second floor pin list to be visible
     public void pinVisible() {
         if (pinList != null) {
