@@ -194,10 +194,20 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             public void onClick(View view) {
                 String addFloorSelectionString = addFloorSelection.getSelectedItem().toString();
                 int floor = Integer.parseInt(addFloorSelectionString.substring(6));
-                float x = Float.parseFloat(addXNumber.getText().toString());
-                float y = Float.parseFloat(addYNumber.getText().toString());
-                float length = Float.parseFloat(addLengthNumber.getText().toString());
-                float width = Float.parseFloat(addWidthNumber.getText().toString());
+                String addXNumberString = addXNumber.getText().toString();
+                String addYNumberString = addYNumber.getText().toString();
+                String addLengthNumberString = addLengthNumber.getText().toString();
+                String addWidthNumberString = addWidthNumber.getText().toString();
+                if (addXNumberString.isEmpty() || addYNumberString.isEmpty() ||
+                        addLengthNumberString.isEmpty() || addWidthNumberString.isEmpty()) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Blank input!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                float x = Float.parseFloat(addXNumberString);
+                float y = Float.parseFloat(addYNumberString);
+                float length = Float.parseFloat(addLengthNumberString);
+                float width = Float.parseFloat(addWidthNumberString);
                 if (floor == 1) {
                     if (DatabaseHelper.addCase(floor, x, y, length, width, firstFloor.getEdges())) {
                         Toast.makeText(Control.this.getApplicationContext(),

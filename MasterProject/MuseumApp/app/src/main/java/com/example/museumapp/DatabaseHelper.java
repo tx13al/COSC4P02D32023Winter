@@ -196,25 +196,25 @@ public class DatabaseHelper {
             caseEdges.add(e4);
             for (Edge edge: edges) {
                 if (this.in(edge.from_x, edge.from_y, caseEdges)) {
-                    return false;
+                    return true;
                 }
                 if (this.in(edge.to_x, edge.to_y, caseEdges)) {
-                    return false;
+                    return true;
                 }
                 if (!this.in(this.x, this.y, edges)) {
-                    return false;
+                    return true;
                 }
                 if (!this.in(this.x + this.length, this.y, edges)) {
-                    return false;
+                    return true;
                 }
                 if (!this.in(this.x + this.length, this.y + this.width, edges)) {
-                    return false;
+                    return true;
                 }
                 if (!this.in(this.x, this.y + this.width, edges)) {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public void run() {
