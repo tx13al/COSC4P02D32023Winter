@@ -1,6 +1,4 @@
-package com.example.museumapp;
-
-import java.net.URL;
+package com.example.museumapp.objects;
 
 public class Item {
     private String itemID;

@@ -16,7 +16,7 @@
         android:theme="@style/MuseumTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ItemList"
+            android:name=".objects.ItemList"
             android:exported="false" />
         <activity android:name=".Login" />
         <activity

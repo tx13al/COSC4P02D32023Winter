@@ -1,4 +1,4 @@
-package com.example.museumapp;
+package com.example.museumapp.map;
 
 public class Edge {
     public float from_x;

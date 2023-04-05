@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone"
-    tools:context=".SecondFloor">
+    tools:context=".map.SecondFloor">
 
-    <com.example.museumapp.SecondFloor
+    <com.example.museumapp.map.SecondFloor
         android:id="@+id/secondFloor"
         android:layout_width="match_parent"
         android:layout_height="0dp"

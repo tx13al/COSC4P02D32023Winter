@@ -1,5 +1,7 @@
 package com.example.museumapp;
 
+import com.example.museumapp.objects.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

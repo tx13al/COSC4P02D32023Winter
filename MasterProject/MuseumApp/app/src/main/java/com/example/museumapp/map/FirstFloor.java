@@ -1,4 +1,4 @@
-package com.example.museumapp;
+package com.example.museumapp.map;
 
 import android.content.Context;
 import android.graphics.Canvas;
