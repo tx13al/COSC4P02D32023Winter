@@ -8,10 +8,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.museumapp.objects.MapPin;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class FirstFloor extends View {
+public class FirstFloor extends View implements Floor {
     ArrayList<Edge> edges;
     private Paint paint;
     private ScaleGestureDetector mScaleGestureDetector;
@@ -20,6 +24,9 @@ public class FirstFloor extends View {
     private float offsetX, offsetY;
     private float startX= 300, startY = 100;
     private float translateX, translateY;
+
+    // Create the pins
+    List<MapPin> pinList = null;
 
     public FirstFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -353,6 +360,41 @@ public class FirstFloor extends View {
                     e.to_x + 450 ,e.to_y + 200, paint);
         }
         canvas.restore();
+    }
+
+    @Override
+    public List<Edge> getEdges() {
+        return edges;
+    }
+
+    @Override
+    public void createPins(List<MapPin> list, ViewGroup parentView) {
+        this.pinList = list;
+        // Update the view with the new list here
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.create(parentView);
+                pin.setVisible();
+            }
+        }
+    }
+
+    @Override
+    public void pinInvisible() {
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.setInvisible();
+            }
+        }
+    }
+
+    @Override
+    public void pinVisible() {
+        if (pinList != null) {
+            for (MapPin pin : pinList) {
+                pin.setVisible();
+            }
+        }
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
