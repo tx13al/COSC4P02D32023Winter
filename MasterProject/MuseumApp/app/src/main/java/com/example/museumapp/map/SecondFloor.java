@@ -248,7 +248,7 @@ public class SecondFloor extends View implements Floor {
     }
 
     @Override
-    public List<Edge> getEdges() {
+    public ArrayList<Edge> getEdges() {
         return outerEdges;
     }
 

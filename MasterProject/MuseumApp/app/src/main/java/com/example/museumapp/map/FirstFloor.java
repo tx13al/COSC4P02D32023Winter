@@ -363,7 +363,7 @@ public class FirstFloor extends View implements Floor {
     }
 
     @Override
-    public List<Edge> getEdges() {
+    public ArrayList<Edge> getEdges() {
         return edges;
     }
 
@@ -416,9 +416,5 @@ public class FirstFloor extends View implements Floor {
 
     public float getOffsetY() {
         return offsetY;
-    }
-
-    public ArrayList<Edge> getEdges() {
-        return edges;
     }
 }
