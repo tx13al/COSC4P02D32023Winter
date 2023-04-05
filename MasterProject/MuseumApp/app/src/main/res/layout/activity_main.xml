@@ -21,13 +21,13 @@
     </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/shape_searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_bar_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/shape_searchbar"
         android:layout_marginStart="6dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp">

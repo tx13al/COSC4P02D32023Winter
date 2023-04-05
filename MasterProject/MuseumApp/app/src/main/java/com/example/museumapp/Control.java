@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +40,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         mydialog= new Dialog(this);
+        builder =new AlertDialog.Builder(this);
 
 
         control_mainScreen = findViewById(R.id.control);
@@ -57,19 +61,41 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         //create add button
         add = findViewById(R.id.control_add);
         add.setOnClickListener(this);
-        //create info button
+        //create delete button
         delete = findViewById(R.id.control_delete);
-        delete.setOnClickListener(this);
-        //create arts button
+        //delete function: delete the closet that been choose
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(false) {
+                    builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //DatabaseHelper.deleteCase(sid);
+                            dialogInterface.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).show();
+                }
+                else{
+                    Toast.makeText(Control.this.getApplicationContext(), "No closet choose", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //create change button
         change = findViewById(R.id.control_change);
         change.setOnClickListener(this);
-        //create setting button
+        //create more button
         more = findViewById(R.id.control_more);
         more.setOnClickListener(this);
 
         //logout
         logout=findViewById(R.id.control_logoutButton);
-        builder =new AlertDialog.Builder(this);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,13 +113,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 }).show();
             }
         });
-
-
-/*        //search bar
-        String[] stringArray = getResources().getStringArray(R.array.countries_array);
-        SearchView searchView = findViewById(R.id.control_search_bar);
-        SearchBar searchBar = new SearchBar(this, stringArray, searchView);*/
-
 
     }
 
@@ -120,7 +139,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 delete.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.navy_blue));
                 more.setTextColor(getColor(R.color.navy_blue));
-                Showpopup(view);
+                AddDialog(view);
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.control_delete:
@@ -147,21 +166,43 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     }
 
     //popup window for add function
-    public void Showpopup(View v){
-        ImageView txtclose;
-        Button preview;
+    public void AddDialog(View v){
         mydialog.setContentView(R.layout.adding_closet);
-        txtclose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
-
-        //preview = (Button) mydialog.findViewById(R.id.add_OK);
-        txtclose.setOnClickListener(new View.OnClickListener() {
+        ImageView txtClose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
+        Button OK = mydialog.findViewById(R.id.add_OK);
+        Spinner addFloorSelection = mydialog.findViewById(R.id.add_floor_selection);
+        EditText addXNumber = mydialog.findViewById(R.id.add_X_number);
+        EditText addYNumber = mydialog.findViewById(R.id.add_Y_number);
+        EditText addLengthNumber = mydialog.findViewById(R.id.add_length_number);
+        EditText addWidthNumber = mydialog.findViewById(R.id.add_width_number);
+        txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mydialog.dismiss();
             }
         });
-        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String addFloorSelectionString = addFloorSelection.getSelectedItem().toString();
+                int floor = Integer.parseInt(addFloorSelectionString.substring(6));
+                float x = Float.parseFloat(addXNumber.getText().toString());
+                float y = Float.parseFloat(addYNumber.getText().toString());
+                float length = Float.parseFloat(addLengthNumber.getText().toString());
+                float width = Float.parseFloat(addWidthNumber.getText().toString());
+                if (DatabaseHelper.addCase(floor, x, y, length, width)) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Adding successfully!", Toast.LENGTH_SHORT).show();
+                    mydialog.dismiss();
+                }
+                else {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         mydialog.show();
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
 

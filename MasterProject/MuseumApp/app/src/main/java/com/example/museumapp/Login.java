@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -43,7 +45,7 @@ public class Login  implements View.OnClickListener {
         dialog.setTitle("Login");
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-        dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_popup));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Button login = DialogView.findViewById(R.id.buttonLogin);
         EditText username = DialogView.findViewById(R.id.loginID);
         EditText userpassword = DialogView.findViewById(R.id.loginPass);
@@ -75,49 +77,6 @@ public class Login  implements View.OnClickListener {
 
                 //TODO
             }
-
-            public void SearchBar(Context context, String[] arr, AutoCompleteTextView View) {
-                //search bar
-                String[] stringArray = arr;
-
-                ArrayAdapter<String> completion = new ArrayAdapter<>(
-                        context, android.R.layout.simple_dropdown_item_1line, arr
-                );
-
-                AutoCompleteTextView actv = View;
-                actv.setAdapter(completion);
-                actv.setThreshold(1);
-                actv.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String selectedItem = (String) adapterView.getItemAtPosition(i);
-                        Toast.makeText(context, "Item "+selectedItem+ " found. ", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                actv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
-                            String enteredText = textView.getText().toString();
-                            int position = ((ArrayAdapter<String>) actv.getAdapter()).getPosition(enteredText);
-                            if (position >= 0) {
-                                // The entered text is in the adapter
-                                Toast.makeText(context, "Item "+enteredText+ " found. ", Toast.LENGTH_SHORT).show();
-                            } else {
-                                // The entered text is not in the adapter
-                                Toast.makeText(context, enteredText+" is NOT found", Toast.LENGTH_SHORT).show();
-                            }
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-            }
         });
     }
-
-
 }

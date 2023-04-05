@@ -15,10 +15,10 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_constraint1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/add_constraint1"
             >
 
             <TextView
@@ -116,7 +116,7 @@
                 android:id="@+id/add_X_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="x in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
@@ -143,7 +143,7 @@
                 android:id="@+id/add_Y_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="y in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
@@ -170,7 +170,7 @@
                 android:id="@+id/add_width_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="width in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
@@ -197,7 +197,7 @@
                 android:id="@+id/add_length_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="length in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
