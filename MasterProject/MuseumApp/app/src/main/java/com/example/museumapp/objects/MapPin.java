@@ -18,8 +18,8 @@ public class MapPin {
         pinView = new ImageView(context);
         pinView.setImageDrawable(icon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
-        this.pinView.setX(showCase.getCenterX());
-        this.pinView.setY(showCase.getCenterY());
+        this.pinView.setX(showCase.getCenterX() - 50);
+        this.pinView.setY(showCase.getCenterY() - 100);
         sid = showCase.getClosetID();
         pinView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +34,13 @@ public class MapPin {
     public void movePinLocation(float x, float y) {
         float newX = pinView.getX() + x;
         float newY = pinView.getY() + y;
+        pinView.setX(newX);
+        pinView.setY(newY);
+    }
+
+    public void scalePinLocation(float scale) {
+        float newX = pinView.getX() * scale;
+        float newY = pinView.getY() * scale;
         pinView.setX(newX);
         pinView.setY(newY);
     }
