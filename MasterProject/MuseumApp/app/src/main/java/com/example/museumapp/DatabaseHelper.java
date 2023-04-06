@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper {
     static String DB_User = BuildConfig.DB_User;
@@ -162,21 +161,27 @@ public class DatabaseHelper {
             return this.acceptable;
         }
 
-        private boolean in (float x, float y, ArrayList<Edge> edges) {
+        private boolean in(float x, float y, ArrayList<Edge> edges) {
             int count = 0;
             for (Edge edge: edges) {
                 if (((edge.from_y >= y) && (edge.to_y < y)) ||
                         ((edge.from_y < y) && (edge.to_y >= y))) {
                     if (edge.from_x == edge.to_x) {
-                        if (edge.from_x >= x) {
+                        if (edge.from_x > x) {
                             count += 1;
+                        }
+                        if (edge.from_x == x) { //(x,y) is right on the edge.
+                            return true;
                         }
                     }
                     else {
                         float slope = (edge.to_y - edge.from_y) / (edge.to_x - edge.from_x);
                         float interX = (y - edge.from_y) / slope + edge.from_x;
-                        if (interX >= x) {
+                        if (interX > x) {
                             count += 1;
+                        }
+                        if (interX == x) {  //(x,y) is right on the edge.
+                            return true;
                         }
                     }
                 }
@@ -273,6 +278,7 @@ public class DatabaseHelper {
                             resultSet.getFloat("length_m"),
                             resultSet.getFloat("width_m"),
                             null);
+                    cases.add(showCase);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -4,16 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
+import com.example.museumapp.objects.ShowCase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FirstFloor extends View implements Floor {
     ArrayList<Edge> edges;
@@ -21,49 +23,24 @@ public class FirstFloor extends View implements Floor {
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.f;
     private float lastX, lastY;
-    private float offsetX, offsetY;
-    private float startX= 300, startY = 100;
+    private float offsetX = 450, offsetY = 200;
     private float translateX, translateY;
 
     // Create the pins
-    List<MapPin> pinList = null;
+    ArrayList <MapPin> pinList = null;
 
-    public FirstFloor(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
-        init();
-    }
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
-
-    private void init() {
-        paint = new Paint();
-        paint.setStrokeWidth(5f);
-        paint.setColor(Color.rgb(0,24,69));
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        mScaleGestureDetector.onTouchEvent(event);
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                lastY = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float x = event.getX();
-                float y = event.getY();
-                float dx = x - lastX;
-                float dy = y - lastY;
-                translateX += dx;
-                translateY += dy;
-                invalidate();
-                lastX = x;
-                lastY = y;
-                break;
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            mScaleFactor *= detector.getScaleFactor();
+            mScaleFactor = Math.max(1.0f, Math.min(mScaleFactor, 5.0f)); // set scale range from 0.1 to 10
+            invalidate();
+            return true;
         }
-        return true;
     }
 
+    //initialize all the wall edges.
     private void initEdges() {
         edges = new ArrayList<Edge>();
         Edge edge1 = new Edge();
@@ -341,23 +318,87 @@ public class FirstFloor extends View implements Floor {
         edges.add(edge39);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    private void init() {
+        paint = new Paint();
+        paint.setStrokeWidth(5f);
+        paint.setColor(Color.rgb(0,24,69));
         initEdges();
+    }
+
+    public FirstFloor(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
+        init();
+    }
+
+    //Draw all pins and move them to the correct coordinates on the screen.
+    //Warning: This method can only be called once.
+    private void drawPins() {
+        ViewGroup viewGroup = (ViewGroup) this.getParent();
+        for (MapPin mapPin: pinList) {
+            mapPin.movePinLocation(offsetX, offsetY);
+            mapPin.create(viewGroup);
+        }
+    }
+
+    //Add all showcases of the first floor to the view of the first floor, and draw the Pins.
+    public void addShowCases(ArrayList<ShowCase> showCases) {
+        Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
+        pinList = new ArrayList<MapPin>();
+        for (ShowCase showCase: showCases) {
+            if (showCase.getFloorNum() == 1) {  //first floor
+                MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
+                Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
+                Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                        showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
+                Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
+                        showCase.getX(), showCase.getY() + showCase.getWidth());
+                Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
+                edges.add(e1);
+                edges.add(e2);
+                edges.add(e3);
+                edges.add(e4);
+                pinList.add(mapPin);
+            }
+        }
+        drawPins();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mScaleGestureDetector.onTouchEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:   //finger down
+                lastX = event.getX();
+                lastY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:   //finger move
+                float x = event.getX();
+                float y = event.getY();
+                float dx = x - lastX;
+                float dy = y - lastY;
+                translateX += dx;
+                translateY += dy;
+                invalidate();
+                for (MapPin mapPin: pinList) {
+                    mapPin.movePinLocation(dx, dy);
+                }
+                lastX = x;
+                lastY = y;
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {  //be called in invalidate().
         super.onDraw(canvas);
-        offsetX = lastX - startX;
-        offsetY = lastY - startY;
         canvas.translate(translateX, translateY);
         canvas.scale(mScaleFactor, mScaleFactor);
         canvas.save();
-
-        //draw all vertex
-        //point A
-        //canvas.drawPoint(20,20,paint);
-        //
         for(Edge e: edges) {
-            canvas.drawLine(e.from_x + 450, e.from_y + 200,
-                    e.to_x + 450 ,e.to_y + 200, paint);
+            canvas.drawLine(e.from_x + offsetX, e.from_y + offsetY,
+                    e.to_x + offsetX ,e.to_y + offsetY, paint);
         }
         canvas.restore();
     }
@@ -367,48 +408,11 @@ public class FirstFloor extends View implements Floor {
         return edges;
     }
 
-    @Override
-    public void createPins(List<MapPin> list, ViewGroup parentView) {
-        this.pinList = list;
-        // Update the view with the new list here
-        if (pinList != null) {
-            for (MapPin pin : pinList) {
-                pin.create(parentView);
-                pin.setVisible();
-            }
+    public void setPinsVisibility () {
+        for (MapPin mapPin: pinList) {
+            mapPin.setVisibility(this.getVisibility());
         }
     }
-
-    @Override
-    public void pinInvisible() {
-        if (pinList != null) {
-            for (MapPin pin : pinList) {
-                pin.setInvisible();
-            }
-        }
-    }
-
-    @Override
-    public void pinVisible() {
-        if (pinList != null) {
-            for (MapPin pin : pinList) {
-                pin.setVisible();
-            }
-        }
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor *= detector.getScaleFactor();
-            mScaleFactor = Math.max(1.0f, Math.min(mScaleFactor, 5.0f)); // 设置缩放范围为 0.1 到 10
-            invalidate();
-            return true;
-        }
-    }
-
-
 
     public float getOffsetX() {
         return offsetX;

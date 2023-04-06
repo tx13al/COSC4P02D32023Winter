@@ -1,36 +1,22 @@
 package com.example.museumapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Login  implements View.OnClickListener {
     private Context context;
-    View dimView;
-    EditText  username, userpassword;
-    Button login;
-    ImageView loginCancel;
-
     public Login(Context context){
         this.context = context;
     }
@@ -67,6 +53,7 @@ public class Login  implements View.OnClickListener {
                     context.startActivity(intent);
                     Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    ((Activity) context).finish();
                 } else if (outcome == 2) {
                     Toast.makeText(context, "Login Failed. Incorrect Password.", Toast.LENGTH_SHORT).show();
                 } else if (outcome == 1) {

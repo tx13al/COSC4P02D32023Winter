@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -25,17 +23,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout mainContainer;
     private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
-
+    private ArrayList<ShowCase> showCases;
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
-    List<MapPin> floor1PinList = new ArrayList<>();
-    List<MapPin> floor2PinList = new ArrayList<>();    // storing the map pin objects
-
     private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showCases = DatabaseHelper.getAllEmptyCases();  //set all cases to empty,
+        // this can also update the show cases for each start of mainActivity
+
         setContentView(R.layout.activity_main);
 
         mainScreen = findViewById(R.id.main_screen);
@@ -44,13 +42,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = LayoutInflater.from(this);
 
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
-        floor_1.setVisibility(View.VISIBLE);
-        mainContainer.addView(floor_1);
         firstFloor = floor_1.findViewById(R.id.firstFloor);
+        firstFloor.addShowCases(showCases);
+        mainContainer.addView(floor_1);
+        floor_1.setVisibility(View.VISIBLE);
+        firstFloor.setPinsVisibility();
 
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
-        mainContainer.addView(floor_2);
         secondFloor = floor_2.findViewById(R.id.secondFloor);
+        secondFloor.addShowCases(showCases);
+        mainContainer.addView(floor_2);
+        secondFloor.setPinsVisibility();
 
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
@@ -79,26 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
         // Create a new instance of SearchBar and pass the necessary arguments
         SearchBar searchBar = new SearchBar(this, actv);
-
-        // assuming loading data from database here
-        Item item1 = new Item("123",
-                               "item",
-                           "this is an item. ",
-                             1999,
-                              2000,
-                              "www",
-                             "www.",
-                              1);
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(item1);
-
-        List<ShowCase> showcaseList = new ArrayList<>();
-        ShowCase showCase1 = new ShowCase(1, 2, 500, 500, 100, 100, itemList);
-        showcaseList.add(showCase1);
-        ShowCase showCase2 = new ShowCase(1, 1, 500, 1000, 100, 100, itemList);
-        showcaseList.add(showCase2);
-
-        initiatePin(showcaseList);
     }
 
     @Override
@@ -107,22 +89,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //press Level 1 button change to level 1 floor plan
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
+                firstFloor.setPinsVisibility();
                 floor_2.setVisibility(View.GONE);
-
-                firstFloor.pinVisible();
-                secondFloor.pinInvisible();
-
+                secondFloor.setPinsVisibility();
                 level_1.setTextColor(getColor(R.color.red));
                 level_2.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press Level 2 button change to level 2 floor plan
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
+                firstFloor.setPinsVisibility();
                 floor_2.setVisibility(View.VISIBLE);
-
-                firstFloor.pinInvisible();
-                secondFloor.pinVisible();
-
+                secondFloor.setPinsVisibility();
                 level_1.setTextColor(getColor(R.color.navy_blue));
                 level_2.setTextColor(getColor(R.color.red));
                 break;
@@ -170,21 +148,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         searchAdapter.setSearchItems(filteredSearchItems);
     }
-
-    private void initiatePin(List<ShowCase> list) {
-        // Initiate pins
-        Drawable pinIcon = getResources().getDrawable(R.drawable.location);
-
-        for (ShowCase sc: list) {
-            MapPin pin = new MapPin(pinIcon, sc, this);
-            if (sc.getFloorNum() == 2) {
-                floor2PinList.add(pin);
-            } else if (sc.getFloorNum() == 1) {
-                floor1PinList.add(pin);
-            }
-        }
-        firstFloor.createPins(floor1PinList, mainContainer);
-        secondFloor.createPins(floor2PinList, mainContainer);
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.example.museumapp;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -112,6 +113,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(Control.this, MainActivity.class);
                         startActivity(intent);
+                        Control.this.finish();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override

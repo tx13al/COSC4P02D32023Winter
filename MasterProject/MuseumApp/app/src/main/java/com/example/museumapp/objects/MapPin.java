@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.security.PublicKey;
+
 public class MapPin {
     private ImageView pinView;
-    private float x, y;
-    private ShowCase showCase;      // Need to decide pin and showcase are one-to-one, or one-to-many
+    private int sid;
 
-    public MapPin(Drawable icon, ShowCase sc, Context context) {
+    public MapPin(Drawable icon, ShowCase showCase, Context context) {
         pinView = new ImageView(context);
         pinView.setImageDrawable(icon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+        this.pinView.setX(showCase.getCenterX());
+        this.pinView.setY(showCase.getCenterY());
+        sid = showCase.getClosetID();
         pinView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,19 +29,13 @@ public class MapPin {
                 context.startActivity(intent);
             }
         });
-
-        showCase = sc;
-        this.x = showCase.getX();
-        this.y = showCase.getY();
-        pinView.setX(x);
-        pinView.setY(y);
     }
 
-    public void setPinLocation(int x, int y) {
-        this.x = x;
-        this.y = y;
-        pinView.setX(x);
-        pinView.setY(y);
+    public void movePinLocation(float x, float y) {
+        float newX = pinView.getX() + x;
+        float newY = pinView.getY() + y;
+        pinView.setX(newX);
+        pinView.setY(newY);
     }
 
     public void create(ViewGroup parentView) {
@@ -48,11 +46,7 @@ public class MapPin {
         parentView.addView(pinView);
     }
 
-    public void setInvisible() {
-        pinView.setVisibility(View.GONE);
-    }
-
-    public void setVisible() {
-        pinView.setVisibility(View.VISIBLE);
+    public void setVisibility(int visibility) {
+        this.pinView.setVisibility(visibility);
     }
 }
