@@ -37,7 +37,7 @@ public class FirstFloor extends View implements Floor {
             mScaleFactor = Math.max(1.0f, Math.min(mScaleFactor, 5.0f)); // set scale range from 0.1 to 10
             invalidate();
             for (MapPin mapPin: pinList) {
-                mapPin.scalePinLocation(mScaleFactor);
+                mapPin.scalePinLocation(mScaleFactor, translateX, translateY);
             }
             return true;
         }

@@ -2,6 +2,7 @@ package com.example.museumapp.objects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +39,13 @@ public class MapPin {
         pinView.setY(newY);
     }
 
-    public void scalePinLocation(float scale) {
-        float newX = pinView.getX() * scale;
-        float newY = pinView.getY() * scale;
-        pinView.setX(newX);
-        pinView.setY(newY);
+    public void scalePinLocation(float scale, float dx, float dy) {
+        Matrix matrix = new Matrix();
+        matrix.setScale(scale, scale);
+        matrix.postTranslate((pinView.getX() + dx - dx) * scale, (pinView.getY() + dy - dy) * scale);
+        pinView.setImageMatrix(matrix);
     }
+
 
     public void create(ViewGroup parentView) {
         if (pinView == null) {
