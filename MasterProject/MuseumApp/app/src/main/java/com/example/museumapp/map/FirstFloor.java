@@ -16,6 +16,7 @@ import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FirstFloor extends View implements Floor {
     ArrayList<Edge> edges;
@@ -23,8 +24,7 @@ public class FirstFloor extends View implements Floor {
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.f;
     private float lastX, lastY;
-    private float offsetX = 450, offsetY = 200;
-    private float translateX, translateY;
+    private float translateX = 450, translateY = 200;
 
     // Create the pins
     ArrayList <MapPin> pinList = null;
@@ -339,8 +339,8 @@ public class FirstFloor extends View implements Floor {
     private void drawPins() {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
         for (MapPin mapPin: pinList) {
-            mapPin.movePinLocation(offsetX, offsetY);
             mapPin.create(viewGroup);
+            mapPin.movePinLocation(translateX, translateY);
         }
     }
 
@@ -400,8 +400,7 @@ public class FirstFloor extends View implements Floor {
         canvas.scale(mScaleFactor, mScaleFactor);
         canvas.save();
         for(Edge e: edges) {
-            canvas.drawLine(e.from_x + offsetX, e.from_y + offsetY,
-                    e.to_x + offsetX ,e.to_y + offsetY, paint);
+            canvas.drawLine(e.from_x, e.from_y, e.to_x ,e.to_y, paint);
         }
         canvas.restore();
     }
@@ -415,13 +414,5 @@ public class FirstFloor extends View implements Floor {
         for (MapPin mapPin: pinList) {
             mapPin.setVisibility(this.getVisibility());
         }
-    }
-
-    public float getOffsetX() {
-        return offsetX;
-    }
-
-    public float getOffsetY() {
-        return offsetY;
     }
 }

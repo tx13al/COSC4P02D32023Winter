@@ -42,7 +42,7 @@ public class MapPin {
     public void scalePinLocation(float scale, float dx, float dy) {
         Matrix matrix = new Matrix();
         matrix.setScale(scale, scale);
-        matrix.postTranslate((pinView.getX() + dx - dx) * scale, (pinView.getY() + dy - dy) * scale);
+        matrix.postTranslate((pinView.getX()) * scale, (pinView.getY()) * scale);
         pinView.setImageMatrix(matrix);
     }
 
