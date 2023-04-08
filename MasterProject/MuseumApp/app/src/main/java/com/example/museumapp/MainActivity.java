@@ -1,8 +1,5 @@
 package com.example.museumapp;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +7,15 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
-
 import com.example.museumapp.map.*;
 import com.example.museumapp.objects.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private View floor_1, floor_2, dimView;
+    private View floor_1, floor_2;
     private FrameLayout mainContainer;
-    private ConstraintLayout mainScreen;
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
     private FirstFloor firstFloor;
@@ -31,12 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCases = DatabaseHelper.getAllEmptyCases();  //set all cases to empty,
-        // this can also update the show cases for each start of mainActivity
+        showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
+        //this can also update the show cases for each start of mainActivity
+        setContentView(R.layout.activity_main); //set the layout
 
-        setContentView(R.layout.activity_main);
-
-        mainScreen = findViewById(R.id.main_screen);
         //main container and two floor views
         mainContainer = findViewById(R.id.main_container);
         LayoutInflater inflater = LayoutInflater.from(this);

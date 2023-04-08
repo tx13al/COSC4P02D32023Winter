@@ -1,8 +1,5 @@
 package com.example.museumapp;
-
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,50 +14,52 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
+import com.example.museumapp.objects.ShowCase;
+
+import java.util.ArrayList;
 
 public class Control extends AppCompatActivity implements View.OnClickListener{
-
-    private Context context;
-    private View floor_1, floor_2, dimView;
+    private View floor_1, floor_2;
     private FrameLayout control_mainContainer;
-    private ConstraintLayout control_mainScreen;
     ImageButton logout;
     private Button level_1, level_2, add, delete, change, more;
-
+    private ArrayList<ShowCase> showCases;
     FirstFloor firstFloor;
     SecondFloor secondFloor;
     Dialog mydialog;
-
     AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
+        // this can also update the show cases for each start of mainActivity
         setContentView(R.layout.activity_control);
         mydialog= new Dialog(this);
         builder =new AlertDialog.Builder(this);
 
-
-        control_mainScreen = findViewById(R.id.control);
         //main container and two floor views
-        control_mainContainer = findViewById(R.id.control_staff_control_container);
+        control_mainContainer = findViewById(R.id.control_main_container);
         LayoutInflater inflater = LayoutInflater.from(this);
+
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
-        floor_1.setVisibility(View.VISIBLE);
-        control_mainContainer.addView(floor_1);
         firstFloor = floor_1.findViewById(R.id.firstFloor);
+        firstFloor.addShowCases(showCases);
+        control_mainContainer.addView(floor_1);
+        floor_1.setVisibility(View.VISIBLE);
+        firstFloor.setPinsVisibility();
 
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
-        control_mainContainer.addView(floor_2);
         secondFloor = floor_2.findViewById(R.id.secondFloor);
+        secondFloor.addShowCases(showCases);
+        control_mainContainer.addView(floor_2);
+        secondFloor.setPinsVisibility();
+
         //create floor buttons
         level_1 = findViewById(R.id.control_floorOneButton);
         level_2 = findViewById(R.id.control_floorTwoButton);
@@ -71,31 +70,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         add = findViewById(R.id.control_add);
         add.setOnClickListener(this);
         //create delete button
-        delete = findViewById(R.id.control_delete);
-        //delete function: delete the closet that been choose
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(false) {
-                    builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //DatabaseHelper.deleteCase(sid);
-                            dialogInterface.dismiss();
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    }).show();
-                }
-                else{
-                    Toast.makeText(Control.this.getApplicationContext(), "No closet choose", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        delete = findViewById(R.id.control_delete); //delete function: delete the closet that been choose
+        delete.setOnClickListener(this);
         //create change button
         change = findViewById(R.id.control_change);
         change.setOnClickListener(this);
@@ -105,78 +81,29 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
         //logout
         logout=findViewById(R.id.control_logoutButton);
-        logout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(this);
+    }
+
+    //popup a dialog for logout function.
+    private void logOut() {
+        builder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                builder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(Control.this, MainActivity.class);
-                        startActivity(intent);
-                        Control.this.finish();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                }).show();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(Control.this, "Logout Successful!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Control.this, MainActivity.class);
+                startActivity(intent);
+                Control.this.finish();
             }
-        });
-
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).show();
     }
 
-    @Override
-    public void onClick(View view){
-        switch (view.getId()){
-            //press Level 1 button change to level 1 floor plan
-            case R.id.control_floorOneButton:
-                floor_1.setVisibility(View.VISIBLE);
-                floor_2.setVisibility(View.GONE);
-                level_1.setTextColor(getColor(R.color.red));
-                level_2.setTextColor(getColor(R.color.navy_blue));
-                break;
-            //press Level 2 button change to level 2 floor plan
-            case R.id.control_floorTwoButton:
-                floor_1.setVisibility(View.GONE);
-                floor_2.setVisibility(View.VISIBLE);
-                level_1.setTextColor(getColor(R.color.navy_blue));
-                level_2.setTextColor(getColor(R.color.red));
-                break;
-            //press home button to back to home page
-            case R.id.control_add:
-                add.setTextColor(getColor(R.color.red));
-                delete.setTextColor(getColor(R.color.navy_blue));
-                change.setTextColor(getColor(R.color.navy_blue));
-                more.setTextColor(getColor(R.color.navy_blue));
-                AddDialog(view);
-                break;
-            //press info button to show the information about the museum like operating hours and admission
-            case R.id.control_delete:
-                add.setTextColor(getColor(R.color.navy_blue));
-                delete.setTextColor(getColor(R.color.red));
-                change.setTextColor(getColor(R.color.navy_blue));
-                more.setTextColor(getColor(R.color.navy_blue));
-                break;
-            //press art button to browse all the art
-            case R.id.control_change:
-                delete.setTextColor(getColor(R.color.navy_blue));
-                add.setTextColor(getColor(R.color.navy_blue));
-                change.setTextColor(getColor(R.color.red));
-                more.setTextColor(getColor(R.color.navy_blue));
-                break;
-            //press setting button to show settings page. Change font size
-            case R.id.control_more:
-                delete.setTextColor(getColor(R.color.navy_blue));
-                add.setTextColor(getColor(R.color.navy_blue));
-                change.setTextColor(getColor(R.color.navy_blue));
-                more.setTextColor(getColor(R.color.red));
-                break;
-        }
-    }
-
-    //popup window for add function
-    public void AddDialog(View v){
+    //popup a dialog for add function
+    private void AddDialog(View v){
         mydialog.setContentView(R.layout.adding_closet);
         ImageView txtClose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
         Button OK = mydialog.findViewById(R.id.add_OK);
@@ -237,9 +164,79 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    private void deleteShowCase() {
+        if(false) {
+            builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //DatabaseHelper.deleteCase(sid);
+                    dialogInterface.dismiss();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            }).show();
+        }
+        else{
+            Toast.makeText(Control.this.getApplicationContext(), "No closet choose", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-
-
-
-
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+            //press Level 1 button change to level 1 floor plan
+            case R.id.control_floorOneButton:
+                floor_1.setVisibility(View.VISIBLE);
+                floor_2.setVisibility(View.GONE);
+                level_1.setTextColor(getColor(R.color.red));
+                level_2.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press Level 2 button change to level 2 floor plan
+            case R.id.control_floorTwoButton:
+                floor_1.setVisibility(View.GONE);
+                floor_2.setVisibility(View.VISIBLE);
+                level_1.setTextColor(getColor(R.color.navy_blue));
+                level_2.setTextColor(getColor(R.color.red));
+                break;
+            //press the logout button to log out.
+            case R.id.control_logoutButton:
+                logOut();
+                break;
+            //press add button to add a showCase to the map.
+            case R.id.control_add:
+                add.setTextColor(getColor(R.color.red));
+                delete.setTextColor(getColor(R.color.navy_blue));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.navy_blue));
+                AddDialog(view);
+                add.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press info button to show the information about the museum like operating hours and admission
+            case R.id.control_delete:
+                add.setTextColor(getColor(R.color.navy_blue));
+                delete.setTextColor(getColor(R.color.red));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.navy_blue));
+                deleteShowCase();
+                delete.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press art button to browse all the art
+            case R.id.control_change:
+                delete.setTextColor(getColor(R.color.navy_blue));
+                add.setTextColor(getColor(R.color.navy_blue));
+                change.setTextColor(getColor(R.color.red));
+                more.setTextColor(getColor(R.color.navy_blue));
+                break;
+            //press setting button to show settings page. Change font size
+            case R.id.control_more:
+                delete.setTextColor(getColor(R.color.navy_blue));
+                add.setTextColor(getColor(R.color.navy_blue));
+                change.setTextColor(getColor(R.color.navy_blue));
+                more.setTextColor(getColor(R.color.red));
+                break;
+        }
+    }
 }
