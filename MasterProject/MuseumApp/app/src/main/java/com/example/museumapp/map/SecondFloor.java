@@ -6,137 +6,132 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
-
 import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class SecondFloor extends View implements Floor {
     private Paint paint;
-    ArrayList<Edge> outerEdges;
-    ArrayList<Edge> innerEdges;
+    private ArrayList<Edge> outerEdges;
+    private ArrayList<Edge> innerEdges;
     private final ScaleGestureDetector mScaleGestureDetector;
-    private float mScaleFactor = 1.f;
+    private float mScaleFactor = 1.0f;
     private float lastX, lastY;
-    private float translateX, translateY;
-
+    private float translateX = 241, translateY = 1467;
     // Create the pins
-    ArrayList<MapPin> pinList = null;
+    private ArrayList<MapPin> pinList = null;
+    // The length in feet of the second floor's diagonal.
 
+    //initialize all the edges for the exhibition area.
+    private void initInnerEdges() {
+        innerEdges = new ArrayList<Edge>();
+        Edge innerEdge1 = new Edge(0.0f,0.0f,679.0f,0.0f);
+        Edge innerEdge2 = new Edge(679.0f,0.0f,679.0f,251.0f);
+        Edge innerEdge3 = new Edge(679.0f,251.0f,629.0f,251.0f);
+        Edge innerEdge4 = new Edge(629.0f,251.0f,629.0f,271.0f);
+        Edge innerEdge5 = new Edge(629.0f,271.0f,589.0f,271.0f);
+        Edge innerEdge6 = new Edge(589.0f,271.0f,589.0f,321.0f);
+        Edge innerEdge7= new Edge(589.0f,321.0f,0.0f,321.0f);
+        Edge innerEdge8 = new Edge(0.0f,321.0f,0.0f,0.0f);
+        Edge innerEdge9 = new Edge(163.0f,76.0f,499.0f,76.0f);
+        Edge innerEdge10 = new Edge(499.0f,76.0f,499.0f,245.0f);
+        Edge innerEdge11 = new Edge(499.0f,245.0f,163.0f,245.0f);
+        Edge innerEdge12 = new Edge(163.0f,245.0f,163.0f,76.0f);
 
-    // The actual length of museum wall
-    private final float vertical_wall = 679.f / 12.f,    // feet
-            hori_wall = 513.f / 12.f,
-            wall_diagonal = (float)Math.sqrt(vertical_wall*vertical_wall + hori_wall*hori_wall);
+        //add all innerEdges to outEdges array list.
+        innerEdges.add(innerEdge1);
+        innerEdges.add(innerEdge2);
+        innerEdges.add(innerEdge3);
+        innerEdges.add(innerEdge4);
+        innerEdges.add(innerEdge5);
+        innerEdges.add(innerEdge6);
+        innerEdges.add(innerEdge7);
+        innerEdges.add(innerEdge8);
+        innerEdges.add(innerEdge9);
+        innerEdges.add(innerEdge10);
+        innerEdges.add(innerEdge11);
+        innerEdges.add(innerEdge12);
+    }
 
+    //initialize all the edges for the other areas. (offices, washrooms, stair cases)
+    private void initOuterEdges() {
+        outerEdges = new ArrayList<Edge>();
 
-    // Device Screen dpi
-    private final DisplayMetrics metrics = getResources().getDisplayMetrics();
-    private final int dpi = metrics.densityDpi;       // get device screen dpi
-    private final float top_reserve = 100 * (dpi / 160f),
-                        bottom_reserve = 150 * (dpi / 160f);
+        //stair cases 1
+        Edge outerEdge1 = new Edge(111.0f,0.0f,111.0f,-192.0f);
+        Edge outerEdge2 = new Edge(111.0f,-192.0f,185.0f,-192.0f);
+        Edge outerEdge3 = new Edge(185.0f,-192.0f,185.0f,-143.0f);
+        Edge outerEdge4 = new Edge(185.0f,-143.0f,163.0f,-143.0f);
+        Edge outerEdge5 = new Edge(163.0f,-143.0f,163.0f,-53.0f);
+        Edge outerEdge6 = new Edge(163.0f,-53.0f,188.0f,-53.0f);
+        Edge outerEdge7 = new Edge(188.0f,-53.0f,188.0f,0.0f);
+        Edge outerEdge8 = new Edge(111.0f,-53.0f,163.0f,-53.0f);
+        Edge outerEdge9 = new Edge(111.0f,-63.0f,163.0f,-63.0f);
+        Edge outerEdge10 = new Edge(111.0f,-73.0f,163.0f,-73.0f);
+        Edge outerEdge11 = new Edge(111.0f,-83.0f,163.0f,-83.0f);
+        Edge outerEdge12 = new Edge(111.0f,-93.0f,163.0f,-93.0f);
+        Edge outerEdge13 = new Edge(111.0f,-103.0f,163.0f,-103.0f);
+        Edge outerEdge14 = new Edge(111.0f,-113.0f,163.0f,-113.0f);
+        Edge outerEdge15 = new Edge(111.0f,-123.0f,163.0f,-123.0f);
+        Edge outerEdge16 = new Edge(111.0f,-133.0f,163.0f,-133.0f);
+        Edge outerEdge17 = new Edge(111.0f,-143.0f,163.0f,-143.0f);
+        Edge outerEdge18 = new Edge(163.0f,-192.0f,163.0f,-143.0f);
+        Edge outerEdge19 = new Edge(174.0f,-192.0f,174.0f,-143.0f);
 
+        //stair cases 2
+        Edge outerEdge20 = new Edge(589.0f,321.0f,679.0f,321.0f);
+        Edge outerEdge21 = new Edge(679.0f,321.0f,679.0f,251.0f);
+        Edge outerEdge22 = new Edge(599.0f,271.0f,599.0f,321.0f);
+        Edge outerEdge23 = new Edge(609.0f,271.0f,609.0f,321.0f);
+        Edge outerEdge24 = new Edge(619.0f,271.0f,619.0f,321.0f);
+        Edge outerEdge25 = new Edge(629.0f,271.0f,629.0f,321.0f);
+        Edge outerEdge26 = new Edge(629.0f,271.0f,679.0f,271.0f);
+        Edge outerEdge27 = new Edge(629.0f,261.0f,679.0f,261.0f);
 
-    // Screen properties, width height and diagonal
-    private final int width = metrics.widthPixels - 20,      // screen width and height
-            height = metrics.heightPixels - 20;   // reserve boarder
-    private final float screen_diagonal = (float)Math.sqrt(width*width + height*height);
-
-
-    // The ratio of actual length and length on screen
-    private final float ratio = wall_diagonal / (screen_diagonal * 0.7f);
-
-
-    // The following are coordinates:
-    private final float main_wall_starting_X = 16.f/ratio,
-                        mail_wall_width = 26.75f/ratio,
-                        main_wall_starting_Y = height - bottom_reserve,      // y coordinate is upside down,
-                        mail_wall_height = 56.58332f/ratio,
-
-                        inner_starting_X = main_wall_starting_X + 6.3333f/ratio,
-                        inner_width = 14.0833f/ratio,
-                        inner_starting_Y = main_wall_starting_Y - 13.3333f/ratio,
-                        inner_height = 28f/ratio,
-
-                        widthOfStair = 4f/ratio,
-
-                        stair1_starting_X = main_wall_starting_X + mail_wall_width - 4f/ratio,
-                        stair1_starting_y = main_wall_starting_Y - mail_wall_height,
-                        stair1_height = 8f/ratio,
-
-                        stair2_starting_X = 20f,
-                        stair2_heigt = 6.1667f/ratio,
-                        stair2_width = 16.f/ratio,
-                        stair2_starting_Y = height - 9.25f/ratio - bottom_reserve;
+        //add all outerEdges to outEdges array list.
+        outerEdges.add(outerEdge1);
+        outerEdges.add(outerEdge2);
+        outerEdges.add(outerEdge3);
+        outerEdges.add(outerEdge4);
+        outerEdges.add(outerEdge5);
+        outerEdges.add(outerEdge6);
+        outerEdges.add(outerEdge7);
+        outerEdges.add(outerEdge8);
+        outerEdges.add(outerEdge9);
+        outerEdges.add(outerEdge10);
+        outerEdges.add(outerEdge11);
+        outerEdges.add(outerEdge12);
+        outerEdges.add(outerEdge13);
+        outerEdges.add(outerEdge14);
+        outerEdges.add(outerEdge15);
+        outerEdges.add(outerEdge16);
+        outerEdges.add(outerEdge17);
+        outerEdges.add(outerEdge18);
+        outerEdges.add(outerEdge19);
+        outerEdges.add(outerEdge20);
+        outerEdges.add(outerEdge21);
+        outerEdges.add(outerEdge22);
+        outerEdges.add(outerEdge23);
+        outerEdges.add(outerEdge24);
+        outerEdges.add(outerEdge25);
+        outerEdges.add(outerEdge26);
+        outerEdges.add(outerEdge27);
+    }
 
     private void initEdges() {
-        outerEdges = new ArrayList<>();
-        innerEdges = new ArrayList<>();
-
-        // main outer wall
-        Edge outer_left = new Edge(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X, main_wall_starting_Y - mail_wall_height);
-        Edge outer_top = new Edge(main_wall_starting_X, main_wall_starting_Y - mail_wall_height, main_wall_starting_X + mail_wall_width, main_wall_starting_Y - mail_wall_height);
-        Edge outer_bottom = new Edge(main_wall_starting_X, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, main_wall_starting_Y);
-        Edge outer_right = new Edge(main_wall_starting_X + mail_wall_width, main_wall_starting_Y, main_wall_starting_X + mail_wall_width, main_wall_starting_Y - mail_wall_height);
-
-        outerEdges.add(outer_left);
-        outerEdges.add(outer_top);
-        outerEdges.add(outer_bottom);
-        outerEdges.add(outer_right);
-
-        // left stair outer wall
-        Edge stairL_bottom = new Edge(stair2_starting_X, stair2_starting_Y, stair2_width, stair2_starting_Y);
-        Edge stairL_left = new Edge(stair2_starting_X, stair2_starting_Y, stair2_starting_X, stair2_starting_Y - stair2_heigt);
-        Edge stairL_topleft = new Edge(stair2_starting_X, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt);
-        Edge stairL_topmidleft = new Edge(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt, stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio);
-        Edge stairL_topmidmid = new Edge(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7.3333f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio);
-        Edge stairL_topmidright = new Edge(stair2_starting_X + widthOfStair + 7.3333f/ratio , stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7.3333f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio);
-        Edge stairL_topright = new Edge(stair2_starting_X + widthOfStair + 7.3333f/ratio , stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio, widthOfStair + 7.3333f/ratio + 4.42f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio - 2.0833f/ratio);
-
-        outerEdges.add(stairL_bottom);
-        outerEdges.add(stairL_left);
-        outerEdges.add(stairL_topleft);
-        outerEdges.add(stairL_topmidleft);
-        outerEdges.add(stairL_topmidmid);
-        outerEdges.add(stairL_topmidright);
-        outerEdges.add(stairL_topright);
-
-        // inner rail, count as outer edges
-        Edge inner_left = new Edge(inner_starting_X , inner_starting_Y, inner_starting_X, inner_starting_Y - inner_height);
-        Edge inner_top = new Edge(inner_starting_X , inner_starting_Y - inner_height, inner_starting_X + inner_width, inner_starting_Y - inner_height);
-        Edge inner_bottom = new Edge(inner_starting_X , inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y);
-        Edge inner_right = new Edge(inner_starting_X + inner_width, inner_starting_Y, inner_starting_X + inner_width, inner_starting_Y - inner_height);
-
-        outerEdges.add(inner_left);
-        outerEdges.add(inner_top);
-        outerEdges.add(inner_bottom);
-        outerEdges.add(inner_right);
-
-        // top-right stair
-        Edge stairTR_bottomleft = new Edge(stair1_starting_X, stair1_starting_y, stair1_starting_X, stair1_starting_y + stair1_height);
-        Edge stairTR_bottombottom = new Edge(stair1_starting_X, stair1_starting_y + stair1_height, stair1_starting_X + widthOfStair, stair1_starting_y + stair1_height);
-        Edge stairTR_leftbottom = new Edge(main_wall_starting_X + mail_wall_width, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y + widthOfStair);
-        Edge stairTR_leftleft = new Edge(main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height, stair1_starting_y);
-
-        innerEdges.add(stairTR_bottomleft);
-        innerEdges.add(stairTR_bottombottom);
-        innerEdges.add(stairTR_leftbottom);
-        innerEdges.add(stairTR_leftleft);
+        initOuterEdges();
+        initInnerEdges();
     }
 
     private void init() {
         paint = new Paint();
-        paint.setStrokeWidth(5f);
+        paint.setStrokeWidth(5.0f);
         paint.setColor(Color.rgb(0,24,69));
         initEdges();
     }
@@ -147,8 +142,11 @@ public class SecondFloor extends View implements Floor {
             @Override
             public boolean onScale(@NonNull ScaleGestureDetector detector) {
                 mScaleFactor *= detector.getScaleFactor();
-                mScaleFactor = Math.max(0.7f, Math.min(mScaleFactor, 5.0f)); // set scale range from 0.7 to 5.
+                mScaleFactor = Math.max(0.5f, Math.min(mScaleFactor, 5.0f)); // set scale range from 0.5 to 5.
                 invalidate();
+                for (MapPin mapPin: pinList) {
+                    mapPin.scalePinLocation(mScaleFactor, translateX, translateY);
+                }
                 return true;
             }
 
@@ -158,18 +156,19 @@ public class SecondFloor extends View implements Floor {
             }
 
             @Override
-            public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
-
-            }
+            public void onScaleEnd(@NonNull ScaleGestureDetector detector) { }
 
         });
         init();
     }
 
+    //Draw all pins and move them to the correct coordinates on the screen.
+    //Warning: This method can only be called once.
     private void drawPins() {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
         for (MapPin mapPin: pinList) {
             mapPin.create(viewGroup);
+            mapPin.movePinLocation(translateX, translateY);
         }
     }
 
@@ -185,10 +184,10 @@ public class SecondFloor extends View implements Floor {
                 Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
                         showCase.getX(), showCase.getY() + showCase.getWidth());
                 Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
-                outerEdges.add(e1);
-                outerEdges.add(e2);
-                outerEdges.add(e3);
-                outerEdges.add(e4);
+                innerEdges.add(e1);
+                innerEdges.add(e2);
+                innerEdges.add(e3);
+                innerEdges.add(e4);
                 pinList.add(mapPin);
             }
         }
@@ -224,58 +223,18 @@ public class SecondFloor extends View implements Floor {
         canvas.translate(translateX, translateY);
         canvas.scale(mScaleFactor, mScaleFactor);
         canvas.save();
-
-        // outer wall
-        paint.setStrokeWidth(5f);
-        for(Edge e: outerEdges) {
-            canvas.drawLine(e.from_x, e.from_y,
-                    e.to_x,e.to_y, paint);
-        }
-
-        // inner rail and top-right stair
-        paint.setStrokeWidth(2f);
         for(Edge e: innerEdges) {
-            canvas.drawLine(e.from_x, e.from_y,
-                    e.to_x,e.to_y, paint);
+            canvas.drawLine(e.from_x, e.from_y, e.to_x ,e.to_y, paint);
         }
-
-
-        // stair 1
-        paint.setStrokeWidth(2f);
-
-/*
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 0.73f/ratio, stair1_starting_y, paint);
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 2*0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 2*0.73f/ratio, stair1_starting_y, paint);
-        canvas.drawLine(main_wall_starting_X + mail_wall_width - stair1_height + 3*0.73f/ratio, stair1_starting_y + widthOfStair, main_wall_starting_X + mail_wall_width - stair1_height + 3*0.73f/ratio, stair1_starting_y, paint);
-
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 0.73f/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 2*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 2*0.73f/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 3*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 3*0.73f/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 4*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 4*0.73f/ratio, paint);
-        canvas.drawLine(stair1_starting_X, stair1_starting_y + stair1_height - 5*0.73f/ratio, main_wall_starting_X + mail_wall_width, stair1_starting_y + stair1_height - 5*0.73f/ratio, paint);
-*/
-
-
-/*
-        paint.setStrokeWidth(2f);
-        canvas.drawLine(stair2_starting_X + widthOfStair, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 2*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 2*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 3*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 3*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 4*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 4*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 5*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 5*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 6*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 6*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 7*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 8*0.73f/ratio, stair2_starting_Y, paint);
-        canvas.drawLine(stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y - stair2_heigt + 1.1f/ratio, stair2_starting_X + widthOfStair + 9*0.73f/ratio, stair2_starting_Y, paint);
-*/
-
+        for(Edge e: outerEdges) {
+            canvas.drawLine(e.from_x, e.from_y, e.to_x ,e.to_y, paint);
+        }
         canvas.restore();
     }
 
     @Override
     public ArrayList<Edge> getEdges() {
-        return outerEdges;
+        return innerEdges;
     }
 
     public void setPinsVisibility () {
