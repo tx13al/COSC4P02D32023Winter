@@ -7,11 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.security.PublicKey;
+import com.example.museumapp.MainActivity;
 
 public class MapPin {
+    Context context;
     private ImageView pinView;
     private int sid;
 
@@ -22,10 +21,13 @@ public class MapPin {
         this.pinView.setX(showCase.getCenterX() - 50);
         this.pinView.setY(showCase.getCenterY() - 100);
         sid = showCase.getClosetID();
+        this.context = context;
         pinView.setOnClickListener(new View.OnClickListener() {
+            private MainActivity context;
+
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You clicked the icon! Good job! ", Toast.LENGTH_LONG).show();
+                ShowCase showcase = this.context.getShowCase(sid);
                 Intent intent = new Intent(context, ItemList.class);
                 context.startActivity(intent);
             }

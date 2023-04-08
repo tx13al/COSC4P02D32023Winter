@@ -267,8 +267,8 @@ public class DatabaseHelper {
         public void run() {
             try {
                 Connection connection = connect();
-                String SQL_command = "SELECT * FROM showcase";
                 Statement statement = connection.createStatement();
+                String SQL_command = "SELECT * FROM showcase";
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 while (resultSet.next()) {
                     ShowCase showCase = new ShowCase(resultSet.getInt("sid"),
@@ -304,6 +304,60 @@ public class DatabaseHelper {
         thread.interrupt();
         return cases;
     }
+
+    static class getAllItemsOfShowCaseThread extends Thread {
+        ArrayList<Item> items = new ArrayList<Item>();
+        int sid;
+
+        public getAllItemsOfShowCaseThread(int sid) {
+            super();
+            this.sid = sid;
+        }
+
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_command = "SELECT * FROM item WHERE sid = " + this.sid;
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    String ID = resultSet.getString("obj_id");
+                    String name = resultSet.getString("obj_name");
+                    String description = resultSet.getString("obj_desc");
+                    int startYear = resultSet.getInt("obj_start_year");
+                    int endYear = resultSet.getInt("obj_end_year");
+                    String itemUrl = resultSet.getString("obj_url");
+                    String imageUrl = resultSet.getString("obj_img");
+                    int closetID = this.sid;
+                    Item item = new Item(ID, name, description, startYear, endYear, itemUrl, imageUrl, closetID);
+                    items.add(item);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            }
+        }
+
+        public ArrayList<Item> getItems() {
+            return items;
+        }
+    }
+
+    public static ArrayList<Item> getAllItemsOfShowCase(int sid) {
+        ArrayList<Item> items = null;
+        getAllItemsOfShowCaseThread thread = new getAllItemsOfShowCaseThread(sid);
+        thread.start();
+        try {
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        items = thread.getItems();
+        thread.interrupt();
+        return items;
+    }
+
 
 //delete case from database
 //    static class deleteCaseThread extends Thread {

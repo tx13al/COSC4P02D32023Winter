@@ -9,6 +9,7 @@ public class ShowCase {
     private float x, y;
     private int floorNum;
     private List<Item> items;
+    private boolean isSet = false;
 
     public ShowCase(int closetID, int floorNum, float x, float y, float length, float width, List<Item> items) {
         this.closetID = closetID;
@@ -82,5 +83,13 @@ public class ShowCase {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public void setIsSet(boolean isSet) {
+        this.isSet = isSet;
+    }
+
+    public boolean getIsSet() {
+        return this.isSet;
     }
 }
