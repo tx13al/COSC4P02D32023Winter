@@ -79,6 +79,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SearchBar searchBar = new SearchBar(this, actv);
     }
 
+    //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
+    public void getShowCase(ShowCase showCase, MapPin mapPin) {
+        this.displayingMapPin = mapPin;
+        if (!showCase.getIsSet()) {
+            showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
+        }
+    }
+
+    public ArrayList<ShowCase> getShowCases() {return showCases;}
+
+    public MapPin getDisplaying() {
+        return displayingMapPin;
+    }
+
+   // search filter
+    private void filterSearchItems(String query) {
+        List<SearchItem> filteredSearchItems = new ArrayList<>();
+        SearchItem[] allSearchItems = new SearchItem[0];
+
+        for (SearchItem searchItem : allSearchItems) {
+            if (searchItem.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredSearchItems.add(searchItem);
+            }
+        }
+        searchAdapter.setSearchItems(filteredSearchItems);
+    }
+
     @Override
     public void onClick(View view){
         switch (view.getId()){
@@ -131,30 +158,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setting.setTextColor(getColor(R.color.red));
                 break;
         }
-    }
-
-    //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
-    public void getShowCase(ShowCase showCase, MapPin mapPin) {
-        this.displayingMapPin = mapPin;
-        if (!showCase.getIsSet()) {
-            showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
-        }
-    }
-
-    public MapPin getDisplaying() {
-        return displayingMapPin;
-    }
-
-   // search filter
-    private void filterSearchItems(String query) {
-        List<SearchItem> filteredSearchItems = new ArrayList<>();
-        SearchItem[] allSearchItems = new SearchItem[0];
-
-        for (SearchItem searchItem : allSearchItems) {
-            if (searchItem.getTitle().toLowerCase().contains(query.toLowerCase())) {
-                filteredSearchItems.add(searchItem);
-            }
-        }
-        searchAdapter.setSearchItems(filteredSearchItems);
     }
 }

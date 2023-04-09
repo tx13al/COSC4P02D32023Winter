@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
+import com.example.museumapp.Control;
 import com.squareup.picasso.Picasso;
 import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
@@ -146,6 +147,9 @@ public class MapPin {
                             });
                         }
                     }
+                }
+                if (context instanceof Control) {
+                    Control control = (Control) context;
                 }
             }
         });

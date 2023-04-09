@@ -40,8 +40,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
-        // this can also update the show cases for each start of mainActivity
+        showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
         setContentView(R.layout.activity_control);
         builder =new AlertDialog.Builder(this);
 

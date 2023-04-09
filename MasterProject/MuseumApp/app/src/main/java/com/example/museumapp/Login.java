@@ -52,6 +52,9 @@ public class Login implements View.OnClickListener {
                     context.startActivity(intent);
                     Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    if (context instanceof MainActivity) {
+                        ShowCaseSingleton.getInstance().setShowCases(((MainActivity)context).getShowCases());
+                    }
                     ((Activity) context).finish();
                 } else if (outcome == 2) {
                     Toast.makeText(context, "Login Failed. Incorrect Password.", Toast.LENGTH_SHORT).show();
@@ -60,7 +63,6 @@ public class Login implements View.OnClickListener {
                 } else {
                     Toast.makeText(context, "Login Failed. Please enter a username/password.", Toast.LENGTH_SHORT).show();
                 }
-                //TODO
             }
         });
     }
