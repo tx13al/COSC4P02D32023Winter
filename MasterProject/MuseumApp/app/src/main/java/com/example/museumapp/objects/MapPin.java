@@ -158,13 +158,6 @@ public class MapPin {
         pinView.setY(newY);
     }
 
-//    public void scalePinLocation(float scale, float dx, float dy) {
-//        Matrix matrix = new Matrix();
-//        matrix.setScale(scale, scale);
-//        matrix.postTranslate((pinView.getX()) * scale, (pinView.getY()) * scale);
-//        pinView.setImageMatrix(matrix);
-//    }
-
     public void scalePinLocation(float scale, float dx, float dy) {
         pinView.setX(thisCase.getCenterX() * scale + dx - 50);
         pinView.setY(thisCase.getCenterY() * scale + dy - 100);
