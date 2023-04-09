@@ -1,5 +1,4 @@
 package com.example.museumapp;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.museumapp.Search.Control;
 
 public class Login  implements View.OnClickListener {
     private Context context;
@@ -49,7 +50,7 @@ public class Login  implements View.OnClickListener {
                         (username.getText().toString(), userpassword.getText().toString());
                 if(outcome == 3){
                     Intent intent=new Intent();
-                    intent.setClass(context.getApplicationContext(),Control.class);
+                    intent.setClass(context.getApplicationContext(), Control.class);
                     context.startActivity(intent);
                     Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
@@ -61,7 +62,6 @@ public class Login  implements View.OnClickListener {
                 } else {
                     Toast.makeText(context, "Login Failed. Please enter a username/password.", Toast.LENGTH_SHORT).show();
                 }
-
                 //TODO
             }
         });

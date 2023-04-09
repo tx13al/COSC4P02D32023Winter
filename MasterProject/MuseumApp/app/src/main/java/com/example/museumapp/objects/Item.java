@@ -84,4 +84,8 @@ public class Item {
     public void setClosetID(int closetID) {
         this.closetID = closetID;
     }
+
+    public int getImageResource() {
+        return 0;
+    }
 }

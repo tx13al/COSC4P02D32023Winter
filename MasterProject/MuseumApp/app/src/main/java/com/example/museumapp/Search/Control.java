@@ -1,4 +1,4 @@
-package com.example.museumapp;
+package com.example.museumapp.Search;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -17,6 +18,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.museumapp.DatabaseHelper;
+import com.example.museumapp.MainActivity;
+import com.example.museumapp.R;
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
 import com.example.museumapp.objects.ShowCase;
@@ -82,6 +87,11 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         //logout
         logout=findViewById(R.id.control_logoutButton);
         logout.setOnClickListener(this);
+
+        // Find the AutoCompleteTextView view
+        AutoCompleteTextView actv = Control.this.findViewById(R.id.search_bar);
+        // Create a new instance of SearchBar and pass the necessary arguments
+      //  SearchBar searchBar = new SearchBar(this, actv);
     }
 
     //popup a dialog for logout function.

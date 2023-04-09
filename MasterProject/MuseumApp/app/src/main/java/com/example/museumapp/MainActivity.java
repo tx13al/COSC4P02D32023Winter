@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import com.example.museumapp.Search.SearchAdapter;
+import com.example.museumapp.Search.SearchBar;
+import com.example.museumapp.Search.SearchItem;
 import com.example.museumapp.map.*;
 import com.example.museumapp.objects.*;
 import java.util.ArrayList;

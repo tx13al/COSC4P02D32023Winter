@@ -1,9 +1,16 @@
-package com.example.museumapp;
+package com.example.museumapp.Search;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+
+
+import com.example.museumapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -11,23 +18,33 @@ public class SearchAdapter extends androidx.recyclerview.widget.RecyclerView.Ada
 
     private List<SearchItem> searchItems;
 
+
     public SearchAdapter(List<SearchItem> searchItems) {
         this.searchItems = searchItems;
     }
-
     public static class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
         private TextView titleTextView;
         private TextView descriptionTextView;
+        private ImageView imageView;
+        private EditText editText;
 
         public ViewHolder(View view) {
             super(view);
             titleTextView = view.findViewById(R.id.search_bar_edit_text);
             descriptionTextView = view.findViewById(R.id.search_bar_edit_text);
+            imageView = view.findViewById(R.id.image_view);
         }
 
         public void bind(SearchItem searchItem) {
             titleTextView.setText(searchItem.getTitle());
             descriptionTextView.setText(searchItem.getDescription());
+
+            // load image using Glide library
+            Picasso.get()
+                    .load(searchItem.getImageUrl())
+                    .resize(500,500)
+                    .centerCrop()
+                    .into(imageView);
         }
     }
 

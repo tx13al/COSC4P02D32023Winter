@@ -35,7 +35,7 @@
             android:id="@+id/control_search_bar"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:hint="Try Sir Isaac Brock"
+            android:hint="Search..."
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/location"
             app:layout_constraintStart_toStartOf="parent"
