@@ -10,7 +10,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
@@ -19,7 +18,6 @@ public class MapPin {
     Context context;
     private ImageView pinView;
     private int sid;
-    private boolean displaying = false;
 
     public MapPin(Drawable icon, ShowCase showCase, Context context) {
         pinView = new ImageView(context);
@@ -32,10 +30,13 @@ public class MapPin {
         pinView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!displaying) {  //This Pin is displaying. (avoid duplicate adding items to scroll view.)
-                    if (context instanceof MainActivity) {  //if context is mainActivity
-                        MainActivity mainActivity = (MainActivity) context;
-                        mainActivity.getShowCase(showCase); //get Items for showCase.
+                if (context instanceof MainActivity) {  //if context is mainActivity
+                    MainActivity mainActivity = (MainActivity) context;
+                    HorizontalScrollView showCaseItemListScrollView =
+                            mainActivity.findViewById(R.id.showCase_item_list_scrollView);
+                    showCaseItemListScrollView.setVisibility(View.VISIBLE);
+                    if (mainActivity.getDisplaying() != MapPin.this) {  //This Pin is displaying. (avoid duplicate adding items to scroll view.)
+                        mainActivity.getShowCase(showCase, MapPin.this); //get Items for showCase.
                         LinearLayout showCaseItemListLayout =   //container for the items
                                 mainActivity.findViewById(R.id.showCase_item_list_scrollView_linear);
                         for (Item item : showCase.getItems()) {
@@ -62,10 +63,6 @@ public class MapPin {
                             itemLayout.addView(text);
                             showCaseItemListLayout.addView(itemLayout);
                         }
-                        HorizontalScrollView showCaseItemListScrollView =
-                                mainActivity.findViewById(R.id.showCase_item_list_scrollView);
-                        showCaseItemListScrollView.setVisibility(View.VISIBLE);
-                        displaying = true;
                     }
                 }
             }

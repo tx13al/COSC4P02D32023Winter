@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
-
 import com.example.museumapp.Search.SearchAdapter;
 import com.example.museumapp.Search.SearchBar;
 import com.example.museumapp.Search.SearchItem;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<ShowCase> showCases;
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
+    private MapPin displayingMapPin = null;
     private SearchAdapter searchAdapter;
 
     @Override
@@ -134,10 +134,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
-    public void getShowCase(ShowCase showCase) {
+    public void getShowCase(ShowCase showCase, MapPin mapPin) {
+        this.displayingMapPin = mapPin;
         if (!showCase.getIsSet()) {
             showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
         }
+    }
+
+    public MapPin getDisplaying() {
+        return displayingMapPin;
     }
 
    // search filter

@@ -33,7 +33,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private ArrayList<ShowCase> showCases;
     FirstFloor firstFloor;
     SecondFloor secondFloor;
-    Dialog mydialog;
     AlertDialog.Builder builder;
 
     @Override
@@ -42,7 +41,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
         // this can also update the show cases for each start of mainActivity
         setContentView(R.layout.activity_control);
-        mydialog= new Dialog(this);
         builder =new AlertDialog.Builder(this);
 
         //main container and two floor views
@@ -111,18 +109,19 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
     //popup a dialog for add function
     private void AddDialog(View v){
-        mydialog.setContentView(R.layout.adding_closet);
-        ImageView txtClose =(ImageView) mydialog.findViewById(R.id.add_Cancel);
-        Button OK = mydialog.findViewById(R.id.add_OK);
-        Spinner addFloorSelection = mydialog.findViewById(R.id.add_floor_selection);
-        EditText addXNumber = mydialog.findViewById(R.id.add_X_number);
-        EditText addYNumber = mydialog.findViewById(R.id.add_Y_number);
-        EditText addLengthNumber = mydialog.findViewById(R.id.add_length_number);
-        EditText addWidthNumber = mydialog.findViewById(R.id.add_width_number);
+        Dialog addDialog = new Dialog(this);
+        addDialog.setContentView(R.layout.adding_closet);
+        ImageView txtClose =(ImageView) addDialog.findViewById(R.id.add_Cancel);
+        Button OK = addDialog.findViewById(R.id.add_OK);
+        Spinner addFloorSelection = addDialog.findViewById(R.id.add_floor_selection);
+        EditText addXNumber = addDialog.findViewById(R.id.add_X_number);
+        EditText addYNumber = addDialog.findViewById(R.id.add_Y_number);
+        EditText addLengthNumber = addDialog.findViewById(R.id.add_length_number);
+        EditText addWidthNumber = addDialog.findViewById(R.id.add_width_number);
         txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mydialog.dismiss();
+                addDialog.dismiss();
             }
         });
         OK.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +147,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                     if (DatabaseHelper.addCase(floor, x, y, length, width, firstFloor.getEdges())) {
                         Toast.makeText(Control.this.getApplicationContext(),
                                 "Adding successfully!", Toast.LENGTH_SHORT).show();
-                        mydialog.dismiss();
+                        addDialog.dismiss();
                     }
                     else {
                         Toast.makeText(Control.this.getApplicationContext(),
@@ -159,7 +158,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                     if (DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges())) {
                         Toast.makeText(Control.this.getApplicationContext(),
                                 "Adding successfully!", Toast.LENGTH_SHORT).show();
-                        mydialog.dismiss();
+                        addDialog.dismiss();
                     } else {
                         Toast.makeText(Control.this.getApplicationContext(),
                                 "Invalid input!!!", Toast.LENGTH_SHORT).show();
@@ -167,8 +166,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         });
-        mydialog.show();
-        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        addDialog.show();
+        addDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void deleteShowCase() {

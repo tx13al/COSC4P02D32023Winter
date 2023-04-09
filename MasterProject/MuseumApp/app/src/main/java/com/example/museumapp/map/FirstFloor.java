@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
@@ -327,6 +329,12 @@ public class FirstFloor extends View implements Floor {
                 lastY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:   //finger move
+                if (this.getContext() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) this.getContext();
+                    HorizontalScrollView showCaseItemListScrollView =
+                            mainActivity.findViewById(R.id.showCase_item_list_scrollView);
+                    showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+                }
                 float x = event.getX();
                 float y = event.getY();
                 float dx = x - lastX;
