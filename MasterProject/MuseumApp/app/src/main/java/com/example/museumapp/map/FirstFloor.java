@@ -16,6 +16,7 @@ import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FirstFloor extends View implements Floor {
     private ArrayList<Edge> innerEdges;
@@ -297,25 +298,33 @@ public class FirstFloor extends View implements Floor {
         }
     }
 
+    public MapPin addShowCase(ShowCase showCase) {
+        if (pinList == null) {
+            pinList = new ArrayList<MapPin>();
+        }
+        if (showCase.getFloorNum() == 1) {  //first floor
+            Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
+            MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
+            Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
+            Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
+            Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY() + showCase.getWidth());
+            Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
+            innerEdges.add(e1);
+            innerEdges.add(e2);
+            innerEdges.add(e3);
+            innerEdges.add(e4);
+            pinList.add(mapPin);
+            return mapPin;
+        }
+        return null;
+    }
+
     //Add all showcases of the first floor to the view of the first floor, and draw the Pins.
     public void addShowCases(ArrayList<ShowCase> showCases) {
-        Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
-        pinList = new ArrayList<MapPin>();
         for (ShowCase showCase: showCases) {
-            if (showCase.getFloorNum() == 1) {  //first floor
-                MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
-                Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
-                Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
-                        showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
-                Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
-                        showCase.getX(), showCase.getY() + showCase.getWidth());
-                Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
-                innerEdges.add(e1);
-                innerEdges.add(e2);
-                innerEdges.add(e3);
-                innerEdges.add(e4);
-                pinList.add(mapPin);
-            }
+            addShowCase(showCase);
         }
         drawPins();
     }
@@ -376,5 +385,9 @@ public class FirstFloor extends View implements Floor {
         for (MapPin mapPin: pinList) {
             mapPin.setVisibility(this.getVisibility());
         }
+    }
+
+    public void setPinsVisibility (MapPin mapPin) {
+        mapPin.setVisibility(this.getVisibility());
     }
 }

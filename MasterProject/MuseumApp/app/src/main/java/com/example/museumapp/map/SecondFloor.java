@@ -172,24 +172,32 @@ public class SecondFloor extends View implements Floor {
         }
     }
 
+    public MapPin addShowCase(ShowCase showCase) {
+        if (pinList == null) {
+            pinList = new ArrayList<MapPin>();
+        }
+        if (showCase.getFloorNum() == 2) {  //second floor
+            Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
+            MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
+            Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
+            Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
+            Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY() + showCase.getWidth());
+            Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
+            innerEdges.add(e1);
+            innerEdges.add(e2);
+            innerEdges.add(e3);
+            innerEdges.add(e4);
+            pinList.add(mapPin);
+            return mapPin;
+        }
+        return null;
+    }
+
     public void addShowCases(ArrayList<ShowCase> showCases) {
-        Drawable pinIcon = getResources().getDrawable(R.drawable.location);
-        pinList = new ArrayList<MapPin>();
         for (ShowCase showCase: showCases) {
-            if (showCase.getFloorNum() == 2) {
-                MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
-                Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
-                Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
-                        showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
-                Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
-                        showCase.getX(), showCase.getY() + showCase.getWidth());
-                Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
-                innerEdges.add(e1);
-                innerEdges.add(e2);
-                innerEdges.add(e3);
-                innerEdges.add(e4);
-                pinList.add(mapPin);
-            }
+            addShowCase(showCase);
         }
         drawPins();
     }
@@ -241,5 +249,9 @@ public class SecondFloor extends View implements Floor {
         for (MapPin mapPin: pinList) {
             mapPin.setVisibility(this.getVisibility());
         }
+    }
+
+    public void setPinsVisibility (MapPin mapPin) {
+        mapPin.setVisibility(this.getVisibility());
     }
 }

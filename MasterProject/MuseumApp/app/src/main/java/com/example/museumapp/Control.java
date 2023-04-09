@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
+import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private ArrayList<ShowCase> showCases;
     FirstFloor firstFloor;
     SecondFloor secondFloor;
+    private MapPin displayingMapPin = null;
     AlertDialog.Builder builder;
 
     @Override
@@ -143,26 +145,33 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 float y = Float.parseFloat(addYNumberString);
                 float length = Float.parseFloat(addLengthNumberString);
                 float width = Float.parseFloat(addWidthNumberString);
+                int sid = -1;
                 if (floor == 1) {
-                    if (DatabaseHelper.addCase(floor, x, y, length, width, firstFloor.getEdges())) {
-                        Toast.makeText(Control.this.getApplicationContext(),
-                                "Adding successfully!", Toast.LENGTH_SHORT).show();
-                        addDialog.dismiss();
-                    }
-                    else {
-                        Toast.makeText(Control.this.getApplicationContext(),
-                                "Invalid input!!!", Toast.LENGTH_SHORT).show();
-                    }
+                    sid = DatabaseHelper.addCase(floor, x, y, length, width, firstFloor.getEdges());
                 }
                 if (floor == 2) {
-                    if (DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges())) {
-                        Toast.makeText(Control.this.getApplicationContext(),
-                                "Adding successfully!", Toast.LENGTH_SHORT).show();
-                        addDialog.dismiss();
-                    } else {
-                        Toast.makeText(Control.this.getApplicationContext(),
-                                "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                    sid = DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges());
+                }
+                if (sid > -1) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Adding successfully!", Toast.LENGTH_SHORT).show();
+                    ShowCase newShowCase = new ShowCase(sid, floor, x, y, length, width, null);
+                    showCases.add(newShowCase);
+                    if (floor == 1) {
+                        displayingMapPin = firstFloor.addShowCase(newShowCase);
+                        firstFloor.setPinsVisibility(displayingMapPin);
+                        firstFloor.invalidate();
                     }
+                    if (floor == 2) {
+                        displayingMapPin = secondFloor.addShowCase(newShowCase);
+                        secondFloor.setPinsVisibility(displayingMapPin);
+                        secondFloor.invalidate();
+                    }
+                    addDialog.dismiss();
+                }
+                if (sid <= -1) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Invalid input!!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

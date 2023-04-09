@@ -30,7 +30,7 @@ import org.w3c.dom.Text;
 public class MapPin {
     Context context;
     private ImageView pinView;
-    private int sid;
+    private ShowCase thisCase;
 
     public MapPin(Drawable icon, ShowCase showCase, Context context) {
         pinView = new ImageView(context);
@@ -38,7 +38,7 @@ public class MapPin {
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
         this.pinView.setX(showCase.getCenterX() - 50);
         this.pinView.setY(showCase.getCenterY() - 100);
-        sid = showCase.getClosetID();
+        this.thisCase = showCase;
         this.context = context;
         pinView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,13 +158,17 @@ public class MapPin {
         pinView.setY(newY);
     }
 
-    public void scalePinLocation(float scale, float dx, float dy) {
-        Matrix matrix = new Matrix();
-        matrix.setScale(scale, scale);
-        matrix.postTranslate((pinView.getX()) * scale, (pinView.getY()) * scale);
-        pinView.setImageMatrix(matrix);
-    }
+//    public void scalePinLocation(float scale, float dx, float dy) {
+//        Matrix matrix = new Matrix();
+//        matrix.setScale(scale, scale);
+//        matrix.postTranslate((pinView.getX()) * scale, (pinView.getY()) * scale);
+//        pinView.setImageMatrix(matrix);
+//    }
 
+    public void scalePinLocation(float scale, float dx, float dy) {
+        pinView.setX(thisCase.getCenterX() * scale + dx - 50);
+        pinView.setY(thisCase.getCenterY() * scale + dy - 100);
+    }
 
     public void create(ViewGroup parentView) {
         if (pinView == null) {

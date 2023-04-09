@@ -144,7 +144,7 @@ public class DatabaseHelper {
         private int floor;
         private float x, y, length, width;
         private ArrayList<Edge> edges;
-        private boolean acceptable;
+        private int sid;
         public addCaseThread(int floor, float x, float y, float length,
                              float width, ArrayList<Edge> edges) {
             super();
@@ -154,11 +154,11 @@ public class DatabaseHelper {
             this.length = length;
             this.width = width;
             this.edges = edges;
-            this.acceptable = true;
+            this.sid = -1;
         }
 
-        public boolean getAcceptable() {
-            return this.acceptable;
+        public int getSid() {
+            return this.sid;
         }
 
         private boolean in(float x, float y, ArrayList<Edge> edges) {
@@ -225,7 +225,7 @@ public class DatabaseHelper {
         public void run() {
             try {
                 if (this.conflict()) {
-                    this.acceptable = false;
+                    this.sid = -1;
                     return;
                 }
                 Connection connection = connect();
@@ -239,7 +239,16 @@ public class DatabaseHelper {
                 SQL_insert_command += (", " + this.y);
                 SQL_insert_command += (", " + this.floor + ");");
                 statement.executeUpdate(SQL_insert_command);
-                disconnect(connection);
+                String SQL_get_sid_command = "SELECT sid FROM showcase WHERE floor_no = " + this.floor;
+                SQL_get_sid_command += " AND x = " + this.x;
+                SQL_get_sid_command += " AND y = " + this.y;
+                SQL_get_sid_command += " AND length_m = " + this.length;
+                SQL_get_sid_command += " AND width_m = " + this.width;
+                ResultSet resultSet = statement.executeQuery(SQL_get_sid_command);
+                if (resultSet.next()) {
+                    this.sid = resultSet.getInt("sid");
+                }
+                disconnect(resultSet,connection);
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
@@ -247,8 +256,8 @@ public class DatabaseHelper {
         }
     }
 
-    public static boolean addCase(int floor, float x, float y, float length, float width, ArrayList<Edge> edges) {
-        boolean acceptable = true;
+    public static int addCase(int floor, float x, float y, float length, float width, ArrayList<Edge> edges) {
+        int sid = -1;
         addCaseThread thread = new addCaseThread(floor, x, y, length, width, edges);
         thread.start();
         try {
@@ -257,9 +266,9 @@ public class DatabaseHelper {
         catch (InterruptedException e) {
             System.err.println(e.getMessage());
         }
-        acceptable = thread.getAcceptable();
+        sid = thread.getSid();
         thread.interrupt();
-        return acceptable;
+        return sid;
     }
 
     static class getAllEmptyCasesThread extends Thread {
