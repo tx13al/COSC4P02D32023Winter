@@ -14,9 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.museumapp.Search.Control;
-
-public class Login  implements View.OnClickListener {
+public class Login implements View.OnClickListener {
     private Context context;
     public Login(Context context){
         this.context = context;

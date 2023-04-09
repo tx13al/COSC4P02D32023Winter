@@ -1,4 +1,4 @@
-package com.example.museumapp.Search;
+package com.example.museumapp;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,9 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.museumapp.DatabaseHelper;
-import com.example.museumapp.MainActivity;
-import com.example.museumapp.R;
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
 import com.example.museumapp.objects.ShowCase;
