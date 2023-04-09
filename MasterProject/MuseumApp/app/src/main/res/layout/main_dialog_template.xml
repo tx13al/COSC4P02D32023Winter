@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main_dialog_constraint_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_popup">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_dialog_top_bar_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/main_dialog_constraint_layout"
+        app:layout_constraintEnd_toEndOf="@id/main_dialog_constraint_layout"
+        app:layout_constraintTop_toTopOf="@id/main_dialog_constraint_layout">
+
+        <ImageView
+            android:id="@+id/main_dialog_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_close_black_48dp" />
+
+        <ImageView
+            android:id="@+id/museum_title"
+            android:layout_width="75dp"
+            android:layout_height="80dp"
+            android:src="@drawable/logo"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/main_dialog_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/main_dialog_constraint_layout"
+        app:layout_constraintStart_toStartOf="@id/main_dialog_constraint_layout"
+        app:layout_constraintTop_toBottomOf="@+id/main_dialog_top_bar_constraint_layout">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/main_dialog_scroll_view_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

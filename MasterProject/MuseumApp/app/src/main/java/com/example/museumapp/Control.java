@@ -111,7 +111,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private void AddDialog(View v){
         Dialog addDialog = new Dialog(this);
         addDialog.setContentView(R.layout.adding_closet);
-        ImageView txtClose =(ImageView) addDialog.findViewById(R.id.add_Cancel);
+        ImageView txtClose = addDialog.findViewById(R.id.add_Cancel);
         Button OK = addDialog.findViewById(R.id.add_OK);
         Spinner addFloorSelection = addDialog.findViewById(R.id.add_floor_selection);
         EditText addXNumber = addDialog.findViewById(R.id.add_X_number);

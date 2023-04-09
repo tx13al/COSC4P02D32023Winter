@@ -9,9 +9,9 @@
     android:background="@drawable/shape_popup"
     >
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/login_layout"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
