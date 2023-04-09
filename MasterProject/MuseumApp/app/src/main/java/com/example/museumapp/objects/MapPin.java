@@ -1,13 +1,21 @@
 package com.example.museumapp.objects;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.squareup.picasso.Picasso;
+
 import com.example.museumapp.MainActivity;
+import com.example.museumapp.R;
+
+import java.util.Map;
 
 public class MapPin {
     Context context;
@@ -23,13 +31,32 @@ public class MapPin {
         sid = showCase.getClosetID();
         this.context = context;
         pinView.setOnClickListener(new View.OnClickListener() {
-            private MainActivity context;
-
             @Override
-            public void onClick(View v) {
-                ShowCase showcase = this.context.getShowCase(sid);
-                Intent intent = new Intent(context, ItemList.class);
-                context.startActivity(intent);
+            public void onClick(View view) {
+                if (context instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) context;
+                    mainActivity.getShowCase(showCase);
+                    LinearLayout showCaseItemListLayout =
+                            mainActivity.findViewById(R.id.showCase_item_list_scrollView_linear);
+                    for (Item item: showCase.getItems()) {
+                        ImageView image = new ImageView(mainActivity);
+                        Picasso.get()
+                                .load(item.getImageUrl())
+                                .resize(500,500)
+                                .centerCrop()
+                                .into(image);
+                        TextView text = new TextView(mainActivity);
+                        text.setText(item.getName());
+                        showCaseItemListLayout.addView(image);
+                        showCaseItemListLayout.addView(text);
+                    }
+                    HorizontalScrollView showCaseItemListScrollView =
+                            mainActivity.findViewById(R.id.showCase_item_list_scrollView);
+                    showCaseItemListScrollView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    Toast.makeText(context, "The context is not MainActivity error!", Toast.LENGTH_SHORT);
+                }
             }
         });
     }

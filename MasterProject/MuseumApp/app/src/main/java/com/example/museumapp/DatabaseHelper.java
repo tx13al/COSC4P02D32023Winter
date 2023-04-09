@@ -11,8 +11,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DatabaseHelper {
-    static String DB_User = BuildConfig.DB_User;
-    static String DB_Pass = BuildConfig.DB_Pass;
+    static private String DB_User = BuildConfig.DB_User;
+    static private String DB_Pass = BuildConfig.DB_Pass;
     static private String pgURL =
             "jdbc:postgresql://" + BuildConfig.DB_URL + ":" + BuildConfig.DB_Port + "/" + BuildConfig.DB_Name;
 

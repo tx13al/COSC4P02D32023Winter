@@ -83,6 +83,7 @@ public class ShowCase {
 
     public void setItems(List<Item> items) {
         this.items = items;
+        this.isSet = true;
     }
 
     public void setIsSet(boolean isSet) {

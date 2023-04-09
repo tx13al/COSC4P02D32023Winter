@@ -130,17 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
-    public ShowCase getShowCase(int sid) {
-        for (ShowCase showCase: showCases) {
-            if (showCase.getClosetID() == sid) {
-                if (!showCase.getIsSet()) {
-                    ArrayList<Item> items = DatabaseHelper.getAllItemsOfShowCase(sid);
-                    showCase.setItems(items);
-                }
-                return showCase;
-            }
-        }
-        return null;
+    public void getShowCase(ShowCase showCase) {
+        showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
     }
 
    // search filter
