@@ -55,10 +55,6 @@ public class DatabaseHelper {
             this.password = password;
         }
 
-        public int getOutcome() {
-            return outcome;
-        }
-
         public void run() {
             try {
                 Connection connection = connect();
@@ -82,6 +78,10 @@ public class DatabaseHelper {
                 System.err.print(e.getMessage());
                 e.printStackTrace();
             }
+        }
+
+        public int getOutcome() {
+            return outcome;
         }
     }
 

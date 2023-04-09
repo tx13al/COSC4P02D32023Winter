@@ -110,6 +110,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         android:paddingTop="5dp"
+        android:background="@color/gray"
         android:visibility="invisible">
         <LinearLayout
             android:id="@+id/showCase_item_list_scrollView_linear"
@@ -118,21 +119,6 @@
             android:orientation="horizontal"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
-            <ImageView
-                android:id="@+id/item_image"
-                android:layout_height="100dp"
-                android:layout_width="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp">
-            </ImageView>
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:textSize="10sp"
-                android:gravity="center">
-            </TextView>
         </LinearLayout>
     </HorizontalScrollView>
 
