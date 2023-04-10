@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -178,6 +179,17 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         addDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    public void getShowCase(ShowCase showCase, MapPin mapPin) {
+        this.displayingMapPin = mapPin;
+        if (!showCase.getIsSet()) {
+            showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
+        }
+    }
+
+    public MapPin getDisplaying() {
+        return displayingMapPin;
+    }
+
     private void deleteShowCase() {
         if(false) {
             builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -198,8 +210,14 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    private void shutShowCaseItemEditList() {
+        HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_edit_list_scrollView);
+        showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     public void onClick(View view){
+        shutShowCaseItemEditList();
         switch (view.getId()){
             //press Level 1 button change to level 1 floor plan
             case R.id.control_floorOneButton:

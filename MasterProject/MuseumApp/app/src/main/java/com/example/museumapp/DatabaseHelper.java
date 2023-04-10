@@ -289,6 +289,7 @@ public class DatabaseHelper {
                             null);
                     cases.add(showCase);
                 }
+                disconnect(resultSet,connection);
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
@@ -341,6 +342,7 @@ public class DatabaseHelper {
                     Item item = new Item(ID, name, description, startYear, endYear, itemUrl, imageUrl, closetID);
                     items.add(item);
                 }
+                disconnect(resultSet,connection);
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ":  " + e.getMessage());
@@ -365,6 +367,56 @@ public class DatabaseHelper {
         items = thread.getItems();
         thread.interrupt();
         return items;
+    }
+
+    static class deleteItemInShowCaseThread extends Thread {
+        boolean success = false;
+        String obj_id;
+        int sid;
+
+        public deleteItemInShowCaseThread(String item_id, int sid) {
+            this.obj_id = item_id;
+            this.sid = sid;
+        }
+
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_query_sid_by_obj_id_command = "SELECT sid FROM item WHERE obj_id = '" + this.obj_id + "'";
+                ResultSet resultSet = statement.executeQuery(SQL_query_sid_by_obj_id_command);
+                if (resultSet.next()) {
+                    if (resultSet.getInt("sid") == this.sid) {
+                        String SQL_remove_item_sid_command = "UPDATE item SET sid = NULL WHERE obj_id = '" + this.obj_id + "'";
+                        statement.executeUpdate(SQL_remove_item_sid_command);
+                        success = true;
+                    }
+                }
+                disconnect(resultSet,connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            }
+        }
+
+        public boolean getSuccess() {
+            return this.success;
+        }
+    }
+
+    public static boolean deleteItemInShowCase(Item item, ShowCase showCase) {
+        boolean success = false;
+        deleteItemInShowCaseThread thread = new deleteItemInShowCaseThread(item.getItemID(), showCase.getClosetID());
+        thread.start();
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        success = thread.getSuccess();
+        thread.interrupt();
+        return success;
     }
 
 

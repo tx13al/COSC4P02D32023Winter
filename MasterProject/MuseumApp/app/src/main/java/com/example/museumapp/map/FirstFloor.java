@@ -11,6 +11,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+
+import com.example.museumapp.Control;
 import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
@@ -343,6 +345,12 @@ public class FirstFloor extends View implements Floor {
                     HorizontalScrollView showCaseItemListScrollView =
                             mainActivity.findViewById(R.id.showCase_item_list_scrollView);
                     showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+                }
+                if (this.getContext() instanceof Control) {
+                    Control control = (Control) this.getContext();
+                    HorizontalScrollView showCaseItemEditListScrollView =
+                            control.findViewById(R.id.showCase_item_edit_list_scrollView);
+                    showCaseItemEditListScrollView.setVisibility(View.INVISIBLE);
                 }
                 float x = event.getX();
                 float y = event.getY();

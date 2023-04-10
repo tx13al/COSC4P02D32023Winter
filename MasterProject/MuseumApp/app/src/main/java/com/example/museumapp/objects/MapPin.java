@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.example.museumapp.Control;
+import com.example.museumapp.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
@@ -51,14 +53,14 @@ public class MapPin {
                             mainActivity.findViewById(R.id.showCase_item_list_scrollView);
                     showCaseItemListScrollView.setVisibility(View.VISIBLE);
                     if (mainActivity.getDisplaying() != MapPin.this) {
-                        //This Pin is not displaying. (avoid duplicate adding items to scroll view.)
-                        mainActivity.getShowCase(showCase, MapPin.this);
-                        //get Items from database for selected showCase if necessary (Maybe loaded already)
+                        //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
                         LinearLayout showCaseItemListLayout =   //container for the items
                                 mainActivity.findViewById(R.id.showCase_item_list_scrollView_linear);
                         if (mainActivity.getDisplaying() != null) { //clear the container for another selected showCase.
                             showCaseItemListLayout.removeAllViews();
                         }
+                        mainActivity.getShowCase(showCase, MapPin.this);
+                        //update the displaying showcase in main, and load the showcase items if not loaded.
                         LayoutInflater layoutInflater = LayoutInflater.from(context);
                         for (Item item : showCase.getItems()) {
                             //Dynamically set linear layout for each item and add them to the scroll.
@@ -144,6 +146,45 @@ public class MapPin {
                 }
                 if (context instanceof Control) {
                     Control control = (Control) context;
+                    HorizontalScrollView showCaseItemEditListScrollView =
+                            control.findViewById(R.id.showCase_item_edit_list_scrollView);
+                    showCaseItemEditListScrollView.setVisibility(View.VISIBLE);
+                    if (control.getDisplaying() != MapPin.this) {
+                        //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
+                        LinearLayout showCaseItemEditListLayout =   //container for the items
+                                control.findViewById(R.id.showCase_item_edit_list_scrollView_linear);
+                        if (control.getDisplaying() != null) {  //list is not empty.
+                            showCaseItemEditListLayout.removeAllViews();
+                        }
+                        control.getShowCase(showCase, MapPin.this);
+                        //update the displaying showcase in control, and load the showcase items if not loaded.
+                        LayoutInflater layoutInflater = LayoutInflater.from(context);
+                        for (Item item: showCase.getItems()) {
+                            View showCaseItemEditLayout = layoutInflater.inflate(
+                                    R.layout.item_edit_display,showCaseItemEditListLayout,false);
+                            //set image
+                            ImageView imageView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_image_view);
+                            Picasso.get()
+                                    .load(item.getImageUrl())
+                                    .resize(500, 500)
+                                    .centerCrop()
+                                    .into(imageView);
+                            //set name
+                            TextView textView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_name_text_view);
+                            textView.setText(item.getName());
+                            ImageButton editButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_button);
+                            ImageButton deleteButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_delete_button);
+                            deleteButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    DatabaseHelper.deleteItemInShowCase(item,showCase);
+                                    showCase.getItems().remove(item);
+                                    showCaseItemEditListLayout.removeView(showCaseItemEditLayout);
+                                }
+                            });
+                            showCaseItemEditListLayout.addView(showCaseItemEditLayout);
+                        }
+                    }
                 }
             }
         });
