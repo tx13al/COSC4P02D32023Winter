@@ -42,7 +42,7 @@
     <ScrollView
         android:id="@+id/main_dialog_item_detail_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/main_dialog_item_detail_constraint_layout"
         app:layout_constraintStart_toStartOf="@id/main_dialog_item_detail_constraint_layout"

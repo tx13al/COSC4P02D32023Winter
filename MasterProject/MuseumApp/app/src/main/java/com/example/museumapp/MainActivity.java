@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+
 import com.example.museumapp.Search.SearchAdapter;
 import com.example.museumapp.Search.SearchBar;
 import com.example.museumapp.Search.SearchItem;
@@ -106,8 +108,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchAdapter.setSearchItems(filteredSearchItems);
     }
 
+    private void shutShowCaseItemList() {
+        HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_list_scrollView);
+        showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     public void onClick(View view){
+        shutShowCaseItemList();
         switch (view.getId()){
             //press Level 1 button change to level 1 floor plan
             case R.id.floorOneButton:

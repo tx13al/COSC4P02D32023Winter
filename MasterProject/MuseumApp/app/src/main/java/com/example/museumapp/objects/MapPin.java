@@ -12,6 +12,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -58,31 +59,24 @@ public class MapPin {
                         if (mainActivity.getDisplaying() != null) { //clear the container for another selected showCase.
                             showCaseItemListLayout.removeAllViews();
                         }
+                        LayoutInflater layoutInflater = LayoutInflater.from(context);
                         for (Item item : showCase.getItems()) {
+                            //Dynamically set linear layout for each item and add them to the scroll.
+                            View showCaseItemLayout = layoutInflater.inflate(R.layout.item_display,
+                                    showCaseItemListLayout,false);
                             //Image setting
-                            ImageView image = new ImageView(mainActivity);
+                            ImageView imageView = showCaseItemLayout.findViewById(R.id.showCase_item_image_view);
                             Picasso.get()
                                     .load(item.getImageUrl())
                                     .resize(500, 500)
                                     .centerCrop()
-                                    .into(image);
+                                    .into(imageView);
                             //Text setting
-                            TextView text = new TextView(mainActivity);
+                            TextView text = showCaseItemLayout.findViewById(R.id.showCase_item_name_text_view);
                             text.setText(item.getName());
-                            text.setGravity(Gravity.CENTER_HORIZONTAL);
-                            //Dynamic linear layout for each item.
-                            LinearLayout itemLayout = new LinearLayout(mainActivity);
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);    //set layout params.
-                            layoutParams.setMargins(10,10,10,10);
-                            itemLayout.setLayoutParams(layoutParams);
-                            itemLayout.setOrientation(LinearLayout.VERTICAL);
-                            itemLayout.addView(image);
-                            itemLayout.addView(text);
-                            showCaseItemListLayout.addView(itemLayout);
+                            showCaseItemListLayout.addView(showCaseItemLayout);
                             //when click the item, it displays the detail of the item by a dialog
-                            itemLayout.setOnClickListener(new View.OnClickListener() {
+                            showCaseItemLayout.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view1) {
                                     Dialog itemDetailDialog = new Dialog(mainActivity);
