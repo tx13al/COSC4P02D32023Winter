@@ -359,8 +359,10 @@ public class FirstFloor extends View implements Floor {
                 translateX += dx;
                 translateY += dy;
                 invalidate();
-                for (MapPin mapPin: pinList) {
-                    mapPin.movePinLocation(dx, dy);
+                if(pinList != null){
+                    for (MapPin mapPin: pinList) {
+                        mapPin.movePinLocation(dx, dy);
+                    }
                 }
                 lastX = x;
                 lastY = y;

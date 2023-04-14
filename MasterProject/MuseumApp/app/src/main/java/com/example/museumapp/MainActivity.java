@@ -1,19 +1,26 @@
 package com.example.museumapp;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-
 import com.example.museumapp.Search.SearchAdapter;
 import com.example.museumapp.Search.SearchBar;
 import com.example.museumapp.Search.SearchItem;
 import com.example.museumapp.map.*;
 import com.example.museumapp.objects.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +34,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SecondFloor secondFloor;
     private MapPin displayingMapPin = null;
     private SearchAdapter searchAdapter;
+    private boolean Connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
+
+        Connected = checkConnection();
+        System.out.println("Connection status: " + Connected);
+
+        if (Connected) showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
         //this can also update the show cases for each start of mainActivity
+
         setContentView(R.layout.activity_main); //set the layout
 
         //main container and two floor views
@@ -41,16 +54,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
         firstFloor = floor_1.findViewById(R.id.firstFloor);
-        firstFloor.addShowCases(showCases);
         mainContainer.addView(floor_1);
         floor_1.setVisibility(View.VISIBLE);
-        firstFloor.setPinsVisibility();
 
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         secondFloor = floor_2.findViewById(R.id.secondFloor);
-        secondFloor.addShowCases(showCases);
         mainContainer.addView(floor_2);
-        secondFloor.setPinsVisibility();
 
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
@@ -58,27 +67,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level_1.setOnClickListener(this);
         level_1.setTextColor(getColor(R.color.red));//set the text color as red because level 1 is selected by default
         level_2.setOnClickListener(this);
+
         //create home button
         home = findViewById(R.id.home);
         home.setOnClickListener(this);
         home.setTextColor(getColor(R.color.red));//set the text color as red because home is selected by default
+
         //create info button
         info = findViewById(R.id.info);
         info.setOnClickListener(this);
+
         //create arts button
         arts = findViewById(R.id.art);
         arts.setOnClickListener(this);
+
         //create setting button
         setting = findViewById(R.id.settings);
         setting.setOnClickListener(this);
+
         //create Login button
         login = findViewById(R.id.loginButton);
-        login.setOnClickListener(new Login(MainActivity.this));
 
         // Find the AutoCompleteTextView view
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
-        // Create a new instance of SearchBar and pass the necessary arguments
-        SearchBar searchBar = new SearchBar(this, actv);
+
+        if(Connected) {
+            firstFloor.addShowCases(showCases);
+            firstFloor.setPinsVisibility();
+            secondFloor.addShowCases(showCases);
+            secondFloor.setPinsVisibility();
+            login.setOnClickListener(new Login(MainActivity.this));
+            // Create a new instance of SearchBar and pass the necessary arguments
+            SearchBar searchBar = new SearchBar(this, actv);
+        }
     }
 
     //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
@@ -120,18 +141,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //press Level 1 button change to level 1 floor plan
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
-                firstFloor.setPinsVisibility();
                 floor_2.setVisibility(View.GONE);
-                secondFloor.setPinsVisibility();
+                if (Connected) {
+                    firstFloor.setPinsVisibility();
+                    secondFloor.setPinsVisibility();
+                }
                 level_1.setTextColor(getColor(R.color.red));
                 level_2.setTextColor(getColor(R.color.navy_blue));
                 break;
             //press Level 2 button change to level 2 floor plan
             case R.id.floorTwoButton:
                 floor_1.setVisibility(View.GONE);
-                firstFloor.setPinsVisibility();
                 floor_2.setVisibility(View.VISIBLE);
-                secondFloor.setPinsVisibility();
+                if (Connected) {
+                    firstFloor.setPinsVisibility();
+                    secondFloor.setPinsVisibility();
+                }
                 level_1.setTextColor(getColor(R.color.navy_blue));
                 level_2.setTextColor(getColor(R.color.red));
                 break;
@@ -165,6 +190,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.red));
                 break;
+        }
+    }
+
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
