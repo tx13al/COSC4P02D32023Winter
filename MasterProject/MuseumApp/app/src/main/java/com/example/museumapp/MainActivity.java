@@ -43,8 +43,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Connected = checkConnection();
         System.out.println("Connection status: " + Connected);
 
-        if (Connected) showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
-        //this can also update the show cases for each start of mainActivity
+        if (Connected) {
+            showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
+            //this can also update the show cases for each start of mainActivity
+        }
 
         setContentView(R.layout.activity_main); //set the layout
 
@@ -99,6 +101,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             login.setOnClickListener(new Login(MainActivity.this));
             // Create a new instance of SearchBar and pass the necessary arguments
             SearchBar searchBar = new SearchBar(this, actv);
+        }
+    }
+
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -190,16 +202,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arts.setTextColor(getColor(R.color.navy_blue));
                 setting.setTextColor(getColor(R.color.red));
                 break;
-        }
-    }
-
-    public boolean checkConnection() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
-        if (capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))) {
-            return true;
-        } else {
-            return false;
         }
     }
 }

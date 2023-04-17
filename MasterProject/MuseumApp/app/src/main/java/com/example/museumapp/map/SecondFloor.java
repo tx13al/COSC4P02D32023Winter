@@ -144,8 +144,10 @@ public class SecondFloor extends View implements Floor {
                 mScaleFactor *= detector.getScaleFactor();
                 mScaleFactor = Math.max(0.5f, Math.min(mScaleFactor, 5.0f)); // set scale range from 0.5 to 5.
                 invalidate();
-                for (MapPin mapPin: pinList) {
-                    mapPin.scalePinLocation(mScaleFactor, translateX, translateY);
+                if (pinList != null) {
+                    for (MapPin mapPin: pinList) {
+                        mapPin.scalePinLocation(mScaleFactor, translateX, translateY);
+                    }
                 }
                 return true;
             }
@@ -166,9 +168,11 @@ public class SecondFloor extends View implements Floor {
     //Warning: This method can only be called once.
     private void drawPins() {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
-        for (MapPin mapPin: pinList) {
-            mapPin.create(viewGroup);
-            mapPin.movePinLocation(translateX, translateY);
+        if (pinList != null) {
+            for (MapPin mapPin: pinList) {
+                mapPin.create(viewGroup);
+                mapPin.movePinLocation(translateX, translateY);
+            }
         }
     }
 
@@ -246,8 +250,10 @@ public class SecondFloor extends View implements Floor {
     }
 
     public void setPinsVisibility () {
-        for (MapPin mapPin: pinList) {
-            mapPin.setVisibility(this.getVisibility());
+        if (pinList != null) {
+            for (MapPin mapPin: pinList) {
+                mapPin.setVisibility(this.getVisibility());
+            }
         }
     }
 
