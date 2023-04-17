@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_edit_display_relative_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/gray"
+    android:background="@color/beige"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="10dp"
@@ -13,7 +15,18 @@
     <ImageView
         android:id="@+id/showCase_item_edit_image_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:padding="5dp"
+        android:background="@color/white"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/showCase_item_edit_name_text_view"
+        />
 
     <TextView
         android:id="@+id/showCase_item_edit_name_text_view"
@@ -21,22 +34,59 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/showCase_item_edit_image_view"
         android:layout_centerHorizontal="true"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:padding="5dp"
+        android:fontFamily="@font/josefin_sans_bold"
+        android:textSize="30sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showCase_item_edit_image_view"
+        app:layout_constraintBottom_toTopOf="@+id/image_button_container"
+        />
 
-    <ImageButton
-        android:id="@+id/showCase_item_edit_button"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/showCase_item_edit_name_text_view"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="40dp"
-        android:src="@drawable/edit"/>
+        android:id="@+id/image_button_container"
+        app:layout_constraintTop_toBottomOf="@id/showCase_item_edit_name_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ImageButton
+        android:id="@+id/showCase_item_edit_button"
+        android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:src="@mipmap/edit"
+        android:background="@drawable/shape_searchbar"
+        app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/showCase_item_delete_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+         android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            />
 
     <ImageButton
         android:id="@+id/showCase_item_delete_button"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/showCase_item_edit_name_text_view"
-        android:layout_toRightOf="@+id/showCase_item_edit_button"
-        android:src="@drawable/delete"/>
-</RelativeLayout>
+        android:layout_width="wrap_content"
+        android:src="@mipmap/garbage"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:background="@drawable/shape_searchbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

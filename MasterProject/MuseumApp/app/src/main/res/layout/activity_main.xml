@@ -110,14 +110,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         android:paddingTop="5dp"
-        android:background="@color/gray"
+        android:background="@color/navy_blue"
         android:visibility="invisible">
         <LinearLayout
             android:id="@+id/showCase_item_list_scrollView_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/gray"
+            android:background="@color/navy_blue"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
         </LinearLayout>

@@ -5,15 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_popup">
+    android:background="@drawable/shape_popup"
+
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_dialog_item_detail_top_bar_constraint_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/main_dialog_item_detail_scroll_view"
         app:layout_constraintEnd_toEndOf="@id/main_dialog_item_detail_scroll_view"
-        app:layout_constraintTop_toTopOf="@id/main_dialog_item_detail_constraint_layout">
+        app:layout_constraintTop_toTopOf="@id/main_dialog_item_detail_constraint_layout"
+        >
 
         <ImageView
             android:id="@+id/main_dialog_item_detail_dismiss"
@@ -21,20 +24,25 @@
             android:layout_height="30dp"
             android:layout_marginTop="22dp"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="70dp"
             app:layout_constraintStart_toStartOf="@+id/main_dialog_item_detail_top_bar_constraint_layout"
             app:layout_constraintTop_toTopOf="@+id/main_dialog_item_detail_top_bar_constraint_layout"
-            app:srcCompat="@drawable/baseline_close_black_48dp" />
+            app:srcCompat="@drawable/baseline_close_black_48dp"
+            app:layout_constraintEnd_toStartOf="@id/museum_title"
+            />
 
         <ImageView
             android:id="@+id/museum_title"
             android:layout_width="75dp"
             android:layout_height="80dp"
             android:src="@drawable/logo"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -44,6 +52,11 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/main_dialog_item_detail_constraint_layout"
         app:layout_constraintStart_toStartOf="@id/main_dialog_item_detail_constraint_layout"
         app:layout_constraintTop_toBottomOf="@+id/main_dialog_item_detail_top_bar_constraint_layout">
@@ -52,24 +65,32 @@
             android:id="@+id/main_dialog_item_detail_scroll_view_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp"
+
+            >
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/main_dialog_item_detail_name_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
                 <TextView
                     android:id="@+id/item_detail_name_bar_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name:">
+                    android:text="Name:"
+                    android:padding="5dp"
+                    >
                 </TextView>
                 <TextView
                     android:id="@+id/item_detail_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp">
+                    android:padding="5dp"
+                    >
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -77,17 +98,23 @@
                 android:id="@+id/main_dialog_item_detail_image_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
                 <TextView
                     android:id="@+id/item_detail_image_bar_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Image:">
+                    android:text="Image:"
+                    android:padding="5dp"
+                    >
                 </TextView>
                 <ImageView
                     android:id="@+id/item_detail_image_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    >
                 </ImageView>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -95,19 +122,24 @@
                 android:id="@+id/main_dialog_item_detail_description_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
                 <TextView
                     android:id="@+id/item_detail_description_bar_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description:">
+                    android:text="Description:"
+                    android:padding="5dp"
+                    >
                 </TextView>
                 <TextView
                     android:id="@+id/item_detail_description_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:maxLines="1000">
+                    android:maxLines="1000"
+                    android:padding="5dp"
+                    >
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -115,19 +147,25 @@
                 android:id="@+id/main_dialog_item_detail_url_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
                 <TextView
                     android:id="@+id/item_detail_url_bar_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="URL:">
+                    android:text="URL:"
+                    android:padding="5dp"
+                    >
                 </TextView>
                 <TextView
                     android:id="@+id/item_detail_url_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:textColor="@color/navy_blue">
+                    android:textColor="@color/navy_blue"
+                    android:padding="5dp"
+                    android:autoLink="web"
+                    >
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
