@@ -402,13 +402,10 @@ public class FirstFloor extends View implements Floor {
         }
     }
 
-    public void deleteShowCaseFromMap (MapPin mapPin) {
-        mapPin.setVisibility(View.INVISIBLE);
-        pinList.remove(mapPin);
-        ShowCase showCase = mapPin.getShowCase();
-        //remove all the edges of this mapPin's showCase.
+    //remove all the edges of the showCase.
+    private void removeShowCaseEdges(ShowCase showCase) {
         ArrayList<Edge> removing = new ArrayList<Edge>();
-        for (Edge edge: innerEdges) {
+        for (Edge edge: innerEdges) {   //find all the edges of this showCase.
             if (edge.equal(new Edge(showCase.getX(), showCase.getY(),
                     showCase.getX() + showCase.getLength(), showCase.getY()))) {
                 removing.add(edge);
@@ -428,6 +425,13 @@ public class FirstFloor extends View implements Floor {
             }
         }
         innerEdges.removeAll(removing);
+    }
+
+    public void deleteShowCaseFromMap (MapPin mapPin) {
+        mapPin.setVisibility(View.INVISIBLE);
+        pinList.remove(mapPin);
+        ShowCase showCase = mapPin.getShowCase();
+        removeShowCaseEdges(showCase);  //remove all the edges of this mapPin's showCase.
         //remove the pinView from the map.
         mapPin.delete((ViewGroup) this.getParent());
         invalidate();

@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.example.museumapp.Control;
 import com.example.museumapp.DatabaseHelper;
+import com.example.museumapp.ItemListActivity;
 import com.squareup.picasso.Picasso;
 import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
@@ -57,6 +59,68 @@ public class MapPin {
         });
     }
 
+    //display the detail of the item selected by a dialog.
+    private void mainDisplayDetail(Context mainActivity, Item item) {
+        Dialog itemDetailDialog = new Dialog(mainActivity);
+        itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
+        ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
+        dialogDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                itemDetailDialog.dismiss();
+            }
+        });
+        //display the name of the item.
+        TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
+        itemDetailNameTextView.setText(item.getName());
+        //if possible, display the name of start year.
+        int endYearPosition = 1;
+        if (item.getStartYear() != 0) {
+            endYearPosition += 1;
+            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
+                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
+            TextView startYear = new TextView(mainActivity);
+            startYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            startYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
+            startYear.setText("Start year:  " + item.getStartYear());
+            mainDialogItemDetailScrollViewLinearLayout.addView(startYear, 1);
+        }
+        //if possible, display the name of end year.
+        if (item.getEndYear() != 0) {
+            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
+                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
+            TextView endYear = new TextView(mainActivity);
+            endYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            endYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
+            endYear.setText("End Year:  " + item.getEndYear());
+            mainDialogItemDetailScrollViewLinearLayout.addView(endYear, endYearPosition);
+        }
+        //display the image of the item.
+        ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
+        Picasso.get()
+                .load(item.getImageUrl())
+                .resize(600, 0)
+                .centerCrop()
+                .into(imageView);
+        //display the description.
+        TextView itemDetailDescriptionTextView =
+                itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
+        itemDetailDescriptionTextView.setText(item.getDescription());
+        //display the URL and set a onclick for the browser.
+        TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
+        itemDetailURLTextView.setText(item.getItemUrl());
+        itemDetailURLTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                String URL = itemDetailURLTextView.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+                mainActivity.startActivity(intent);
+            }
+        });
+        itemDetailDialog.show();
+        itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
     private void mainItemList() {
         MainActivity mainActivity = (MainActivity) context;
         HorizontalScrollView showCaseItemListScrollView =
@@ -86,73 +150,27 @@ public class MapPin {
                 //Text setting
                 TextView text = showCaseItemLayout.findViewById(R.id.showCase_item_name_text_view);
                 text.setText(item.getName());
-                showCaseItemListLayout.addView(showCaseItemLayout);
                 //when click the item, it displays the detail of the item by a dialog
                 showCaseItemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view1) {
-                        Dialog itemDetailDialog = new Dialog(mainActivity);
-                        itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
-                        ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
-                        dialogDismiss.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view2) {
-                                itemDetailDialog.dismiss();
-                            }
-                        });
-                        //display the name of the item.
-                        TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
-                        itemDetailNameTextView.setText(item.getName());
-                        //if possible, display the name of start year.
-                        int endYearPosition = 1;
-                        if (item.getStartYear() != 0) {
-                            endYearPosition += 1;
-                            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-                            TextView startYear = new TextView(mainActivity);
-                            startYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                            startYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-                            startYear.setText("Start year:  " + item.getStartYear());
-                            mainDialogItemDetailScrollViewLinearLayout.addView(startYear, 1);
-                        }
-                        //if possible, display the name of end year.
-                        if (item.getEndYear() != 0) {
-                            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-                            TextView endYear = new TextView(mainActivity);
-                            endYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                            endYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-                            endYear.setText("End Year:  " + item.getEndYear());
-                            mainDialogItemDetailScrollViewLinearLayout.addView(endYear, endYearPosition);
-                        }
-                        //display the image of the item.
-                        ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
-                        Picasso.get()
-                                .load(item.getImageUrl())
-                                .resize(600, 0)
-                                .centerCrop()
-                                .into(imageView);
-                        //display the description.
-                        TextView itemDetailDescriptionTextView =
-                                itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
-                        itemDetailDescriptionTextView.setText(item.getDescription());
-                        //display the URL and set a onclick for the browser.
-                        TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
-                        itemDetailURLTextView.setText(item.getItemUrl());
-                        itemDetailURLTextView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view2) {
-                                String URL = itemDetailURLTextView.getText().toString();
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
-                                mainActivity.startActivity(intent);
-                            }
-                        });
-                        itemDetailDialog.show();
-                        itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        mainDisplayDetail(mainActivity, item);
                     }
                 });
+                showCaseItemListLayout.addView(showCaseItemLayout);
             }
         }
+    }
+
+    //addItem to the selected showCase.
+    //TODO
+    private void addItem() {
+        Intent intent = new Intent(context, ItemListActivity.class);
+    }
+
+    //display the detail of the item selected by a dialog and set everything editing.
+    private void controlDisplayItem() {
+        //TODO
     }
 
     private void controlItemList() {
@@ -170,6 +188,14 @@ public class MapPin {
             control.getShowCase(thisCase, MapPin.this);
             //update the displaying showcase in control, and load the showcase items if not loaded.
             LayoutInflater layoutInflater = LayoutInflater.from(context);
+            //set the add function.
+            Button addItem = control.findViewById(R.id.showCase_item_add_button);
+            addItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addItem();
+                }
+            });
             for (Item item: thisCase.getItems()) {
                 View showCaseItemEditLayout = layoutInflater.inflate(
                         R.layout.item_edit_display,showCaseItemEditListLayout,false);
@@ -177,7 +203,7 @@ public class MapPin {
                 ImageView imageView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_image_view);
                 Picasso.get()
                         .load(item.getImageUrl())
-                        .resize(500, 500)
+                        .resize(0, 500)
                         .centerCrop()
                         .into(imageView);
                 //set name
@@ -185,6 +211,12 @@ public class MapPin {
                 textView.setText(item.getName());
                 ImageButton editButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_button);
                 ImageButton deleteButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_delete_button);
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        controlDisplayItem();
+                    }
+                });
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
