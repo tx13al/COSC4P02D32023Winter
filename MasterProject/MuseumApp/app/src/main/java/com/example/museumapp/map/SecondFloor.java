@@ -10,7 +10,12 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+
 import androidx.annotation.NonNull;
+
+import com.example.museumapp.Control;
+import com.example.museumapp.MainActivity;
 import com.example.museumapp.R;
 import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
@@ -170,8 +175,7 @@ public class SecondFloor extends View implements Floor {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
         if (pinList != null) {
             for (MapPin mapPin: pinList) {
-                mapPin.create(viewGroup);
-                mapPin.movePinLocation(translateX, translateY);
+                mapPin.create(viewGroup, translateX, translateY);
             }
         }
     }
@@ -210,11 +214,23 @@ public class SecondFloor extends View implements Floor {
     public boolean onTouchEvent(MotionEvent event) {
         mScaleGestureDetector.onTouchEvent(event);
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN:   //finger down
                 lastX = event.getX();
                 lastY = event.getY();
                 break;
-            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_MOVE:   //finger move
+                if (this.getContext() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) this.getContext();
+                    HorizontalScrollView showCaseItemListScrollView =
+                            mainActivity.findViewById(R.id.showCase_item_list_scrollView);
+                    showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+                }
+                if (this.getContext() instanceof Control) {
+                    Control control = (Control) this.getContext();
+                    HorizontalScrollView showCaseItemEditListScrollView =
+                            control.findViewById(R.id.showCase_item_edit_list_scrollView);
+                    showCaseItemEditListScrollView.setVisibility(View.INVISIBLE);
+                }
                 float x = event.getX();
                 float y = event.getY();
                 float dx = x - lastX;
@@ -222,6 +238,11 @@ public class SecondFloor extends View implements Floor {
                 translateX += dx;
                 translateY += dy;
                 invalidate();
+                if(pinList != null){
+                    for (MapPin mapPin: pinList) {
+                        mapPin.movePinLocation(dx, dy);
+                    }
+                }
                 lastX = x;
                 lastY = y;
                 break;
@@ -257,7 +278,43 @@ public class SecondFloor extends View implements Floor {
         }
     }
 
-    public void setPinsVisibility (MapPin mapPin) {
-        mapPin.setVisibility(this.getVisibility());
+    public void deleteShowCaseFromMap (MapPin mapPin) {
+        mapPin.setVisibility(View.INVISIBLE);
+        pinList.remove(mapPin);
+        ShowCase showCase = mapPin.getShowCase();
+        //remove all the edges of this mapPin's showCase.
+        ArrayList<Edge> removing = new ArrayList<Edge>();
+        for (Edge edge: innerEdges) {
+            if (edge.equal(new Edge(showCase.getX(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(),
+                    showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY() + showCase.getWidth()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY()))) {
+                removing.add(edge);
+            }
+        }
+        innerEdges.removeAll(removing);
+        //remove the pinView from the map.
+        mapPin.delete((ViewGroup) this.getParent());
+        invalidate();
+    }
+
+
+    public float getTranslateX() {
+        return translateX;
+    }
+
+    public float getTranslateY() {
+        return translateY;
     }
 }

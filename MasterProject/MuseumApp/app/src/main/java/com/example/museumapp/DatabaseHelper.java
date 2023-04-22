@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class DatabaseHelper {
     static private String DB_User = BuildConfig.DB_User;
@@ -161,10 +162,37 @@ public class DatabaseHelper {
             return this.sid;
         }
 
+        private boolean on(float x, float y, Edge edge) {   //check if (x, y) is on the edge.
+            if (edge.from_x == edge.to_x) {
+                if ((edge.from_x == x) &&
+                        (((edge.from_y >= y) && (edge.to_y <= y)) ||
+                                ((edge.from_y <= y) && (edge.to_y >= y)))) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                float slope = (edge.to_y - edge.from_y) / (edge.to_x - edge.from_x);
+                float interY = slope * (x - edge.from_x) + edge.from_y;
+                if (interY == y) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+
         private boolean in(float x, float y, ArrayList<Edge> edges) {
+            //check if the x, y is in the edge.
             int count = 0;
             for (Edge edge: edges) {
-                if (((edge.from_y >= y) && (edge.to_y < y)) ||
+                if (on(x, y, edge)) {
+                    return true;
+                }
+                else if (((edge.from_y >= y) && (edge.to_y < y)) ||
                         ((edge.from_y < y) && (edge.to_y >= y))) {
                     if (edge.from_x == edge.to_x) {
                         if (edge.from_x > x) {
@@ -189,34 +217,50 @@ public class DatabaseHelper {
             return (count % 2 == 1);
         }
 
+        //check if the (x, y) is on any edge in the list of edges
+        private boolean on(float x, float y, ArrayList<Edge> caseEdges) {
+            for (Edge edge: edges) {
+                if (on(x, y, edge)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //Roughly check the cases area's availability.
         private boolean conflict() {
+            //check four points of the case if they are in the area.
+            if (!this.in(this.x, this.y, edges)) {
+                return true;
+            }
+            if (!this.in(this.x + this.length, this.y, edges)) {
+                return true;
+            }
+            if (!this.in(this.x + this.length, this.y + this.width, edges)) {
+                return true;
+            }
+            if (!this.in(this.x, this.y + this.width, edges)) {
+                return true;
+            }
             ArrayList<Edge> caseEdges = new ArrayList<Edge>();
-            Edge e1 = new Edge(this.x, this.y, this.x + this.length, this.y);
-            Edge e2 = new Edge(this.x + this.length, this.y, this.x + this.length, this.y + this.width);
-            Edge e3 = new Edge(this.x + this.length, this.y + this.width, this.x, this.y + this.width);
-            Edge e4 = new Edge(this.x, this.y + this.width, this.x, this.y);
+            Edge e1 = new Edge(x, y, x + length, y);
+            Edge e2 = new Edge(x + length, y, x + length, y + width);
+            Edge e3 = new Edge(x + length, y + width, x, y + width);
+            Edge e4 = new Edge(x, y + width, x, y);
             caseEdges.add(e1);
             caseEdges.add(e2);
             caseEdges.add(e3);
             caseEdges.add(e4);
             for (Edge edge: edges) {
-                if (this.in(edge.from_x, edge.from_y, caseEdges)) {
-                    return true;
+                if (!this.on(edge.from_x, edge.from_y, caseEdges)) {
+                    if (this.in(edge.from_x, edge.from_y, caseEdges)) {
+                        return true;
+                    }
                 }
-                if (this.in(edge.to_x, edge.to_y, caseEdges)) {
-                    return true;
-                }
-                if (!this.in(this.x, this.y, edges)) {
-                    return true;
-                }
-                if (!this.in(this.x + this.length, this.y, edges)) {
-                    return true;
-                }
-                if (!this.in(this.x + this.length, this.y + this.width, edges)) {
-                    return true;
-                }
-                if (!this.in(this.x, this.y + this.width, edges)) {
-                    return true;
+                if (!this.on(edge.to_x, edge.to_y, caseEdges)) {
+                    if (this.in(edge.to_x, edge.to_y, caseEdges)) {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -410,8 +454,7 @@ public class DatabaseHelper {
         thread.start();
         try{
             thread.join();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println(e.getMessage());
         }
         success = thread.getSuccess();
@@ -419,43 +462,39 @@ public class DatabaseHelper {
         return success;
     }
 
+    static class deleteShowCaseThread extends Thread {
+        ShowCase showCase;
 
-//delete case from database
-//    static class deleteCaseThread extends Thread {
-//        int sid;
-//        public deleteCaseThread(int sid) {
-//            super();
-//            this.sid = sid;
-//        }
-//        public void run() {
-//            try {
-//                Connection connection = connect();
-//                String SQL_command =
-//                        "DELETE FROM showcase WHERE sid=";
-//                SQL_command += ("(" + sid +");");
-//                Statement statement = connection.createStatement();
-//                statement.executeUpdate(SQL_command);
-//                disconnect(connection);
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//                System.err.println(e.getClass().getName()+ ":  "+ e.getMessage());
-//            }
-//        }
-//    }
-//
-//    public static boolean deleteCase(int sid) {
-//        deleteCaseThread thread = new deleteCaseThread(sid);
-//        thread.start();
-//        try {
-//            thread.join();
-//        }
-//        catch (InterruptedException e) {
-//            System.err.print(e.getMessage());
-//        }
-//        thread.interrupt();
-//        return true;
-//    }
+        public deleteShowCaseThread(ShowCase showCase) {
+            this.showCase = showCase;
+        }
 
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_delete_showCase = "DELETE FROM showcase WHERE sid = " + showCase.getClosetID();
+                statement.executeUpdate(SQL_delete_showCase);
+                disconnect(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            }
+        }
+    }
 
+    public static void deleteShowCase(MapPin mapPin) {
+        ShowCase showCase = mapPin.getShowCase();
+        deleteShowCaseThread thread = new deleteShowCaseThread(showCase);
+        thread.start();
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        thread.interrupt();
+        return;
+    }
 
 }

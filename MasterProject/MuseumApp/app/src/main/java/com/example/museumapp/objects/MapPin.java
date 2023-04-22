@@ -47,147 +47,155 @@ public class MapPin {
         pinView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (context instanceof MainActivity) {  //if context is mainActivity
-                    MainActivity mainActivity = (MainActivity) context;
-                    HorizontalScrollView showCaseItemListScrollView =
-                            mainActivity.findViewById(R.id.showCase_item_list_scrollView);
-                    showCaseItemListScrollView.setVisibility(View.VISIBLE);
-                    if (mainActivity.getDisplaying() != MapPin.this) {
-                        //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
-                        LinearLayout showCaseItemListLayout =   //container for the items
-                                mainActivity.findViewById(R.id.showCase_item_list_scrollView_linear);
-                        if (mainActivity.getDisplaying() != null) { //clear the container for another selected showCase.
-                            showCaseItemListLayout.removeAllViews();
-                        }
-                        mainActivity.getShowCase(showCase, MapPin.this);
-                        //update the displaying showcase in main, and load the showcase items if not loaded.
-                        LayoutInflater layoutInflater = LayoutInflater.from(context);
-                        for (Item item : showCase.getItems()) {
-                            //Dynamically set linear layout for each item and add them to the scroll.
-                            View showCaseItemLayout = layoutInflater.inflate(R.layout.item_display,
-                                    showCaseItemListLayout,false);
-                            //Image setting
-                            ImageView imageView = showCaseItemLayout.findViewById(R.id.showCase_item_image_view);
-                            Picasso.get()
-                                    .load(item.getImageUrl())
-                                    .resize(500, 500)
-                                    .centerCrop()
-                                    .into(imageView);
-                            //Text setting
-                            TextView text = showCaseItemLayout.findViewById(R.id.showCase_item_name_text_view);
-                            text.setText(item.getName());
-                            showCaseItemListLayout.addView(showCaseItemLayout);
-                            //when click the item, it displays the detail of the item by a dialog
-                            showCaseItemLayout.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view1) {
-                                    Dialog itemDetailDialog = new Dialog(mainActivity);
-                                    itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
-                                    ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
-                                    dialogDismiss.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view2) {
-                                            itemDetailDialog.dismiss();
-                                        }
-                                    });
-                                    //display the name of the item.
-                                    TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
-                                    itemDetailNameTextView.setText(item.getName());
-                                    //if possible, display the name of start year.
-                                    int endYearPosition = 1;
-                                    if (item.getStartYear() != 0) {
-                                        endYearPosition += 1;
-                                        LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                                                itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-                                        TextView startYear = new TextView(mainActivity);
-                                        startYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                        startYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-                                        startYear.setText("Start year:  " + item.getStartYear());
-                                        mainDialogItemDetailScrollViewLinearLayout.addView(startYear, 1);
-                                    }
-                                    //if possible, display the name of end year.
-                                    if (item.getEndYear() != 0) {
-                                        LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                                                itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-                                        TextView endYear = new TextView(mainActivity);
-                                        endYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                        endYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-                                        endYear.setText("End Year:  " + item.getEndYear());
-                                        mainDialogItemDetailScrollViewLinearLayout.addView(endYear, endYearPosition);
-                                    }
-                                    //display the image of the item.
-                                    ImageView imageView= itemDetailDialog.findViewById(R.id.item_detail_image_view);
-                                    Picasso.get()
-                                            .load(item.getImageUrl())
-                                            .resize(750, 750)
-                                            .centerCrop()
-                                            .into(imageView);
-                                    //display the description.
-                                    TextView itemDetailDescriptionTextView =
-                                            itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
-                                    itemDetailDescriptionTextView.setText(item.getDescription());
-                                    //display the URL and set a onclick for the browser.
-                                    TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
-                                    itemDetailURLTextView.setText(item.getItemUrl());
-                                    itemDetailURLTextView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view2) {
-                                            String URL = itemDetailURLTextView.getText().toString();
-                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
-                                            mainActivity.startActivity(intent);
-                                        }
-                                    });
-                                    itemDetailDialog.show();
-                                    itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                }
-                            });
-                        }
-                    }
+                if (context instanceof MainActivity) {
+                    mainItemList();
                 }
                 if (context instanceof Control) {
-                    Control control = (Control) context;
-                    HorizontalScrollView showCaseItemEditListScrollView =
-                            control.findViewById(R.id.showCase_item_edit_list_scrollView);
-                    showCaseItemEditListScrollView.setVisibility(View.VISIBLE);
-                    if (control.getDisplaying() != MapPin.this) {
-                        //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
-                        LinearLayout showCaseItemEditListLayout =   //container for the items
-                                control.findViewById(R.id.showCase_item_edit_list_scrollView_linear);
-                        if (control.getDisplaying() != null) {  //list is not empty.
-                            showCaseItemEditListLayout.removeAllViews();
-                        }
-                        control.getShowCase(showCase, MapPin.this);
-                        //update the displaying showcase in control, and load the showcase items if not loaded.
-                        LayoutInflater layoutInflater = LayoutInflater.from(context);
-                        for (Item item: showCase.getItems()) {
-                            View showCaseItemEditLayout = layoutInflater.inflate(
-                                    R.layout.item_edit_display,showCaseItemEditListLayout,false);
-                            //set image
-                            ImageView imageView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_image_view);
-                            Picasso.get()
-                                    .load(item.getImageUrl())
-                                    .resize(500, 500)
-                                    .centerCrop()
-                                    .into(imageView);
-                            //set name
-                            TextView textView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_name_text_view);
-                            textView.setText(item.getName());
-                            ImageButton editButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_button);
-                            ImageButton deleteButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_delete_button);
-                            deleteButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    DatabaseHelper.deleteItemInShowCase(item,showCase);
-                                    showCase.getItems().remove(item);
-                                    showCaseItemEditListLayout.removeView(showCaseItemEditLayout);
-                                }
-                            });
-                            showCaseItemEditListLayout.addView(showCaseItemEditLayout);
-                        }
-                    }
+                    controlItemList();
                 }
             }
         });
+    }
+
+    private void mainItemList() {
+        MainActivity mainActivity = (MainActivity) context;
+        HorizontalScrollView showCaseItemListScrollView =
+                mainActivity.findViewById(R.id.showCase_item_list_scrollView);
+        showCaseItemListScrollView.setVisibility(View.VISIBLE);
+        if (mainActivity.getDisplaying() != MapPin.this) {
+            //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
+            LinearLayout showCaseItemListLayout =   //container for the items
+                    mainActivity.findViewById(R.id.showCase_item_list_scrollView_linear);
+            if (mainActivity.getDisplaying() != null) { //clear the container for another selected showCase.
+                showCaseItemListLayout.removeAllViews();
+            }
+            mainActivity.getShowCase(thisCase, MapPin.this);
+            //update the displaying showcase in main, and load the showcase items if not loaded.
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            for (Item item : thisCase.getItems()) {
+                //Dynamically set linear layout for each item and add them to the scroll.
+                View showCaseItemLayout = layoutInflater.inflate(R.layout.item_display,
+                        showCaseItemListLayout, false);
+                //Image setting
+                ImageView imageView = showCaseItemLayout.findViewById(R.id.showCase_item_image_view);
+                Picasso.get()
+                        .load(item.getImageUrl())
+                        .resize(500, 500)
+                        .centerCrop()
+                        .into(imageView);
+                //Text setting
+                TextView text = showCaseItemLayout.findViewById(R.id.showCase_item_name_text_view);
+                text.setText(item.getName());
+                showCaseItemListLayout.addView(showCaseItemLayout);
+                //when click the item, it displays the detail of the item by a dialog
+                showCaseItemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view1) {
+                        Dialog itemDetailDialog = new Dialog(mainActivity);
+                        itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
+                        ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
+                        dialogDismiss.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view2) {
+                                itemDetailDialog.dismiss();
+                            }
+                        });
+                        //display the name of the item.
+                        TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
+                        itemDetailNameTextView.setText(item.getName());
+                        //if possible, display the name of start year.
+                        int endYearPosition = 1;
+                        if (item.getStartYear() != 0) {
+                            endYearPosition += 1;
+                            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
+                                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
+                            TextView startYear = new TextView(mainActivity);
+                            startYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            startYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
+                            startYear.setText("Start year:  " + item.getStartYear());
+                            mainDialogItemDetailScrollViewLinearLayout.addView(startYear, 1);
+                        }
+                        //if possible, display the name of end year.
+                        if (item.getEndYear() != 0) {
+                            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
+                                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
+                            TextView endYear = new TextView(mainActivity);
+                            endYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            endYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
+                            endYear.setText("End Year:  " + item.getEndYear());
+                            mainDialogItemDetailScrollViewLinearLayout.addView(endYear, endYearPosition);
+                        }
+                        //display the image of the item.
+                        ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
+                        Picasso.get()
+                                .load(item.getImageUrl())
+                                .resize(750, 750)
+                                .centerCrop()
+                                .into(imageView);
+                        //display the description.
+                        TextView itemDetailDescriptionTextView =
+                                itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
+                        itemDetailDescriptionTextView.setText(item.getDescription());
+                        //display the URL and set a onclick for the browser.
+                        TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
+                        itemDetailURLTextView.setText(item.getItemUrl());
+                        itemDetailURLTextView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view2) {
+                                String URL = itemDetailURLTextView.getText().toString();
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+                                mainActivity.startActivity(intent);
+                            }
+                        });
+                        itemDetailDialog.show();
+                        itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    }
+                });
+            }
+        }
+    }
+
+    private void controlItemList() {
+        Control control = (Control) context;
+        HorizontalScrollView showCaseItemEditListScrollView =
+                control.findViewById(R.id.showCase_item_edit_list_scrollView);
+        showCaseItemEditListScrollView.setVisibility(View.VISIBLE);
+        if (control.getDisplaying() != MapPin.this) {
+            //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
+            LinearLayout showCaseItemEditListLayout =   //container for the items
+                    control.findViewById(R.id.showCase_item_edit_list_scrollView_linear);
+            if (control.getDisplaying() != null) {  //list is not empty.
+                showCaseItemEditListLayout.removeAllViews();
+            }
+            control.getShowCase(thisCase, MapPin.this);
+            //update the displaying showcase in control, and load the showcase items if not loaded.
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            for (Item item: thisCase.getItems()) {
+                View showCaseItemEditLayout = layoutInflater.inflate(
+                        R.layout.item_edit_display,showCaseItemEditListLayout,false);
+                //set image
+                ImageView imageView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_image_view);
+                Picasso.get()
+                        .load(item.getImageUrl())
+                        .resize(500, 500)
+                        .centerCrop()
+                        .into(imageView);
+                //set name
+                TextView textView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_name_text_view);
+                textView.setText(item.getName());
+                ImageButton editButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_button);
+                ImageButton deleteButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_delete_button);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseHelper.deleteItemInShowCase(item,thisCase);
+                        thisCase.getItems().remove(item);
+                        showCaseItemEditListLayout.removeView(showCaseItemEditLayout);
+                    }
+                });
+                showCaseItemEditListLayout.addView(showCaseItemEditLayout);
+            }
+        }
     }
 
     public void movePinLocation(float x, float y) {
@@ -202,15 +210,26 @@ public class MapPin {
         pinView.setY(thisCase.getCenterY() * scale + dy - 100);
     }
 
-    public void create(ViewGroup parentView) {
+    //create the pinView from the parent view with the translateX and translateY.
+    public void create(ViewGroup parentView, float translateX, float translateY) {
         if (pinView == null) {
             return;
         }
         pinView.setVisibility(View.GONE);
         parentView.addView(pinView);
+        this.movePinLocation(translateX, translateY);
+    }
+
+    //delete the pinView from the parent view
+    public void delete(ViewGroup parentView) {
+        parentView.removeView(pinView);
     }
 
     public void setVisibility(int visibility) {
         this.pinView.setVisibility(visibility);
+    }
+
+    public ShowCase getShowCase() {
+        return thisCase;
     }
 }

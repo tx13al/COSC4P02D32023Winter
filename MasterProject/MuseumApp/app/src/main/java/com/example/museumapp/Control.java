@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,6 +92,24 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
       //  SearchBar searchBar = new SearchBar(this, actv);
     }
 
+    private void viewFirstFloor() {
+        floor_1.setVisibility(View.VISIBLE);
+        floor_2.setVisibility(View.GONE);
+        level_1.setTextColor(getColor(R.color.red));
+        level_2.setTextColor(getColor(R.color.navy_blue));
+        firstFloor.setPinsVisibility();
+        firstFloor.invalidate();
+    }
+
+    private void viewSecondFloor() {
+        floor_1.setVisibility(View.GONE);
+        floor_2.setVisibility(View.VISIBLE);
+        level_1.setTextColor(getColor(R.color.navy_blue));
+        level_2.setTextColor(getColor(R.color.red));
+        secondFloor.setPinsVisibility();
+        secondFloor.invalidate();
+    }
+
     //popup a dialog for logout function.
     private void logOut() {
         builder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -111,6 +130,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
     //popup a dialog for add function
     private void AddDialog(View v){
+        //create a dialog, and initialize everything.
         Dialog addDialog = new Dialog(this);
         addDialog.setContentView(R.layout.adding_closet);
         ImageView txtClose = addDialog.findViewById(R.id.add_Cancel);
@@ -129,6 +149,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get all the information from the dialog.
                 String addFloorSelectionString = addFloorSelection.getSelectedItem().toString();
                 int floor = Integer.parseInt(addFloorSelectionString.substring(6));
                 String addXNumberString = addXNumber.getText().toString();
@@ -137,6 +158,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 String addWidthNumberString = addWidthNumber.getText().toString();
                 if (addXNumberString.isEmpty() || addYNumberString.isEmpty() ||
                         addLengthNumberString.isEmpty() || addWidthNumberString.isEmpty()) {
+                    //empty checking.
                     Toast.makeText(Control.this.getApplicationContext(),
                             "Blank input!!!", Toast.LENGTH_SHORT).show();
                     return;
@@ -152,20 +174,23 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 if (floor == 2) {
                     sid = DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges());
                 }
-                if (sid > -1) {
+                if (sid > -1) { //adding the showCase to database successfully
                     Toast.makeText(Control.this.getApplicationContext(),
                             "Adding successfully!", Toast.LENGTH_SHORT).show();
+                    //display the showCase in the map and switch to the related floor.
                     ShowCase newShowCase = new ShowCase(sid, floor, x, y, length, width, null);
                     showCases.add(newShowCase);
                     if (floor == 1) {
                         displayingMapPin = firstFloor.addShowCase(newShowCase);
-                        firstFloor.setPinsVisibility(displayingMapPin);
-                        firstFloor.invalidate();
+                        displayingMapPin.create((ViewGroup) firstFloor.getParent(),
+                                firstFloor.getTranslateX(), firstFloor.getTranslateY());
+                        viewFirstFloor();
                     }
                     if (floor == 2) {
                         displayingMapPin = secondFloor.addShowCase(newShowCase);
-                        secondFloor.setPinsVisibility(displayingMapPin);
-                        secondFloor.invalidate();
+                        displayingMapPin.create((ViewGroup) secondFloor.getParent(),
+                                secondFloor.getTranslateX(), secondFloor.getTranslateY());
+                        viewSecondFloor();
                     }
                     addDialog.dismiss();
                 }
@@ -190,12 +215,29 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         return displayingMapPin;
     }
 
+    private void deleteShowCaseFromMap(MapPin mapPin) {
+        if (mapPin.getShowCase().getFloorNum() == 1) {
+            firstFloor.deleteShowCaseFromMap(mapPin);
+        }
+        else if (mapPin.getShowCase().getFloorNum() == 2) {
+            secondFloor.deleteShowCaseFromMap(mapPin);
+        }
+    }
+
     private void deleteShowCase() {
-        if(false) {
-            builder.setTitle("Deletion Confirm").setMessage("Are you sure to delete??").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        if (displayingMapPin != null) {
+            //display the deleting showCase item list
+            HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_edit_list_scrollView);
+            showCaseItemListScrollView.setVisibility(View.VISIBLE);
+            builder.setTitle("Deletion Confirm")
+                    .setMessage("Are you sure to delete?")
+                    .setCancelable(true)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //DatabaseHelper.deleteCase(sid);
+                    showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+                    deleteShowCaseFromMap(displayingMapPin);
+                    DatabaseHelper.deleteShowCase(displayingMapPin);
                     dialogInterface.dismiss();
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -221,17 +263,11 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         switch (view.getId()){
             //press Level 1 button change to level 1 floor plan
             case R.id.control_floorOneButton:
-                floor_1.setVisibility(View.VISIBLE);
-                floor_2.setVisibility(View.GONE);
-                level_1.setTextColor(getColor(R.color.red));
-                level_2.setTextColor(getColor(R.color.navy_blue));
+                viewFirstFloor();
                 break;
             //press Level 2 button change to level 2 floor plan
             case R.id.control_floorTwoButton:
-                floor_1.setVisibility(View.GONE);
-                floor_2.setVisibility(View.VISIBLE);
-                level_1.setTextColor(getColor(R.color.navy_blue));
-                level_2.setTextColor(getColor(R.color.red));
+                viewSecondFloor();
                 break;
             //press the logout button to log out.
             case R.id.control_logoutButton:

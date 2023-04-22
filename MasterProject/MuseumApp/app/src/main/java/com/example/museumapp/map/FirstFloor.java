@@ -298,13 +298,12 @@ public class FirstFloor extends View implements Floor {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
         if (pinList != null) {
             for (MapPin mapPin: pinList) {
-                mapPin.create(viewGroup);
-                mapPin.movePinLocation(translateX, translateY);
+                mapPin.create(viewGroup, translateX, translateY);
             }
         }
     }
 
-    public MapPin addShowCase(ShowCase showCase) {
+    public MapPin addShowCase(ShowCase showCase) {  //add a showCase to the map.
         if (pinList == null) {
             pinList = new ArrayList<MapPin>();
         }
@@ -403,7 +402,42 @@ public class FirstFloor extends View implements Floor {
         }
     }
 
-    public void setPinsVisibility (MapPin mapPin) {
-        mapPin.setVisibility(this.getVisibility());
+    public void deleteShowCaseFromMap (MapPin mapPin) {
+        mapPin.setVisibility(View.INVISIBLE);
+        pinList.remove(mapPin);
+        ShowCase showCase = mapPin.getShowCase();
+        //remove all the edges of this mapPin's showCase.
+        ArrayList<Edge> removing = new ArrayList<Edge>();
+        for (Edge edge: innerEdges) {
+            if (edge.equal(new Edge(showCase.getX(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                    showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(),
+                    showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY() + showCase.getWidth()))) {
+                removing.add(edge);
+            }
+            if (edge.equal(new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(),
+                    showCase.getX(), showCase.getY()))) {
+                removing.add(edge);
+            }
+        }
+        innerEdges.removeAll(removing);
+        //remove the pinView from the map.
+        mapPin.delete((ViewGroup) this.getParent());
+        invalidate();
+    }
+
+    public float getTranslateX() {
+        return translateX;
+    }
+
+    public float getTranslateY() {
+        return translateY;
     }
 }
