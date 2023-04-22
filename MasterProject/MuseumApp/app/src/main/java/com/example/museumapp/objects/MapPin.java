@@ -80,7 +80,7 @@ public class MapPin {
                 ImageView imageView = showCaseItemLayout.findViewById(R.id.showCase_item_image_view);
                 Picasso.get()
                         .load(item.getImageUrl())
-                        .resize(500, 500)
+                        .resize(0, 350)
                         .centerCrop()
                         .into(imageView);
                 //Text setting
@@ -129,7 +129,7 @@ public class MapPin {
                         ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
                         Picasso.get()
                                 .load(item.getImageUrl())
-                                .resize(750, 750)
+                                .resize(600, 0)
                                 .centerCrop()
                                 .into(imageView);
                         //display the description.
