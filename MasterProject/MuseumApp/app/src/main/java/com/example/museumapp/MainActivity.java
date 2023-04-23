@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
     private MapPin displayingMapPin = null;
-    private SearchAdapter searchAdapter;
     private boolean Connected = false;
 
     @Override
@@ -127,19 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public MapPin getDisplaying() {
         return displayingMapPin;
-    }
-
-   // search filter
-    private void filterSearchItems(String query) {
-        List<SearchItem> filteredSearchItems = new ArrayList<>();
-        SearchItem[] allSearchItems = new SearchItem[0];
-
-        for (SearchItem searchItem : allSearchItems) {
-            if (searchItem.getTitle().toLowerCase().contains(query.toLowerCase())) {
-                filteredSearchItems.add(searchItem);
-            }
-        }
-        searchAdapter.setSearchItems(filteredSearchItems);
     }
 
     private void shutShowCaseItemList() {
