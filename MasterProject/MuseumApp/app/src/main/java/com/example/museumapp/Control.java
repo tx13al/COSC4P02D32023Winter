@@ -347,7 +347,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                                 viewSecondFloor();  //display the second floor.
                             }
                         }
-                        if (changing.getFloorNum() == 2) {
+                        else if (changing.getFloorNum() == 2) {
                             //previous showCase is located at the second floor.
                             secondFloor.remove(displayingMapPin);
                             if (floor == 1) {   //move to the first floor.

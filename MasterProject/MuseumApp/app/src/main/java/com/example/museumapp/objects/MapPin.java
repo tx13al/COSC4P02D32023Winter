@@ -268,7 +268,7 @@ public class MapPin {
         this.pinView.setVisibility(visibility);
     }
 
-    //create the pinView from the parent view with the translateX and translateY.
+    //create the pinView from the parent view.
     public void create(ViewGroup parentView) {
         if (pinView == null) {
             return;

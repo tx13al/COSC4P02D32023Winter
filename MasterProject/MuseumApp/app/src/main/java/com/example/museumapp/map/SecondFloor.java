@@ -28,7 +28,7 @@ public class SecondFloor extends View implements Floor {
     private final ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
     private float lastX, lastY;
-    private float translateX = 241, translateY = 1467;
+    private float translateX = 241.0f, translateY = 1467.0f;
     // Create the pins
     private ArrayList<MapPin> pinList = null;
     // The length in feet of the second floor's diagonal.
