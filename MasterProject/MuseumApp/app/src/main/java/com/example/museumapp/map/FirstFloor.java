@@ -26,7 +26,7 @@ public class FirstFloor extends View implements Floor {
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
     private float lastX, lastY;
-    private float translateX = 350, translateY = 450;
+    private float translateX = 350.0f, translateY = 450.0f;
     // Create the pins
     private ArrayList <MapPin> pinList = null;
 

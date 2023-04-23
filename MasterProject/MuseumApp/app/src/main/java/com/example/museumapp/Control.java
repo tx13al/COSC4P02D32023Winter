@@ -31,12 +31,12 @@ import java.util.ArrayList;
 
 public class Control extends AppCompatActivity implements View.OnClickListener{
     private View floor_1, floor_2;
+    FirstFloor firstFloor;
+    SecondFloor secondFloor;
     private FrameLayout control_mainContainer;
     ImageButton logout;
     private Button level_1, level_2, add, delete, change, more;
     private ArrayList<ShowCase> showCases;
-    FirstFloor firstFloor;
-    SecondFloor secondFloor;
     private MapPin displayingMapPin = null;
     AlertDialog.Builder builder;
 
@@ -347,7 +347,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                                 viewSecondFloor();  //display the second floor.
                             }
                         }
-                        if (changing.getFloorNum() == 2) {
+                        else if (changing.getFloorNum() == 2) {
                             //previous showCase is located at the second floor.
                             secondFloor.remove(displayingMapPin);
                             if (floor == 1) {   //move to the first floor.
