@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //Check internet state.
+        showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
         Connected = checkConnection();
         System.out.println("Connection status: " + Connected);
 
-        if (Connected) {
+        if ((Connected) && (showCases.isEmpty())){
             showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
             //this can also update the show cases for each start of mainActivity
         }

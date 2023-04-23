@@ -116,9 +116,10 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         builder.setTitle("Logout Confirm").setMessage("Do you want to logout?").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(Control.this, "Logout Successful!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Control.this, MainActivity.class);
                 startActivity(intent);
+                Toast.makeText(Control.this, "Logout Successful!", Toast.LENGTH_SHORT).show();
+                ShowCaseSingleton.getInstance().setShowCases(showCases);
                 Control.this.finish();
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
