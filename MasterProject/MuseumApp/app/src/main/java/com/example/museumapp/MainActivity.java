@@ -27,11 +27,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View floor_1, floor_2;
+    private FirstFloor firstFloor;
+    private SecondFloor secondFloor;
     private FrameLayout mainContainer;
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
-    private FirstFloor firstFloor;
-    private SecondFloor secondFloor;
     private MapPin displayingMapPin = null;
     private SearchAdapter searchAdapter;
     private boolean Connected = false;
