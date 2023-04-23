@@ -187,9 +187,16 @@ public class MapPin {
             }
             control.getShowCase(thisCase, MapPin.this);
             //update the displaying showcase in control, and load the showcase items if not loaded.
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            //set the add function.
-            Button addItem = control.findViewById(R.id.showCase_item_add_button);
+            LayoutInflater layoutInflater = LayoutInflater.from(control);
+            //set the add button for the showCase.
+            Button addItem = new Button(control);
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(128, 128);
+            params.setMargins(5, 0, 0, 0);
+            params.gravity = Gravity.CENTER_VERTICAL;
+            addItem.setLayoutParams(params);
+            addItem.setBackgroundResource(R.drawable.add_icon_with_circle);
+            showCaseItemEditListLayout.addView(addItem);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -259,6 +266,23 @@ public class MapPin {
 
     public void setVisibility(int visibility) {
         this.pinView.setVisibility(visibility);
+    }
+
+    //create the pinView from the parent view with the translateX and translateY.
+    public void create(ViewGroup parentView) {
+        if (pinView == null) {
+            return;
+        }
+        pinView.setVisibility(View.GONE);
+        parentView.addView(pinView);
+    }
+
+    public void update(int floorNum, float x, float y, float length, float width,
+                       float translateX, float translateY, float mScaleFactor) {
+        thisCase.update(floorNum, x, y, length, width);
+        this.pinView.setX(thisCase.getCenterX() - 50);
+        this.pinView.setY(thisCase.getCenterY() - 100);
+        this.scalePinLocation(mScaleFactor, translateX, translateY);
     }
 
     public ShowCase getShowCase() {

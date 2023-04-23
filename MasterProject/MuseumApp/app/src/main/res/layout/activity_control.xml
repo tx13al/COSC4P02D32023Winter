@@ -116,13 +116,6 @@
             android:background="@color/gray"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
-            <Button
-                android:id="@+id/showCase_item_add_button"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/add_icon_with_circle"/>
         </LinearLayout>
     </HorizontalScrollView>
 

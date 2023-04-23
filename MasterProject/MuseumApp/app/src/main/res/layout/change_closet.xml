@@ -11,11 +11,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_layout"
+        android:id="@+id/change_layout"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/add_constraint1"
+            android:id="@+id/change_constraint1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/josefin_sans_bold"
                 android:padding="10dp"
-                android:text="Adding a closet"
+                android:text="Changing the closet"
                 android:textColor="@color/navy_blue"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/museum_title" />
             <ImageView
-                android:id="@+id/add_Cancel"
+                android:id="@+id/change_Cancel"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="22dp"
@@ -61,16 +61,16 @@
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/add_constraint2"
+            android:id="@+id/change_constraint2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/add_constraint1"
+            app:layout_constraintTop_toBottomOf="@+id/change_constraint1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             >
 
             <TextView
-                android:id="@+id/add_floor"
+                android:id="@+id/change_floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/josefin_sans_bold"
@@ -79,27 +79,27 @@
                 android:textColor="@color/navy_blue"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/add_floor_selection"
+                app:layout_constraintEnd_toStartOf="@id/change_floor_selection"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/add_constraint2"
+                app:layout_constraintTop_toTopOf="@+id/change_constraint2"
                 app:layout_constraintVertical_bias="0.0"
                 />
 
             <Spinner
-                android:id="@+id/add_floor_selection"
+                android:id="@+id/change_floor_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:entries="@array/floor_selection"
                 android:fontFamily="@font/josefin_sans_bold"
                 android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="@id/add_floor"
+                app:layout_constraintBottom_toBottomOf="@id/change_floor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/add_floor"
-                app:layout_constraintTop_toTopOf="@+id/add_constraint2"
+                app:layout_constraintStart_toEndOf="@+id/change_floor"
+                app:layout_constraintTop_toTopOf="@+id/change_constraint2"
                 />
 
             <TextView
-                android:id="@+id/add_X"
+                android:id="@+id/change_X"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/josefin_sans_bold"
@@ -107,26 +107,26 @@
                 android:text="X:"
                 android:textColor="@color/navy_blue"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/add_X_number"
+                app:layout_constraintEnd_toStartOf="@+id/change_X_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_floor"
+                app:layout_constraintTop_toBottomOf="@+id/change_floor"
                 />
 
             <EditText
-                android:id="@+id/add_X_number"
+                android:id="@+id/change_X_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="x in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
-                app:layout_constraintStart_toEndOf="@+id/add_X"
+                app:layout_constraintStart_toEndOf="@+id/change_X"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_floor"
+                app:layout_constraintTop_toBottomOf="@+id/change_floor"
                 />
 
             <TextView
-                android:id="@+id/add_Y"
+                android:id="@+id/change_Y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/josefin_sans_bold"
@@ -134,26 +134,26 @@
                 android:text="Y:"
                 android:textColor="@color/navy_blue"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/add_Y_number"
+                app:layout_constraintEnd_toStartOf="@+id/change_Y_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_X"
+                app:layout_constraintTop_toBottomOf="@+id/change_X"
                 />
 
             <EditText
-                android:id="@+id/add_Y_number"
+                android:id="@+id/change_Y_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="y in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
-                app:layout_constraintStart_toEndOf="@+id/add_Y"
+                app:layout_constraintStart_toEndOf="@+id/change_Y"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_X"
+                app:layout_constraintTop_toBottomOf="@+id/change_X"
                 />
 
             <TextView
-                android:id="@+id/add_width"
+                android:id="@+id/change_width"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/josefin_sans_bold"
@@ -161,26 +161,26 @@
                 android:text="Width:"
                 android:textColor="@color/navy_blue"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/add_width_number"
+                app:layout_constraintEnd_toStartOf="@+id/change_width_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_Y"
+                app:layout_constraintTop_toBottomOf="@+id/change_Y"
                 />
 
             <EditText
-                android:id="@+id/add_width_number"
+                android:id="@+id/change_width_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="width in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
-                app:layout_constraintStart_toEndOf="@+id/add_width"
+                app:layout_constraintStart_toEndOf="@+id/change_width"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_Y"
+                app:layout_constraintTop_toBottomOf="@+id/change_Y"
                 />
 
             <TextView
-                android:id="@+id/add_length"
+                android:id="@+id/change_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/josefin_sans_bold"
@@ -188,26 +188,26 @@
                 android:text="Length:"
                 android:textColor="@color/navy_blue"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/add_length_number"
+                app:layout_constraintEnd_toStartOf="@+id/change_length_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_width"
+                app:layout_constraintTop_toBottomOf="@+id/change_width"
                 />
 
             <EditText
-                android:id="@+id/add_length_number"
+                android:id="@+id/change_length_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="length in inches"
                 android:fontFamily="@font/josefin_sans_light"
                 android:textColor="@color/gray"
-                app:layout_constraintStart_toEndOf="@+id/add_length"
+                app:layout_constraintStart_toEndOf="@+id/change_length"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_width"
+                app:layout_constraintTop_toBottomOf="@+id/change_width"
                 />
 
             <Button
-                android:id="@+id/add_OK"
+                android:id="@+id/change_OK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
@@ -216,7 +216,7 @@
                 android:textSize="20dp"
                 android:fontFamily="@font/josefin_sans_bold"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/add_length"
+                app:layout_constraintTop_toBottomOf="@+id/change_length"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="260dp"
                 android:layout_marginEnd="100dp"

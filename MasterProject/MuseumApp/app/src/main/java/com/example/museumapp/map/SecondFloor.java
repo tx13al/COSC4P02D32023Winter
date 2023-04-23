@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class SecondFloor extends View implements Floor {
     private Paint paint;
-    private ArrayList<Edge> outerEdges;
     private ArrayList<Edge> innerEdges;
+    private ArrayList<Edge> outerEdges;
     private final ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
     private float lastX, lastY;
@@ -180,6 +180,19 @@ public class SecondFloor extends View implements Floor {
         }
     }
 
+    private void addShowCaseEdges(ShowCase showCase) {  //add all the edges of the showCase to the innerEdges.
+        Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
+        Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
+        Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
+                showCase.getX(), showCase.getY() + showCase.getWidth());
+        Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
+        innerEdges.add(e1);
+        innerEdges.add(e2);
+        innerEdges.add(e3);
+        innerEdges.add(e4);
+    }
+
     public MapPin addShowCase(ShowCase showCase) {
         if (pinList == null) {
             pinList = new ArrayList<MapPin>();
@@ -187,16 +200,7 @@ public class SecondFloor extends View implements Floor {
         if (showCase.getFloorNum() == 2) {  //second floor
             Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
             MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
-            Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
-            Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
-                    showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
-            Edge e3 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth(),
-                    showCase.getX(), showCase.getY() + showCase.getWidth());
-            Edge e4 = new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(), showCase.getX(), showCase.getY());
-            innerEdges.add(e1);
-            innerEdges.add(e2);
-            innerEdges.add(e3);
-            innerEdges.add(e4);
+            addShowCaseEdges(showCase);
             pinList.add(mapPin);
             return mapPin;
         }
@@ -313,6 +317,38 @@ public class SecondFloor extends View implements Floor {
         invalidate();
     }
 
+    //remove the caseEdges from the innerEdges.
+    private void removeShowCaseEdges(ArrayList<Edge> caseEdges) {
+        innerEdges.removeAll(caseEdges);
+    }
+
+    private void removePin(MapPin mapPin) {
+        mapPin.delete((ViewGroup) this.getParent());    //remove the pin from the view.
+        pinList.remove(mapPin);
+    }
+
+    public void remove(MapPin mapPin) {
+        removeShowCaseEdges(mapPin.getShowCase());
+        removePin(mapPin);
+    }
+
+    //update the mapPin of the selected showCase on the map.
+    public void updatePin(MapPin mapPin, int floor, float x, float y, float length, float width) {
+        mapPin.update(floor, x, y, length, width, translateX, translateY, mScaleFactor);
+        addShowCaseEdges(mapPin.getShowCase());
+    }
+
+    public void addPin(MapPin mapPin) {
+        mapPin.create((ViewGroup) this.getParent());    //add the pin to the view.
+        pinList.add(mapPin);
+    }
+
+    //update the mapPin of the selected showCase on the map.
+    public void updatePin(MapPin mapPin, int floor, float x, float y, float length, float width, ArrayList<Edge> caseEdges) {
+        removeShowCaseEdges(caseEdges);
+        mapPin.update(floor, x, y, length, width, translateX, translateY, mScaleFactor);
+        addShowCaseEdges(mapPin.getShowCase());
+    }
 
     public float getTranslateX() {
         return translateX;

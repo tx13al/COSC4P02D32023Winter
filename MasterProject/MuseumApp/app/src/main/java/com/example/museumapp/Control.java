@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.museumapp.map.Edge;
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
 import com.example.museumapp.objects.MapPin;
@@ -133,6 +134,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         //create a dialog, and initialize everything.
         Dialog addDialog = new Dialog(this);
         addDialog.setContentView(R.layout.adding_closet);
+        //get all components from the layout.
         ImageView txtClose = addDialog.findViewById(R.id.add_Cancel);
         Button OK = addDialog.findViewById(R.id.add_OK);
         Spinner addFloorSelection = addDialog.findViewById(R.id.add_floor_selection);
@@ -175,8 +177,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                     sid = DatabaseHelper.addCase(floor, x, y, length, width, secondFloor.getEdges());
                 }
                 if (sid > -1) { //adding the showCase to database successfully
-                    Toast.makeText(Control.this.getApplicationContext(),
-                            "Adding successfully!", Toast.LENGTH_SHORT).show();
                     //display the showCase in the map and switch to the related floor.
                     ShowCase newShowCase = new ShowCase(sid, floor, x, y, length, width, null);
                     showCases.add(newShowCase);
@@ -193,6 +193,8 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                         viewSecondFloor();
                     }
                     addDialog.dismiss();
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Adding successfully!", Toast.LENGTH_SHORT).show();
                 }
                 if (sid <= -1) {
                     Toast.makeText(Control.this.getApplicationContext(),
@@ -226,7 +228,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
 
     private void deleteShowCase() {
         if (displayingMapPin != null) {
-            //display the deleting showCase item list
+            //display the deleting showCase detail.
             HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_edit_list_scrollView);
             showCaseItemListScrollView.setVisibility(View.VISIBLE);
             builder.setTitle("Deletion Confirm")
@@ -248,13 +250,131 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             }).show();
         }
         else{
-            Toast.makeText(Control.this.getApplicationContext(), "No closet choose", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Control.this.getApplicationContext(), "No closet selected!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void shutShowCaseItemEditList() {
         HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_edit_list_scrollView);
         showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+    }
+
+    private void displayShowCase() {
+        HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_edit_list_scrollView);
+        showCaseItemListScrollView.setVisibility(View.VISIBLE);
+    }
+
+    private void changeShowCase() {
+        if (displayingMapPin == null) {
+            Toast.makeText(Control.this.getApplicationContext(), "No closet selected!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //Display the showCase detail.
+        displayShowCase();
+        ShowCase changing = displayingMapPin.getShowCase();
+        //create a dialog, and initialize everything.
+        Dialog changeDialog = new Dialog(this);
+        changeDialog.setContentView(R.layout.change_closet);
+        //get all components from the layout.
+        ImageView txtClose = changeDialog.findViewById(R.id.change_Cancel);
+        Button OK = changeDialog.findViewById(R.id.change_OK);
+        Spinner changeFloorSelection = changeDialog.findViewById(R.id.change_floor_selection);
+        EditText changeXNumber = changeDialog.findViewById(R.id.change_X_number);
+        EditText changeYNumber = changeDialog.findViewById(R.id.change_Y_number);
+        EditText changeLengthNumber = changeDialog.findViewById(R.id.change_length_number);
+        EditText changeWidthNumber = changeDialog.findViewById(R.id.change_width_number);
+        //default setting for the dialog.
+        if (changing.getFloorNum() == 1) {  //first floor.
+            changeFloorSelection.setSelection(0);
+        }
+        if (changing.getFloorNum() == 2) {  //second floor.
+            changeFloorSelection.setSelection(1);
+        }
+        changeXNumber.setText(String.valueOf(changing.getX()));
+        changeYNumber.setText(String.valueOf(changing.getY()));
+        changeLengthNumber.setText(String.valueOf(changing.getLength()));
+        changeWidthNumber.setText(String.valueOf(changing.getWidth()));
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeDialog.dismiss();
+            }
+        });
+        OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //get all the information from the dialog.
+                String changeFloorSelectionString = changeFloorSelection.getSelectedItem().toString();
+                int floor = Integer.parseInt(changeFloorSelectionString.substring(6));
+                String changeXNumberString = changeXNumber.getText().toString();
+                String changeYNumberString = changeYNumber.getText().toString();
+                String changeLengthNumberString = changeLengthNumber.getText().toString();
+                String changeWidthNumberString = changeWidthNumber.getText().toString();
+                if (changeXNumberString.isEmpty() || changeYNumberString.isEmpty() ||
+                        changeLengthNumberString.isEmpty() || changeWidthNumberString.isEmpty()) {
+                    //empty checking.
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Blank input!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                float x = Float.parseFloat(changeXNumberString);
+                float y = Float.parseFloat(changeYNumberString);
+                float length = Float.parseFloat(changeLengthNumberString);
+                float width = Float.parseFloat(changeWidthNumberString);
+                ArrayList<Edge> caseEdges = null;
+                if (floor == 1) {
+                    caseEdges = DatabaseHelper.changeShowCase(changing,
+                            floor, x, y, length, width, firstFloor.getEdges());
+                }
+                if (floor == 2) {
+                    caseEdges = DatabaseHelper.changeShowCase(changing,
+                            floor, x, y, length, width, secondFloor.getEdges());
+                }
+                if (caseEdges == null) {
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "Invalid input!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else {  //showCase changed position available, and database has been changed.
+                    if (changing.getFloorNum() != floor) {
+                        if (changing.getFloorNum() == 1) {
+                            //previous showCase is located at the first floor.
+                            firstFloor.remove(displayingMapPin);
+                            if (floor == 2) {   //move to the second floor.
+                                secondFloor.updatePin(displayingMapPin, floor, x, y, length, width);
+                                secondFloor.addPin(displayingMapPin);
+                                viewSecondFloor();  //display the second floor.
+                            }
+                        }
+                        if (changing.getFloorNum() == 2) {
+                            //previous showCase is located at the second floor.
+                            secondFloor.remove(displayingMapPin);
+                            if (floor == 1) {   //move to the first floor.
+                                firstFloor.updatePin(displayingMapPin, floor, x, y, length, width);
+                                firstFloor.addPin(displayingMapPin);
+                                viewFirstFloor();  //display the first floor.
+                            }
+                        }
+                    }
+                    else {  //floor not change
+                        if (floor == 1) {
+                            firstFloor.updatePin(displayingMapPin, floor, x, y, length, width, caseEdges);
+                            //pass the caseEdges to optimize the program's efficiency.
+                        }
+                        if (floor == 2) {
+                            secondFloor.updatePin(displayingMapPin, floor, x, y, length, width, caseEdges);
+                            //pass the caseEdges to optimize the program's efficiency.
+                        }
+                    }
+                    changeDialog.dismiss();
+                    displayShowCase();
+                    Toast.makeText(Control.this.getApplicationContext(),
+                            "closet changed successfully!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        changeDialog.show();
+        changeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -282,7 +402,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 AddDialog(view);
                 add.setTextColor(getColor(R.color.navy_blue));
                 break;
-            //press info button to show the information about the museum like operating hours and admission
+            //press delete button to delete the selected showCase.
             case R.id.control_delete:
                 add.setTextColor(getColor(R.color.navy_blue));
                 delete.setTextColor(getColor(R.color.red));
@@ -291,14 +411,16 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 deleteShowCase();
                 delete.setTextColor(getColor(R.color.navy_blue));
                 break;
-            //press art button to browse all the art
+            //press change button to change the position of the selected showCase.
             case R.id.control_change:
                 delete.setTextColor(getColor(R.color.navy_blue));
                 add.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.red));
                 more.setTextColor(getColor(R.color.navy_blue));
+                changeShowCase();
+                change.setTextColor(getColor(R.color.navy_blue));
                 break;
-            //press setting button to show settings page. Change font size
+            //press more button to ... (other functions)
             case R.id.control_more:
                 delete.setTextColor(getColor(R.color.navy_blue));
                 add.setTextColor(getColor(R.color.navy_blue));

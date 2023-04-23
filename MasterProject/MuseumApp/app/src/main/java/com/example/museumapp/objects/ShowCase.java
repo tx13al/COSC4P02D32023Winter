@@ -21,6 +21,14 @@ public class ShowCase {
         this.items = items;
     }
 
+    public void update(int floorNum, float x, float y, float length, float width) {
+        this.floorNum = floorNum;
+        this.x = x;
+        this.y = y;
+        this.length = length;
+        this.width = width;
+    }
+
     public int getClosetID() {
         return closetID;
     }

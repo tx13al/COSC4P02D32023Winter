@@ -497,4 +497,201 @@ public class DatabaseHelper {
         return;
     }
 
+    static class changeShowCaseThread extends Thread {
+        ArrayList<Edge> removed = new ArrayList<Edge>();
+        private ShowCase showCase;
+        private int floor;
+        private float x;
+        private float y;
+        private float length;
+        private float width;
+        private ArrayList<Edge> edges;
+
+        public changeShowCaseThread (ShowCase showCase, int floor, float x, float y, float length, float width, ArrayList<Edge> edges) {
+            this.showCase = showCase;
+            this.floor = floor;
+            this.x = x;
+            this.y = y;
+            this.length = length;
+            this.width = width;
+            this.edges = edges;
+        }
+
+        //remove all the edges from showCase in edges. And return all the edges removed.
+        private void removeEdges(ShowCase showCase, ArrayList<Edge> edges) {
+            for (Edge edge: edges) {   //find all the edges of this showCase.
+                if (edge.equal(new Edge(showCase.getX(), showCase.getY(),
+                        showCase.getX() + showCase.getLength(), showCase.getY()))) {
+                    removed.add(edge);
+                }
+                if (edge.equal(new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+                        showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth()))) {
+                    removed.add(edge);
+                }
+                if (edge.equal(new Edge(showCase.getX() + showCase.getLength(),
+                        showCase.getY() + showCase.getWidth(),
+                        showCase.getX(), showCase.getY() + showCase.getWidth()))) {
+                    removed.add(edge);
+                }
+                if (edge.equal(new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(),
+                        showCase.getX(), showCase.getY()))) {
+                    removed.add(edge);
+                }
+            }
+            edges.removeAll(removed);
+        }
+
+        private boolean on(float x, float y, Edge edge) {   //check if (x, y) is on the edge.
+            if (edge.from_x == edge.to_x) {
+                if ((edge.from_x == x) &&
+                        (((edge.from_y >= y) && (edge.to_y <= y)) ||
+                                ((edge.from_y <= y) && (edge.to_y >= y)))) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                float slope = (edge.to_y - edge.from_y) / (edge.to_x - edge.from_x);
+                float interY = slope * (x - edge.from_x) + edge.from_y;
+                if (interY == y) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+
+        private boolean in(float x, float y, ArrayList<Edge> edges) {
+            //check if the x, y is in the edge.
+            int count = 0;
+            for (Edge edge: edges) {
+                if (on(x, y, edge)) {
+                    return true;
+                }
+                else if (((edge.from_y >= y) && (edge.to_y < y)) ||
+                        ((edge.from_y < y) && (edge.to_y >= y))) {
+                    if (edge.from_x == edge.to_x) {
+                        if (edge.from_x > x) {
+                            count += 1;
+                        }
+                        if (edge.from_x == x) { //(x,y) is right on the edge.
+                            return true;
+                        }
+                    }
+                    else {
+                        float slope = (edge.to_y - edge.from_y) / (edge.to_x - edge.from_x);
+                        float interX = (y - edge.from_y) / slope + edge.from_x;
+                        if (interX > x) {
+                            count += 1;
+                        }
+                        if (interX == x) {  //(x,y) is right on the edge.
+                            return true;
+                        }
+                    }
+                }
+            }
+            return (count % 2 == 1);
+        }
+
+        //check if the (x, y) is on any edge in the list of edges
+        private boolean on(float x, float y, ArrayList<Edge> caseEdges) {
+            for (Edge edge: edges) {
+                if (on(x, y, edge)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //Roughly check the cases area's availability.
+        private boolean conflict() {
+            //check four points of the case if they are in the area.
+            if (!this.in(this.x, this.y, edges)) {
+                return true;
+            }
+            if (!this.in(this.x + this.length, this.y, edges)) {
+                return true;
+            }
+            if (!this.in(this.x + this.length, this.y + this.width, edges)) {
+                return true;
+            }
+            if (!this.in(this.x, this.y + this.width, edges)) {
+                return true;
+            }
+            ArrayList<Edge> caseEdges = new ArrayList<Edge>();
+            Edge e1 = new Edge(x, y, x + length, y);
+            Edge e2 = new Edge(x + length, y, x + length, y + width);
+            Edge e3 = new Edge(x + length, y + width, x, y + width);
+            Edge e4 = new Edge(x, y + width, x, y);
+            caseEdges.add(e1);
+            caseEdges.add(e2);
+            caseEdges.add(e3);
+            caseEdges.add(e4);
+            for (Edge edge: edges) {
+                if (!this.on(edge.from_x, edge.from_y, caseEdges)) {
+                    if (this.in(edge.from_x, edge.from_y, caseEdges)) {
+                        return true;
+                    }
+                }
+                if (!this.on(edge.to_x, edge.to_y, caseEdges)) {
+                    if (this.in(edge.to_x, edge.to_y, caseEdges)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public void run() {
+            if (floor == showCase.getFloorNum()) {
+                removeEdges(showCase, edges);
+            }
+            boolean available = !conflict();
+            if (floor == showCase.getFloorNum()) {
+                edges.addAll(removed);  //add the removed edges back.
+            }
+            //Database helper would only make modification on database!!!
+            if (available) {
+                try {
+                    Connection connection = connect();
+                    Statement statement = connection.createStatement();
+                    String SQL_update_showCase = "UPDATE showcase SET length_m = " + length +
+                            ", width_m = " + width + ", x = " + x + ", y = " + y +
+                            ", floor_no = " + floor + " WHERE sid = " + showCase.getClosetID();
+                    statement.executeUpdate(SQL_update_showCase);
+                    disconnect(connection);
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+                }
+            }
+            else {
+                removed = null;
+            }
+        }
+
+        public ArrayList<Edge> getRemoved() {
+            return removed;
+        }
+    }
+
+    //The case Edges can only be returned if the showCase doesn't move to other floors.
+    //If so, return an empty edge list.
+    public static ArrayList<Edge> changeShowCase(ShowCase showCase, int floor, float x, float y, float length, float width, ArrayList<Edge> edges) {
+        ArrayList<Edge> removed = null;
+        changeShowCaseThread thread = new changeShowCaseThread(showCase, floor, x, y, length, width, edges);
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        removed = thread.getRemoved();
+        thread.interrupt();
+        return removed;
+    }
 }
