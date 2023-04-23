@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Connected = checkConnection();
         System.out.println("Connection status: " + Connected);
 
-        if ((Connected) && (showCases.isEmpty())){
+        if ((Connected) && (showCases==null)){
             showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
             //this can also update the show cases for each start of mainActivity
         }
