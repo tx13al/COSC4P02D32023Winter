@@ -1,4 +1,6 @@
 package com.example.museumapp;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        items = ItemListSingleton.getInstance().getItems();
+        items = (ArrayList<Item>)getIntent().getSerializableExtra("itemList");
         Button back = findViewById(R.id.search_bar_item_list_back_button);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

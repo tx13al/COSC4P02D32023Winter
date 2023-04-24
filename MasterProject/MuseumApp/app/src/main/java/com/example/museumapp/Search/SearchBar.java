@@ -3,6 +3,7 @@ import static com.example.museumapp.DatabaseHelper.searchItemByName;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,12 +14,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.museumapp.DatabaseHelper;
+import com.example.museumapp.ItemListActivity;
+import com.example.museumapp.ItemSingleton;
 import com.example.museumapp.objects.Item;
 
 import java.util.ArrayList;
 import android.widget.FrameLayout;
 
 public class SearchBar extends FrameLayout {
+    Item searched = null;
     public SearchBar(Context context, AutoCompleteTextView view) {
         super(context);
         // Retrieve data from database using getAllNoDuplicateNames() method
@@ -41,7 +45,16 @@ public class SearchBar extends FrameLayout {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = (String) adapterView.getItemAtPosition(i);
                 Toast.makeText(context, "Item "+selectedItem+ " found. ", Toast.LENGTH_SHORT).show();
-                ArrayList<Item> items = searchItemByName(selectedItem);
+                ArrayList<Item> items = DatabaseHelper.searchItemByName(selectedItem);
+                if (items.size() > 1) {
+                    Intent intent = new Intent(context, ItemListActivity.class);
+                    intent.putExtra("itemList", items);
+                    context.startActivity(intent);
+                    Item searched = ItemSingleton.getInstance().getItem();
+                    if (searched.getClosetID() == 0) {
+                        
+                    }
+                }
             }
         });
 
