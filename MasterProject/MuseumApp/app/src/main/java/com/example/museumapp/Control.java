@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.museumapp.Search.SearchBar;
 import com.example.museumapp.map.Edge;
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
@@ -33,6 +34,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
     private View floor_1, floor_2;
     FirstFloor firstFloor;
     SecondFloor secondFloor;
+    SearchBar searchBar;
     private FrameLayout control_mainContainer;
     ImageButton logout;
     private Button level_1, level_2, add, delete, change, more;

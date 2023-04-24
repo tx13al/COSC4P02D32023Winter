@@ -694,4 +694,58 @@ public class DatabaseHelper {
         thread.interrupt();
         return removed;
     }
+
+    static class searchItemByNameThread extends Thread{
+        private String name;
+        private ArrayList<Item> items = new ArrayList<Item>();
+
+        public searchItemByNameThread(String name) {
+            this.name = name;
+        }
+
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_get_items_by_name = "SELECT * FROM item WHERE obj_name LIKE '%" + name + "%'";
+                ResultSet resultSet = statement.executeQuery(SQL_get_items_by_name);
+                while (resultSet.next()) {
+                    String ID = resultSet.getString("obj_id");
+                    String name = resultSet.getString("obj_name");
+                    String description = resultSet.getString("obj_desc");
+                    int startYear = resultSet.getInt("obj_start_year");
+                    int endYear = resultSet.getInt("obj_end_year");
+                    String itemUrl = resultSet.getString("obj_url");
+                    String imageUrl = resultSet.getString("obj_img");
+                    int closetID = resultSet.getInt("sid");
+                    Item item = new Item(ID, name, description, startYear, endYear,
+                            itemUrl, imageUrl, closetID);
+                    items.add(item);
+                }
+                disconnect(resultSet,connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            }
+        }
+
+        public ArrayList<Item> getItems() {
+            return items;
+        }
+    }
+
+    //Give all items based on the given name.
+    public static ArrayList<Item> searchItemByName(String name) {
+        ArrayList<Item> items = null;
+        searchItemByNameThread thread = new searchItemByNameThread(name);
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        items = thread.getItems();
+        thread.interrupt();
+        return items;
+    }
 }

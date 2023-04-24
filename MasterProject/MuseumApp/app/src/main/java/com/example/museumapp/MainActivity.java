@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View floor_1, floor_2;
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
+    SearchBar searchBar;
     private FrameLayout mainContainer;
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondFloor.setPinsVisibility();
             login.setOnClickListener(new Login(MainActivity.this));
             // Create a new instance of SearchBar and pass the necessary arguments
-            SearchBar searchBar = new SearchBar(this, actv);
+            searchBar = new SearchBar(this, actv);
         }
     }
 
