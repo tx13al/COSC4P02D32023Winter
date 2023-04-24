@@ -74,26 +74,18 @@ public class MapPin {
         TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
         itemDetailNameTextView.setText(item.getName());
         //if possible, display the name of start year.
-        int endYearPosition = 1;
+        TextView startYear = itemDetailDialog.findViewById(R.id.start_year);
+        startYear.setVisibility(View.GONE);
         if (item.getStartYear() != 0) {
-            endYearPosition += 1;
-            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-            TextView startYear = new TextView(mainActivity);
-            startYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            startYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-            startYear.setText("Start year:  " + item.getStartYear());
-            mainDialogItemDetailScrollViewLinearLayout.addView(startYear, 1);
+            startYear.setVisibility(View.VISIBLE);
+            startYear.setText("Start Year: " + item.getStartYear());
         }
         //if possible, display the name of end year.
+        TextView endYear = itemDetailDialog.findViewById(R.id.end_year);
+        endYear.setVisibility(View.GONE);
         if (item.getEndYear() != 0) {
-            LinearLayoutCompat mainDialogItemDetailScrollViewLinearLayout =
-                    itemDetailDialog.findViewById(R.id.main_dialog_item_detail_scroll_view_linear_layout);
-            TextView endYear = new TextView(mainActivity);
-            endYear.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            endYear.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-            endYear.setText("End Year:  " + item.getEndYear());
-            mainDialogItemDetailScrollViewLinearLayout.addView(endYear, endYearPosition);
+            endYear.setVisibility(View.VISIBLE);
+            endYear.setText("End Year: " + item.getEndYear());
         }
         //display the image of the item.
         ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
@@ -109,14 +101,6 @@ public class MapPin {
         //display the URL and set a onclick for the browser.
         TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
         itemDetailURLTextView.setText(item.getItemUrl());
-        itemDetailURLTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view2) {
-                String URL = itemDetailURLTextView.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
-                mainActivity.startActivity(intent);
-            }
-        });
         itemDetailDialog.show();
         itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }

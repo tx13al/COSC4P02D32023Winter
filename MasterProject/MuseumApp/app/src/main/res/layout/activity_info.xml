@@ -11,18 +11,27 @@
     android:layout_height="wrap_content"
 
     >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/tool_info"
         />
-
+    </LinearLayout>
     <TextView
         android:id="@+id/visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tool_info"
+        app:layout_constraintTop_toBottomOf="@+id/linear_toolbar"
         android:gravity="center"
         android:padding="10dp"
         android:text="VISIT"

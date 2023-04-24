@@ -43,6 +43,23 @@
             app:layout_constraintTop_toTopOf="parent"
 
             />
+        <TextView
+            android:id="@+id/item_detail_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/museum_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/josefin_sans_bold"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            >
+        </TextView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -55,11 +72,12 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/main_dialog_item_detail_constraint_layout"
         app:layout_constraintStart_toStartOf="@id/main_dialog_item_detail_constraint_layout"
-        app:layout_constraintTop_toBottomOf="@+id/main_dialog_item_detail_top_bar_constraint_layout">
+        app:layout_constraintTop_toBottomOf="@+id/main_dialog_item_detail_top_bar_constraint_layout"
+        >
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/main_dialog_item_detail_scroll_view_linear_layout"
@@ -67,95 +85,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="5dp"
-
             >
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/main_dialog_item_detail_name_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                >
-                <TextView
-                    android:id="@+id/item_detail_name_bar_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name:"
-                    android:padding="5dp"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/item_detail_name_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    >
-                </TextView>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/main_dialog_item_detail_image_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                >
-                <TextView
-                    android:id="@+id/item_detail_image_bar_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Image:"
-                    android:padding="5dp"
-                    >
-                </TextView>
                 <ImageView
                     android:id="@+id/item_detail_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     >
                 </ImageView>
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/main_dialog_item_detail_description_linear_layout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/start_year"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="5dp"
-                >
-                <TextView
-                    android:id="@+id/item_detail_description_bar_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description:"
-                    android:padding="5dp"
-                    >
-                </TextView>
+                />
+            <TextView
+                android:id="@+id/end_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                />
+
                 <TextView
                     android:id="@+id/item_detail_description_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1000"
+                    android:lineSpacingExtra="5dp"
+                    android:fontFamily="@font/josefin_sans_regular"
+                    android:textSize="15sp"
                     android:padding="5dp"
-                    >
-                </TextView>
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    />
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/main_dialog_item_detail_url_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_gravity="center"
                 android:padding="5dp"
                 >
                 <TextView
                     android:id="@+id/item_detail_url_bar_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="URL:"
+                    android:text="More Info"
+                    android:textSize="20sp"
                     android:padding="5dp"
+                    android:layout_gravity="center"
                     >
                 </TextView>
                 <TextView
@@ -165,6 +148,9 @@
                     android:textColor="@color/navy_blue"
                     android:padding="5dp"
                     android:autoLink="web"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/josefin_sans_regular"
+                    android:textSize="15sp"
                     >
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>

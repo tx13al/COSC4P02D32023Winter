@@ -1,10 +1,12 @@
 package com.example.museumapp;
 
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -16,7 +18,7 @@ public class InfoPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        setTitle("Visitor Info");
+        setTitle("");
         TextView address_text = findViewById(R.id.location_address);
         address_text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +35,6 @@ public class InfoPage extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
