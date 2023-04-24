@@ -1,13 +1,13 @@
 package com.example.museumapp;
 import com.example.museumapp.Search.SearchBar;
 
-public class searchBarSingleton {
-    private static searchBarSingleton instance = null;
-    private SearchBar searchBar;
+public class SearchBarSingleton {
+    private static SearchBarSingleton instance = null;
+    private SearchBar searchBar = null;
 
-    public static searchBarSingleton getInstance() {
+    public static SearchBarSingleton getInstance() {
         if (instance == null) {
-            instance = new searchBarSingleton();
+            instance = new SearchBarSingleton();
         }
         return instance;
     }
