@@ -38,6 +38,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name=".ArtPage"
+            android:label="Info Page"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

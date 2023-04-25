@@ -18,4 +18,6 @@
     <color name="ground">#ccb27f</color>
     <color name="green">#285943</color>
     <color name="backgrd">#eaeae6</color>
+    <color name="unselected">#092447</color>
+    <color name="selected">#B52525</color>
 </resources>

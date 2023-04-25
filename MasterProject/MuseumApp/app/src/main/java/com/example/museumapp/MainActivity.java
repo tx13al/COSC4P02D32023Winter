@@ -162,33 +162,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             //press home button to back to home page
             case R.id.home:
-                home.setTextColor(getColor(R.color.red));
-                info.setTextColor(getColor(R.color.navy_blue));//TODO need to make it more efficient when the button is not clicked the text color back to default
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                home.setTextColor(getColor(R.color.selected));
+                info.setTextColor(getColor(R.color.unselected));
+                arts.setTextColor(getColor(R.color.unselected));
+                setting.setTextColor(getColor(R.color.unselected));
                 break;
             //press info button to show the information about the museum like operating hours and admission
             case R.id.info:
-                info.setTextColor(getColor(R.color.red));
-                home.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                info.setTextColor(getColor(R.color.selected));
+                home.setTextColor(getColor(R.color.unselected));
+                arts.setTextColor(getColor(R.color.unselected));
+                setting.setTextColor(getColor(R.color.unselected));
                 Intent infoIntent = new Intent(MainActivity.this, InfoPage.class);
                 startActivity(infoIntent);
+                info.setTextColor(getColor(R.color.unselected));
+                home.setTextColor(getColor(R.color.selected));
                 break;
             //press art button to browse all the art
             case R.id.art:
-                info.setTextColor(getColor(R.color.navy_blue));
-                home.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.red));
-                setting.setTextColor(getColor(R.color.navy_blue));
+                info.setTextColor(getColor(R.color.unselected));
+                home.setTextColor(getColor(R.color.unselected));
+                arts.setTextColor(getColor(R.color.selected));
+                setting.setTextColor(getColor(R.color.unselected));
+                Intent artIntent = new Intent(MainActivity.this, ArtPage.class);
+                startActivity(artIntent);
+                arts.setTextColor(getColor(R.color.unselected));
+                home.setTextColor(getColor(R.color.selected));
                 break;
             //press setting button to show settings page. Change font size
             case R.id.settings:
-                info.setTextColor(getColor(R.color.navy_blue));
-                home.setTextColor(getColor(R.color.navy_blue));
-                arts.setTextColor(getColor(R.color.navy_blue));
-                setting.setTextColor(getColor(R.color.red));
+                info.setTextColor(getColor(R.color.unselected));
+                home.setTextColor(getColor(R.color.unselected));
+                arts.setTextColor(getColor(R.color.unselected));
+                setting.setTextColor(getColor(R.color.selected));
                 break;
         }
     }
