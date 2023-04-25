@@ -761,15 +761,16 @@ public class DatabaseHelper {
                 String SQL_command = "SELECT * FROM item";
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 while (resultSet.next()) {
-                    String itemID = resultSet.getString("item_id");
-                    String name = resultSet.getString("name");
-                    String description = resultSet.getString("description");
-                    int startYear = resultSet.getInt("start_year");
-                    int endYear = resultSet.getInt("end_year");
-                    String itemUrl = resultSet.getString("item_url");
-                    String imageUrl = resultSet.getString("image_url");
-                    int closetID = resultSet.getInt("closet_id");
-                    Item item = new Item(itemID, name, description, startYear, endYear, itemUrl, imageUrl, closetID);
+                    String ID = resultSet.getString("obj_id");
+                    String name = resultSet.getString("obj_name");
+                    String description = resultSet.getString("obj_desc");
+                    int startYear = resultSet.getInt("obj_start_year");
+                    int endYear = resultSet.getInt("obj_end_year");
+                    String itemUrl = resultSet.getString("obj_url");
+                    String imageUrl = resultSet.getString("obj_img");
+                    int closetID = resultSet.getInt("sid");
+                    Item item = new Item(ID, name, description, startYear, endYear,
+                            itemUrl, imageUrl, closetID);
                     itemList.add(item);
                 }
                 disconnect(resultSet, connection);
