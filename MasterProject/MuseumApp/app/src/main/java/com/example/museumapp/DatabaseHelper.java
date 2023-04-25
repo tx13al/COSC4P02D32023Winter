@@ -748,4 +748,59 @@ public class DatabaseHelper {
         thread.interrupt();
         return items;
     }
+    public static class getItemListThread extends Thread {
+        private ArrayList<Item> itemList = new ArrayList<Item>();
+        private int from;
+        private int to;
+
+        public getItemListThread(int from, int to){
+            super();
+            this.from =from;
+            this.to = to;
+        }
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_command = "SELECT * FROM item LIMIT " + to + " OFFSET " + from;
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    String ID = resultSet.getString("obj_id");
+                    String name = resultSet.getString("obj_name");
+                    String description = resultSet.getString("obj_desc");
+                    int startYear = resultSet.getInt("obj_start_year");
+                    int endYear = resultSet.getInt("obj_end_year");
+                    String itemUrl = resultSet.getString("obj_url");
+                    String imageUrl = resultSet.getString("obj_img");
+                    int closetID = resultSet.getInt("sid");
+                    Item item = new Item(ID, name, description, startYear, endYear,
+                            itemUrl, imageUrl, closetID);
+                    itemList.add(item);
+                }
+                disconnect(resultSet, connection);
+            } catch (SQLException e) {
+                System.err.print(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        public ArrayList<Item> getItems(){
+            return itemList;
+        }
+    }
+
+    //this method can get all the items from the item list. (get all items between from and to)
+    public static ArrayList<Item> getItemList(int from, int to) {
+        ArrayList<Item> itemList;
+        getItemListThread getItemListThread = new getItemListThread(from, to);
+        getItemListThread.start();
+        try {
+            getItemListThread.join();
+        } catch (InterruptedException e){
+            System.err.println(e.getMessage());
+        }
+        itemList = getItemListThread.getItems();
+        getItemListThread.interrupt();
+        return itemList;
+    }
 }

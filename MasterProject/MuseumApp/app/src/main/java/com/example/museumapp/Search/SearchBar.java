@@ -54,10 +54,6 @@ public class SearchBar extends FrameLayout {
         actv.setAdapter(completion);
         actv.setThreshold(1);
         actv.setInputType(InputType.TYPE_CLASS_TEXT);
-
-        // Set the dropdown height
-        //actv.setDropDownHeight(300);
-
         actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
