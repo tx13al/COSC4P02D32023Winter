@@ -749,7 +749,7 @@ public class DatabaseHelper {
         return items;
     }
     public static class getItemListThread extends Thread {
-        ArrayList<Item> itemList = new ArrayList<>();
+        private ArrayList<Item> itemList = new ArrayList<Item>();
 
         public getItemListThread(){
             super();
@@ -778,12 +778,15 @@ public class DatabaseHelper {
                 e.printStackTrace();
             }
         }
+
         public ArrayList<Item> getItems(){
             return itemList;
         }
     }
-    public static ArrayList<Item> getItemList(){
-        ArrayList<Item> itemList = null;
+
+    //this method can get all the items from the item list.
+    public static ArrayList<Item> getItemList() {
+        ArrayList<Item> itemList;
         getItemListThread getItemListThread = new getItemListThread();
         getItemListThread.start();
         try {
