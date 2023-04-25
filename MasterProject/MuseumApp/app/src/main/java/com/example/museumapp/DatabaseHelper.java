@@ -750,15 +750,19 @@ public class DatabaseHelper {
     }
     public static class getItemListThread extends Thread {
         private ArrayList<Item> itemList = new ArrayList<Item>();
+        private int from;
+        private int to;
 
-        public getItemListThread(){
+        public getItemListThread(int from, int to){
             super();
+            this.from =from;
+            this.to = to;
         }
         public void run() {
             try {
                 Connection connection = connect();
                 Statement statement = connection.createStatement();
-                String SQL_command = "SELECT * FROM item";
+                String SQL_command = "SELECT * FROM item LIMIT " + to + " OFFSET " + from;
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 while (resultSet.next()) {
                     String ID = resultSet.getString("obj_id");
@@ -785,10 +789,10 @@ public class DatabaseHelper {
         }
     }
 
-    //this method can get all the items from the item list.
-    public static ArrayList<Item> getItemList() {
+    //this method can get all the items from the item list. (get all items between from and to)
+    public static ArrayList<Item> getItemList(int from, int to) {
         ArrayList<Item> itemList;
-        getItemListThread getItemListThread = new getItemListThread();
+        getItemListThread getItemListThread = new getItemListThread(from, to);
         getItemListThread.start();
         try {
             getItemListThread.join();
