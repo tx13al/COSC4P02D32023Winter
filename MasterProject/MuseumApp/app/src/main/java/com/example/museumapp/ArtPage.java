@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.museumapp.objects.Item;
+import com.example.museumapp.objects.ItemList;
 
 import java.util.ArrayList;
 
@@ -39,10 +41,9 @@ public class ArtPage extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        //initiate the items
-        itemList = (ArrayList<Item>)getIntent().getSerializableExtra("itemList");
+        itemList = DatabaseHelper.getItemList();
         //load page
-        loadPage();
+        loadPage(itemList);
 
     }
 
@@ -55,7 +56,7 @@ public class ArtPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadPage() {
+    private void loadPage(ArrayList<Item> itemList) {
         loadingIndicator.setVisibility(View.VISIBLE);
         int start = currentPage * pageSize;
         int end = Math.min(start + pageSize, itemList.size());

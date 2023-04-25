@@ -748,4 +748,51 @@ public class DatabaseHelper {
         thread.interrupt();
         return items;
     }
+    public static class getItemListThread extends Thread {
+        ArrayList<Item> itemList = new ArrayList<>();
+
+        public getItemListThread(){
+            super();
+        }
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_command = "SELECT * FROM item";
+                ResultSet resultSet = statement.executeQuery(SQL_command);
+                while (resultSet.next()) {
+                    String itemID = resultSet.getString("item_id");
+                    String name = resultSet.getString("name");
+                    String description = resultSet.getString("description");
+                    int startYear = resultSet.getInt("start_year");
+                    int endYear = resultSet.getInt("end_year");
+                    String itemUrl = resultSet.getString("item_url");
+                    String imageUrl = resultSet.getString("image_url");
+                    int closetID = resultSet.getInt("closet_id");
+                    Item item = new Item(itemID, name, description, startYear, endYear, itemUrl, imageUrl, closetID);
+                    itemList.add(item);
+                }
+                disconnect(resultSet, connection);
+            } catch (SQLException e) {
+                System.err.print(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        public ArrayList<Item> getItems(){
+            return itemList;
+        }
+    }
+    public static ArrayList<Item> getItemList(){
+        ArrayList<Item> itemList = null;
+        getItemListThread getItemListThread = new getItemListThread();
+        getItemListThread.start();
+        try {
+            getItemListThread.join();
+        } catch (InterruptedException e){
+            System.err.println(e.getMessage());
+        }
+        itemList = getItemListThread.getItems();
+        getItemListThread.interrupt();
+        return itemList;
+    }
 }

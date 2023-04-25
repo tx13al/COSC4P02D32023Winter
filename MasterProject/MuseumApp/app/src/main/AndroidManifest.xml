@@ -39,7 +39,6 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".ArtPage"
-            android:label="Info Page"
             android:parentActivityName=".MainActivity">
         </activity>
     </application>
