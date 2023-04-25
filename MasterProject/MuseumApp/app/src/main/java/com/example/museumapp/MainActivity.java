@@ -125,6 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public ArrayList<ShowCase> getShowCases() {return showCases;}
 
+    public void setDisplayingMapPin(MapPin mapPin) {
+        this.displayingMapPin = mapPin;
+    }
+
     public MapPin getDisplaying() {
         return displayingMapPin;
     }
@@ -132,6 +136,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void shutShowCaseItemList() {
         HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_list_scrollView);
         showCaseItemListScrollView.setVisibility(View.INVISIBLE);
+    }
+
+    public FirstFloor getFirstFloor() {
+        return firstFloor;
+    }
+
+    public SecondFloor getSecondFloor() {
+        return secondFloor;
+    }
+
+    public void viewFirstFloor() {
+        floor_1.setVisibility(View.VISIBLE);
+        floor_2.setVisibility(View.GONE);
+        level_1.setTextColor(getColor(R.color.red));
+        level_2.setTextColor(getColor(R.color.navy_blue));
+        firstFloor.setPinsVisibility();
+        firstFloor.invalidate();
+    }
+
+    public void viewSecondFloor() {
+        floor_1.setVisibility(View.GONE);
+        floor_2.setVisibility(View.VISIBLE);
+        level_1.setTextColor(getColor(R.color.navy_blue));
+        level_2.setTextColor(getColor(R.color.red));
+        secondFloor.setPinsVisibility();
+        secondFloor.invalidate();
     }
 
     @Override

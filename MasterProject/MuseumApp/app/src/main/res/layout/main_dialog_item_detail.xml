@@ -111,16 +111,16 @@
                 android:padding="5dp"
                 />
 
-                <TextView
-                    android:id="@+id/item_detail_description_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1000"
-                    android:lineSpacingExtra="5dp"
-                    android:fontFamily="@font/josefin_sans_regular"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    />
+            <TextView
+                android:id="@+id/item_detail_description_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1000"
+                android:lineSpacingExtra="5dp"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:textSize="15sp"
+                android:padding="5dp"
+                />
 
 
             <androidx.appcompat.widget.LinearLayoutCompat

@@ -95,7 +95,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
       //  SearchBar searchBar = new SearchBar(this, actv);
     }
 
-    private void viewFirstFloor() {
+    public void viewFirstFloor() {
         floor_1.setVisibility(View.VISIBLE);
         floor_2.setVisibility(View.GONE);
         level_1.setTextColor(getColor(R.color.red));
@@ -104,7 +104,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         firstFloor.invalidate();
     }
 
-    private void viewSecondFloor() {
+    public void viewSecondFloor() {
         floor_1.setVisibility(View.GONE);
         floor_2.setVisibility(View.VISIBLE);
         level_1.setTextColor(getColor(R.color.navy_blue));
@@ -214,6 +214,10 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         if (!showCase.getIsSet()) {
             showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
         }
+    }
+
+    public void setDisplayingMapPin(MapPin mapPin) {
+        this.displayingMapPin = mapPin;
     }
 
     public MapPin getDisplaying() {
@@ -378,6 +382,18 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         });
         changeDialog.show();
         changeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    public ArrayList<ShowCase> getShowCases() {
+        return showCases;
+    }
+
+    public FirstFloor getFirstFloor() {
+        return firstFloor;
+    }
+
+    public SecondFloor getSecondFloor() {
+        return secondFloor;
     }
 
     @Override

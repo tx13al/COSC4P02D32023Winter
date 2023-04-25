@@ -481,4 +481,8 @@ public class FirstFloor extends View implements Floor {
     public float getTranslateY() {
         return translateY;
     }
+
+    public ArrayList<MapPin> getPinList() {
+        return pinList;
+    }
 }

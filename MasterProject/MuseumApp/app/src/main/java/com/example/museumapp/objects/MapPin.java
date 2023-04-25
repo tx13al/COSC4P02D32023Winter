@@ -105,7 +105,7 @@ public class MapPin {
         itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private void mainItemList() {
+    public void mainItemList() {
         MainActivity mainActivity = (MainActivity) context;
         HorizontalScrollView showCaseItemListScrollView =
                 mainActivity.findViewById(R.id.showCase_item_list_scrollView);
@@ -157,7 +157,7 @@ public class MapPin {
         //TODO
     }
 
-    private void controlItemList() {
+    public void controlItemList() {
         Control control = (Control) context;
         HorizontalScrollView showCaseItemEditListScrollView =
                 control.findViewById(R.id.showCase_item_edit_list_scrollView);

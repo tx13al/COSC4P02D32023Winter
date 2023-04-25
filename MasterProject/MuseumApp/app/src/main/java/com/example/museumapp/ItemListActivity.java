@@ -21,7 +21,7 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        items = (ArrayList<Item>)getIntent().getSerializableExtra("itemList");
+        items = ItemListSingleton.getInstance().getItemList();
         Button back = findViewById(R.id.search_bar_item_list_back_button);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Control" />
+        <activity android:name=".ItemListActivity"/>
         <activity
             android:name=".InfoPage"
             android:label="Info Page"

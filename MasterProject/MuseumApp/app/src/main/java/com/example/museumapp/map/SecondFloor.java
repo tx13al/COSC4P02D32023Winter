@@ -357,4 +357,8 @@ public class SecondFloor extends View implements Floor {
     public float getTranslateY() {
         return translateY;
     }
+
+    public ArrayList<MapPin> getPinList() {
+        return pinList;
+    }
 }
