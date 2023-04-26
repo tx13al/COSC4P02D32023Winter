@@ -736,7 +736,7 @@ public class DatabaseHelper {
 
     //Give all items based on the given name.
     public static ArrayList<Item> searchItemByName(String name) {
-        ArrayList<Item> items = null;
+        ArrayList<Item> items;
         searchItemByNameThread thread = new searchItemByNameThread(name);
         thread.start();
         try{

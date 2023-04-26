@@ -16,9 +16,7 @@ public class ItemListSingleton {
     }
 
     public ArrayList<Item> getItemList() {
-        ArrayList<Item> tmp = items;
-        items = null;
-        return tmp;
+        return items;
     }
 
     public void setItemList(ArrayList<Item> items) {

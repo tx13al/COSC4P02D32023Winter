@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -25,8 +28,10 @@ import com.example.museumapp.Search.SearchBar;
 import com.example.museumapp.map.Edge;
 import com.example.museumapp.map.FirstFloor;
 import com.example.museumapp.map.SecondFloor;
+import com.example.museumapp.objects.Item;
 import com.example.museumapp.objects.MapPin;
 import com.example.museumapp.objects.ShowCase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -216,14 +221,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    public void setDisplayingMapPin(MapPin mapPin) {
-        this.displayingMapPin = mapPin;
-    }
-
-    public MapPin getDisplaying() {
-        return displayingMapPin;
-    }
-
     private void deleteShowCaseFromMap(MapPin mapPin) {
         if (mapPin.getShowCase().getFloorNum() == 1) {
             firstFloor.deleteShowCaseFromMap(mapPin);
@@ -384,16 +381,151 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         changeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public ArrayList<ShowCase> getShowCases() {
-        return showCases;
+    //display the detail of the item selected by a dialog.
+    public void displayItemDialog(Item item) {
+        Dialog itemDetailDialog = new Dialog(this);
+        itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
+        ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
+        dialogDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                itemDetailDialog.dismiss();
+            }
+        });
+        //display the name of the item.
+        TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
+        itemDetailNameTextView.setText(item.getName());
+        //if possible, display the name of start year.
+        TextView startYear = itemDetailDialog.findViewById(R.id.start_year);
+        startYear.setVisibility(View.GONE);
+        if (item.getStartYear() != 0) {
+            startYear.setVisibility(View.VISIBLE);
+            startYear.setText("Start Year: " + item.getStartYear());
+        }
+        //if possible, display the name of end year.
+        TextView endYear = itemDetailDialog.findViewById(R.id.end_year);
+        endYear.setVisibility(View.GONE);
+        if (item.getEndYear() != 0) {
+            endYear.setVisibility(View.VISIBLE);
+            endYear.setText("End Year: " + item.getEndYear());
+        }
+        //display the image of the item.
+        ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
+        Picasso.get()
+                .load(item.getImageUrl())
+                .resize(600, 0)
+                .centerCrop()
+                .into(imageView);
+        //display the description.
+        TextView itemDetailDescriptionTextView =
+                itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
+        itemDetailDescriptionTextView.setText(item.getDescription());
+        //display the URL and set a onclick for the browser.
+        TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
+        itemDetailURLTextView.setText(item.getItemUrl());
+        itemDetailDialog.show();
+        itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public FirstFloor getFirstFloor() {
-        return firstFloor;
+    //TODO
+    private void addItem() {
+        Intent intent = new Intent(this, ItemListActivity.class);
     }
 
-    public SecondFloor getSecondFloor() {
-        return secondFloor;
+    public void displayMapPinItemList(MapPin mapPin) {
+        HorizontalScrollView showCaseItemEditListScrollView =
+                this.findViewById(R.id.showCase_item_edit_list_scrollView);
+        showCaseItemEditListScrollView.setVisibility(View.VISIBLE);
+        if (displayingMapPin != mapPin) {
+            //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
+            LinearLayout showCaseItemEditListLayout =   //container for the items
+                    this.findViewById(R.id.showCase_item_edit_list_scrollView_linear);
+            if (displayingMapPin != null) {  //list is not empty.
+                showCaseItemEditListLayout.removeAllViews();
+            }
+            this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
+            //update the displaying showcase in control, and load the showcase items if not loaded.
+            LayoutInflater layoutInflater = LayoutInflater.from(this);
+            //set the add button for the showCase.
+            Button addItem = new Button(this);
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(128, 128);
+            params.setMargins(5, 0, 0, 0);
+            params.gravity = Gravity.CENTER_VERTICAL;
+            addItem.setLayoutParams(params);
+            addItem.setBackgroundResource(R.drawable.add_icon_with_circle);
+            showCaseItemEditListLayout.addView(addItem);
+            addItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addItem();
+                }
+            });
+            for (Item item: mapPin.getShowCase().getItems()) {
+                View showCaseItemEditLayout = layoutInflater.inflate(
+                        R.layout.item_edit_display,showCaseItemEditListLayout,false);
+                //set image
+                ImageView imageView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_image_view);
+                Picasso.get()
+                        .load(item.getImageUrl())
+                        .resize(0, 500)
+                        .centerCrop()
+                        .into(imageView);
+                //set name
+                TextView textView = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_name_text_view);
+                textView.setText(item.getName());
+                ImageButton editButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_edit_button);
+                ImageButton deleteButton = showCaseItemEditLayout.findViewById(R.id.showCase_item_delete_button);
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayItemDialog(item);
+                    }
+                });
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseHelper.deleteItemInShowCase(item, mapPin.getShowCase());
+                        mapPin.getShowCase().getItems().remove(item);
+                        showCaseItemEditListLayout.removeView(showCaseItemEditLayout);
+                    }
+                });
+                showCaseItemEditListLayout.addView(showCaseItemEditLayout);
+            }
+        }
+    }
+
+    //display the searched item, the dialog and the mapPin list.
+    public void displaySearchedItem(Item item) {
+        int sid = item.getClosetID();
+        if (sid != 0) {
+            ShowCase container = null;
+            for (ShowCase showCase: showCases) {
+                if (showCase.getClosetID() == sid) {
+                    container = showCase;
+                    break;
+                }
+            }
+            MapPin display = null;
+            if (container.getFloorNum() == 1) {
+                for (MapPin mapPin: firstFloor.getPinList()) {
+                    if (mapPin.getShowCase() == container) {
+                        display = mapPin;
+                        break;
+                    }
+                }
+            }
+            if (container.getFloorNum() == 2) {
+                for (MapPin mapPin: secondFloor.getPinList()) {
+                    if (mapPin.getShowCase() == container) {
+                        display = mapPin;
+                        break;
+                    }
+                }
+            }
+            displayMapPinItemList(display);
+        }
+        displayItemDialog(item);
     }
 
     @Override

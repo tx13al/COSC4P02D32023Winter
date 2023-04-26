@@ -1,23 +1,18 @@
 package com.example.museumapp;
-import android.content.ComponentName;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.example.museumapp.objects.Item;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 public class ItemListActivity extends AppCompatActivity {
@@ -55,7 +50,12 @@ public class ItemListActivity extends AppCompatActivity {
             searchBarItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ItemSingleton.getInstance().setItem(item);
+                    if (getBaseContext() instanceof MainActivity) {
+                        ((MainActivity)getBaseContext()).displaySearchedItem(item);
+                    }
+                    if (getBaseContext() instanceof Control) {
+                        ((Control)getBaseContext()).displaySearchedItem(item);
+                    }
                     finish();
                 }
             });

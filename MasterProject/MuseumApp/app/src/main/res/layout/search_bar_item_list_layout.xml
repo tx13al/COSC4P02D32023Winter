@@ -36,13 +36,19 @@
     <ScrollView
         android:id="@+id/search_bar_item_list_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar_item_list_slider_layout"
-        android:scrollbars="vertical">
-        <androidx.appcompat.widget.LinearLayoutCompat
+        android:scrollbars="vertical"
+        android:paddingTop="5dp"
+        android:background="@color/navy_blue"
+        android:visibility="visible">
+        <LinearLayout
             android:id="@+id/search_bar_item_list_scroll_view_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/navy_blue"
+            >
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,35 +1,38 @@
 package com.example.museumapp;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import com.example.museumapp.Search.SearchAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.example.museumapp.Search.SearchBar;
-import com.example.museumapp.Search.SearchItem;
 import com.example.museumapp.map.*;
 import com.example.museumapp.objects.*;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View floor_1, floor_2;
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
-    SearchBar searchBar;
+    private SearchBar searchBar;
     private FrameLayout mainContainer;
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public boolean checkConnection() {
+    private boolean checkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
         if (capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))) {
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //get the show case with items in it. (For efficiency, we will check if the showCase has been updated.)
-    public void getShowCase(ShowCase showCase, MapPin mapPin) {
+    private void getShowCase(ShowCase showCase, MapPin mapPin) {
         this.displayingMapPin = mapPin;
         if (!showCase.getIsSet()) {
             showCase.setItems(DatabaseHelper.getAllItemsOfShowCase(showCase.getClosetID()));
@@ -125,28 +128,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public ArrayList<ShowCase> getShowCases() {return showCases;}
 
-    public void setDisplayingMapPin(MapPin mapPin) {
-        this.displayingMapPin = mapPin;
-    }
-
-    public MapPin getDisplaying() {
-        return displayingMapPin;
-    }
-
     private void shutShowCaseItemList() {
         HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_list_scrollView);
         showCaseItemListScrollView.setVisibility(View.INVISIBLE);
     }
 
-    public FirstFloor getFirstFloor() {
-        return firstFloor;
-    }
-
-    public SecondFloor getSecondFloor() {
-        return secondFloor;
-    }
-
-    public void viewFirstFloor() {
+    private void viewFirstFloor() {
         floor_1.setVisibility(View.VISIBLE);
         floor_2.setVisibility(View.GONE);
         level_1.setTextColor(getColor(R.color.red));
@@ -155,13 +142,132 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firstFloor.invalidate();
     }
 
-    public void viewSecondFloor() {
+    private void viewSecondFloor() {
         floor_1.setVisibility(View.GONE);
         floor_2.setVisibility(View.VISIBLE);
         level_1.setTextColor(getColor(R.color.navy_blue));
         level_2.setTextColor(getColor(R.color.red));
         secondFloor.setPinsVisibility();
         secondFloor.invalidate();
+    }
+
+    //display the detail of the item selected by a dialog.
+    public void displayItemDialog(Item item) {
+        Dialog itemDetailDialog = new Dialog(this);
+        itemDetailDialog.setContentView(R.layout.main_dialog_item_detail);
+        ImageView dialogDismiss = itemDetailDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
+        dialogDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                itemDetailDialog.dismiss();
+            }
+        });
+        //display the name of the item.
+        TextView itemDetailNameTextView = itemDetailDialog.findViewById(R.id.item_detail_name_text_view);
+        itemDetailNameTextView.setText(item.getName());
+        //if possible, display the name of start year.
+        TextView startYear = itemDetailDialog.findViewById(R.id.start_year);
+        startYear.setVisibility(View.GONE);
+        if (item.getStartYear() != 0) {
+            startYear.setVisibility(View.VISIBLE);
+            startYear.setText("Start Year: " + item.getStartYear());
+        }
+        //if possible, display the name of end year.
+        TextView endYear = itemDetailDialog.findViewById(R.id.end_year);
+        endYear.setVisibility(View.GONE);
+        if (item.getEndYear() != 0) {
+            endYear.setVisibility(View.VISIBLE);
+            endYear.setText("End Year: " + item.getEndYear());
+        }
+        //display the image of the item.
+        ImageView imageView = itemDetailDialog.findViewById(R.id.item_detail_image_view);
+        Picasso.get()
+                .load(item.getImageUrl())
+                .resize(600, 0)
+                .centerCrop()
+                .into(imageView);
+        //display the description.
+        TextView itemDetailDescriptionTextView =
+                itemDetailDialog.findViewById(R.id.item_detail_description_text_view);
+        itemDetailDescriptionTextView.setText(item.getDescription());
+        //display the URL and set a onclick for the browser.
+        TextView itemDetailURLTextView = itemDetailDialog.findViewById(R.id.item_detail_url_text_view);
+        itemDetailURLTextView.setText(item.getItemUrl());
+        itemDetailDialog.show();
+        itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    public void displayMapPinItemList(MapPin mapPin) {
+        HorizontalScrollView showCaseItemListScrollView =
+                this.findViewById(R.id.showCase_item_list_scrollView);
+        showCaseItemListScrollView.setVisibility(View.VISIBLE);
+        if (displayingMapPin != mapPin) {
+            //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
+            LinearLayout showCaseItemListLayout =   //container for the items
+                    this.findViewById(R.id.showCase_item_list_scrollView_linear);
+            if (displayingMapPin != null) { //clear the container for another selected showCase.
+                showCaseItemListLayout.removeAllViews();
+            }
+            this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
+            //update the displaying showcase in main, and load the showcase items if not loaded.
+            LayoutInflater layoutInflater = LayoutInflater.from(this);
+            for (Item item : mapPin.getShowCase().getItems()) {
+                //Dynamically set linear layout for each item and add them to the scroll.
+                View showCaseItemLayout = layoutInflater.inflate(R.layout.item_display,
+                        showCaseItemListLayout, false);
+                //Image setting
+                ImageView imageView = showCaseItemLayout.findViewById(R.id.showCase_item_image_view);
+                Picasso.get()
+                        .load(item.getImageUrl())
+                        .resize(0, 350)
+                        .centerCrop()
+                        .into(imageView);
+                //Text setting
+                TextView text = showCaseItemLayout.findViewById(R.id.showCase_item_name_text_view);
+                text.setText(item.getName());
+                //when click the item, it displays the detail of the item by a dialog
+                showCaseItemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view1) {
+                        displayItemDialog(item);
+                    }
+                });
+                showCaseItemListLayout.addView(showCaseItemLayout);
+            }
+        }
+    }
+
+    //display the searched item, the dialog and the mapPin list.
+    public void displaySearchedItem(Item item) {
+        int sid = item.getClosetID();
+        if (sid != 0) {
+            ShowCase container = null;
+            for (ShowCase showCase: showCases) {
+                if (showCase.getClosetID() == sid) {
+                    container = showCase;
+                    break;
+                }
+            }
+            MapPin display = null;
+            if (container.getFloorNum() == 1) {
+                for (MapPin mapPin: firstFloor.getPinList()) {
+                    if (mapPin.getShowCase() == container) {
+                        display = mapPin;
+                        break;
+                    }
+                }
+            }
+            if (container.getFloorNum() == 2) {
+                for (MapPin mapPin: secondFloor.getPinList()) {
+                    if (mapPin.getShowCase() == container) {
+                        display = mapPin;
+                        break;
+                    }
+                }
+            }
+            displayMapPinItemList(display);
+        }
+        displayItemDialog(item);
     }
 
     @Override
