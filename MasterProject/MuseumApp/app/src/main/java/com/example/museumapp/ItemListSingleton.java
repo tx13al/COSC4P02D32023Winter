@@ -16,7 +16,10 @@ public class ItemListSingleton {
     }
 
     public ArrayList<Item> getItemList() {
-        return items;
+        ArrayList<Item> tmp;
+        tmp = items;
+        items = null;
+        return tmp;
     }
 
     public void setItemList(ArrayList<Item> items) {
