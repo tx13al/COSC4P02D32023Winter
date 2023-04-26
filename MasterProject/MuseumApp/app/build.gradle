@@ -72,4 +72,5 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.32'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }

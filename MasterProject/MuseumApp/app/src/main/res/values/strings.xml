@@ -3,6 +3,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="address"><u>43 Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</u></string>
+    <string name="more">more...</string>
+    <string name="less">less...</string>
+
 
     <string-array name="floor_selection">
         <item>Floor 1</item>
