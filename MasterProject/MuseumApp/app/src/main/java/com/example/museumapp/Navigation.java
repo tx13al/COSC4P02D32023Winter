@@ -283,7 +283,7 @@ public class Navigation {
     private ArrayList<Edge> convertPathPointsToEdges(ArrayList<Integer> pathPoints,  HashSet<Edge> vertices) {
         ArrayList<Edge> vertexList = new ArrayList<>(vertices);
         ArrayList<Edge> vertexEdgeList = new ArrayList<>();
-        if(pathPoints.size() == 2){
+        if(pathPoints.size() >= 2){
             for (int i =0;i < pathPoints.size()-1; i++) {
                 Edge vertex1 = vertexList.get(pathPoints.get(i));
                 Edge vertex2 = vertexList.get(pathPoints.get(i+1));
