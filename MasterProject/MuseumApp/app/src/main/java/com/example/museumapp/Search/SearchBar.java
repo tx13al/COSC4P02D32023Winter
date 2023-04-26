@@ -1,10 +1,7 @@
 package com.example.museumapp.Search;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,19 +9,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.museumapp.ContextSingleton;
 import com.example.museumapp.Control;
 import com.example.museumapp.DatabaseHelper;
 import com.example.museumapp.ItemListActivity;
 import com.example.museumapp.ItemListSingleton;
 import com.example.museumapp.MainActivity;
-import com.example.museumapp.R;
 import com.example.museumapp.objects.Item;
-import com.example.museumapp.objects.MapPin;
-import com.example.museumapp.objects.ShowCase;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import android.widget.FrameLayout;
 
@@ -92,6 +85,7 @@ public class SearchBar extends FrameLayout {
         }
         else { //have over 1 items. (display the list to make future selection.)
             Intent intent = new Intent(context, ItemListActivity.class);
+            ContextSingleton.getInstance().setContext(context);
             ItemListSingleton.getInstance().setItemList(items);
             context.startActivity(intent);
         }

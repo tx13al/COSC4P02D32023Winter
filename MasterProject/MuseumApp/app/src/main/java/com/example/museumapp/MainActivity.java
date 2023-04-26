@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             MapPin display = null;
             if (container.getFloorNum() == 1) {
+                viewFirstFloor();
                 for (MapPin mapPin: firstFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;
@@ -258,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             if (container.getFloorNum() == 2) {
+                viewSecondFloor();
                 for (MapPin mapPin: secondFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;

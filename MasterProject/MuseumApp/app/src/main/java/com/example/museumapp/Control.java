@@ -508,6 +508,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             }
             MapPin display = null;
             if (container.getFloorNum() == 1) {
+                viewFirstFloor();
                 for (MapPin mapPin: firstFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;
@@ -516,6 +517,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 }
             }
             if (container.getFloorNum() == 2) {
+                viewSecondFloor();
                 for (MapPin mapPin: secondFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;

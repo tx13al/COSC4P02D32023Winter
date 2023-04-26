@@ -8,19 +8,19 @@
     <ImageView
         android:id="@+id/search_bar_item_image"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="@+id/search_bar_item_name"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/search_bar_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/holo_blue_light"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
