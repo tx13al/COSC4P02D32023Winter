@@ -1,4 +1,5 @@
 package com.example.museumapp;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -37,17 +38,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
     private MapPin displayingMapPin = null;
+
+    private ArrayList<POI> POIs;
     private boolean Connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Check internet state.
         showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
+        POIs = createPOIs(); //get all POIs (toilets, exits, etc.)
+        displayPOIs(); //display POIs on the map
+
+        //Check internet state.
         Connected = checkConnection();
         System.out.println("Connection status: " + Connected);
 
-        if ((Connected) && (showCases==null)){
+        if ((Connected) && (showCases == null)) {
             showCases = DatabaseHelper.getAllEmptyCases();  //get all cases from database and set empty,
             //this can also update the show cases for each start of mainActivity
         }
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainContainer = findViewById(R.id.main_container);
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        floor_1 = inflater.inflate(R.layout.activity_floor_one,null);
+        floor_1 = inflater.inflate(R.layout.activity_floor_one, null);
         firstFloor = floor_1.findViewById(R.id.firstFloor);
         mainContainer.addView(floor_1);
         floor_1.setVisibility(View.VISIBLE);
@@ -97,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Find the AutoCompleteTextView view
         AutoCompleteTextView actv = findViewById(R.id.search_bar);
 
-        if(Connected) {
+        if (Connected) {
             firstFloor.addShowCases(showCases);
             firstFloor.setPinsVisibility();
             secondFloor.addShowCases(showCases);
@@ -126,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public ArrayList<ShowCase> getShowCases() {return showCases;}
+    public ArrayList<ShowCase> getShowCases() {
+        return showCases;
+    }
 
     private void shutShowCaseItemList() {
         HorizontalScrollView showCaseItemListScrollView = findViewById(R.id.showCase_item_list_scrollView);
@@ -242,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int sid = item.getClosetID();
         if (sid != 0) {
             ShowCase container = null;
-            for (ShowCase showCase: showCases) {
+            for (ShowCase showCase : showCases) {
                 if (showCase.getClosetID() == sid) {
                     container = showCase;
                     break;
@@ -251,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             MapPin display = null;
             if (container.getFloorNum() == 1) {
                 viewFirstFloor();
-                for (MapPin mapPin: firstFloor.getPinList()) {
+                for (MapPin mapPin : firstFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;
                         break;
@@ -260,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (container.getFloorNum() == 2) {
                 viewSecondFloor();
-                for (MapPin mapPin: secondFloor.getPinList()) {
+                for (MapPin mapPin : secondFloor.getPinList()) {
                     if (mapPin.getShowCase() == container) {
                         display = mapPin;
                         break;
@@ -273,9 +281,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view){
+    public void onClick(View view) {
         shutShowCaseItemList();
-        switch (view.getId()){
+        switch (view.getId()) {
             //press Level 1 button change to level 1 floor plan
             case R.id.floorOneButton:
                 floor_1.setVisibility(View.VISIBLE);
@@ -335,5 +343,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setting.setTextColor(getColor(R.color.selected));
                 break;
         }
+    }
+
+    //This method is used to generate all the bathrooms and exits on the map.
+    public ArrayList<POI> createPOIs() {
+        ArrayList<POI> POIs = new ArrayList<POI>();
+
+        //Manually generate exits
+        POIs.add(new POI(1, 1, 45, 60, 0));
+        POIs.add(new POI(2, 1, 350, 270, 0));
+
+        //Manually generate bathrooms
+        POIs.add(new POI(3, 1, 120, 120, 1));
+        POIs.add(new POI(4, 1, 220, 120, 1));
+        POIs.add(new POI(5, 1, 270, 200, 1));
+
+        return POIs;
+    }
+
+    public void displayPOIs() {
+
     }
 }
