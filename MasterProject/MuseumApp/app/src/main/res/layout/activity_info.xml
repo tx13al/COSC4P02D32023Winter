@@ -9,29 +9,37 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_tool_bar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal">
+        android:padding="8dp"
+        >
+
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/tool_info"
         />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/search_bar_item_list_header"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/logo"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/linear_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/info_tool_bar_container"
         android:gravity="center"
         android:padding="10dp"
         android:text="VISIT"

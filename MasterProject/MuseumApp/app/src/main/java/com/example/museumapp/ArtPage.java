@@ -1,16 +1,12 @@
 package com.example.museumapp;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,13 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.museumapp.objects.Item;
-import com.example.museumapp.objects.ItemList;
 
 import java.util.ArrayList;
 
 public class ArtPage extends AppCompatActivity {
 
-    private Item item;
     private ArrayList<Item> itemList;
     private RecyclerView itemContainer;
     private ProgressBar loadingIndicator;
@@ -37,13 +31,29 @@ public class ArtPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art);
-        itemList = DatabaseHelper.getItemList(0,5);
-        adapter = new ItemAdapter(itemList); // assign adapter to the field
+        setTitle("");
+        itemList = DatabaseHelper.getItemList(0,100);
+        adapter = new ItemAdapter(itemList);
         itemContainer = findViewById(R.id.item_list);
         itemContainer.setAdapter(adapter);
         itemContainer.setLayoutManager(new LinearLayoutManager(this));
+        itemContainer.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (loadingIndicator.getVisibility() != View.VISIBLE && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    loadPage();
+                }
+            }
+        });
+
         loadingIndicator = findViewById(R.id.loading_indicator);
-        loadMoreBtn = findViewById(R.id.load_more_btn);
 
         //initiate toolbar to handle back action
         Toolbar toolbar = findViewById(R.id.art_tool_bar);
@@ -55,12 +65,6 @@ public class ArtPage extends AppCompatActivity {
 
         //load page
         loadPage();
-        loadMoreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPage();
-            }
-        });
     }
 
     @Override
@@ -71,18 +75,33 @@ public class ArtPage extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 
     private void loadPage() {
         loadingIndicator.setVisibility(View.VISIBLE);
+
         int start = currentPage * pageSize;
         int end = Math.min(start + pageSize, itemList.size());
+
         ArrayList<Item> sublist = new ArrayList<>(itemList.subList(start, end));
-        adapter.updateItemList(sublist);
+
+        if (currentPage == 0) {
+            adapter.updateItemList(new ArrayList<>(itemList.subList(0, 5)));
+        } else {
+            adapter.addItems(sublist);
+        }
+
         if (end == itemList.size()) {
             loadMoreBtn.setVisibility(View.GONE);
         }
 
-        loadingIndicator.setVisibility(View.GONE);
         currentPage++;
+
+        loadingIndicator.setVisibility(View.GONE);
     }
+
 }

@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="6dp"
     android:onClick="onClick"
@@ -27,26 +27,46 @@
         <TextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:hint="Item Name"
+            android:fontFamily="@font/josefin_sans_medium"
             android:textSize="20sp"
-            android:padding="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="2dp"
             />
 
         <TextView
             android:id="@+id/item_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="3"
             android:hint="Item Description"
-            android:maxLines="4"
-            android:padding="5dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:lineSpacingExtra="3dp"
+            android:textSize="10sp"
+            android:fontFamily="@font/josefin_sans_light"
+            android:padding="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
             />
+        <TextView
+            android:id="@+id/more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more"
+            android:textSize="10sp"
+            android:fontFamily="@font/josefin_sans_light"
+            android:textColor="@color/light_blue"
+            android:visibility="gone"
+            android:onClick="onClick"
+            android:padding="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+
+            />
+
 
     </LinearLayout>
 
