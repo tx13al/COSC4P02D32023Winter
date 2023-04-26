@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.museumapp.objects.Item;
 import com.example.museumapp.objects.ItemList;
@@ -23,16 +26,25 @@ public class ArtPage extends AppCompatActivity {
 
     private Item item;
     private ArrayList<Item> itemList;
-    private LinearLayout itemContainer;
+    private RecyclerView itemContainer;
     private ProgressBar loadingIndicator;
     private int currentPage = 0;
-    private int pageSize = 20;
+    private int pageSize = 5;
+    private Button loadMoreBtn;
+    private ItemAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art);
-        itemContainer = findViewById(R.id.item_container);
+        itemList = DatabaseHelper.getItemList(0,5);
+        adapter = new ItemAdapter(itemList); // assign adapter to the field
+        itemContainer = findViewById(R.id.item_list);
+        itemContainer.setAdapter(adapter);
+        itemContainer.setLayoutManager(new LinearLayoutManager(this));
         loadingIndicator = findViewById(R.id.loading_indicator);
+        loadMoreBtn = findViewById(R.id.load_more_btn);
+
         //initiate toolbar to handle back action
         Toolbar toolbar = findViewById(R.id.art_tool_bar);
         setSupportActionBar(toolbar);
@@ -41,10 +53,14 @@ public class ArtPage extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        itemList = DatabaseHelper.getItemList();
         //load page
-        loadPage(itemList);
-
+        loadPage();
+        loadMoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPage();
+            }
+        });
     }
 
     @Override
@@ -56,30 +72,17 @@ public class ArtPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadPage(ArrayList<Item> itemList) {
+    private void loadPage() {
         loadingIndicator.setVisibility(View.VISIBLE);
         int start = currentPage * pageSize;
         int end = Math.min(start + pageSize, itemList.size());
-        for (int i = start; i < end; i++) {
-            Item item = itemList.get(i);
-            View itemView = createItemView(item);
-            itemContainer.addView(itemView);
+        ArrayList<Item> sublist = new ArrayList<>(itemList.subList(start, end));
+        adapter.updateItemList(sublist);
+        if (end == itemList.size()) {
+            loadMoreBtn.setVisibility(View.GONE);
         }
 
         loadingIndicator.setVisibility(View.GONE);
         currentPage++;
     }
-
-    private View createItemView(Item item) {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View itemView = inflater.inflate(R.layout.arts_layout, itemContainer, false);
-        ImageView itemImage = itemView.findViewById(R.id.item_image);
-        TextView itemName = itemView.findViewById(R.id.item_name);
-        TextView itemDescription = itemView.findViewById(R.id.item_description);
-        //itemImage.setImageResource(item.getImageResourceId());
-        itemName.setText(item.getName());
-        itemDescription.setText(item.getDescription());
-        return itemView;
-    }
-
 }

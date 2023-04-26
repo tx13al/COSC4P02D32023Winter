@@ -1,32 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/beige"
+    >
+
     <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/art_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@android:color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/art_tool_bar"
+        android:layout_above="@+id/loading_container"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/arts_layout"
         />
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:background="@color/white"
+        >
 
-        <LinearLayout
-            android:id="@+id/item_container"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:visibility="gone" />
 
-            <ProgressBar
-                android:id="@+id/loading_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+        <Button
+            android:id="@+id/load_more_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load More"
+            android:textColor="@color/white"
+            android:padding="15dp"
+            android:background="@drawable/shape_round_button_blue"
+            />
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
