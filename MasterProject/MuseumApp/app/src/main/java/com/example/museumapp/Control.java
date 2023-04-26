@@ -444,23 +444,16 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 showCaseItemEditListLayout.removeAllViews();
             }
             this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
-            //update the displaying showcase in control, and load the showcase items if not loaded.
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
             //set the add button for the showCase.
-            Button addItem = new Button(this);
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(128, 128);
-            params.setMargins(5, 0, 0, 0);
-            params.gravity = Gravity.CENTER_VERTICAL;
-            addItem.setLayoutParams(params);
-            addItem.setBackgroundResource(R.drawable.add_icon_with_circle);
-            showCaseItemEditListLayout.addView(addItem);
+            Button addItem = findViewById(R.id.showCase_add_item_button);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     addItem();
                 }
             });
+            //update the displaying showcase in control, and load the showcase items if not loaded.
+            LayoutInflater layoutInflater = LayoutInflater.from(this);
             for (Item item: mapPin.getShowCase().getItems()) {
                 View showCaseItemEditLayout = layoutInflater.inflate(
                         R.layout.item_edit_display,showCaseItemEditListLayout,false);

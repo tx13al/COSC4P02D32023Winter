@@ -108,6 +108,7 @@
         android:paddingTop="5dp"
         android:background="@color/gray"
         android:visibility="invisible">
+
         <LinearLayout
             android:id="@+id/showCase_item_edit_list_scrollView_linear"
             android:layout_width="match_parent"
@@ -115,7 +116,15 @@
             android:orientation="horizontal"
             android:background="@color/gray"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical">
+            <Button
+                android:id="@+id/showCase_add_item_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/add_icon_with_circle"
+                android:gravity="center_vertical" />
         </LinearLayout>
     </HorizontalScrollView>
 

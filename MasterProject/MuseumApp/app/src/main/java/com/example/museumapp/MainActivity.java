@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button login, level_1, level_2, home, info, arts, setting;
     private ArrayList<ShowCase> showCases;
     private MapPin displayingMapPin = null;
-
+    private MapPin from = null;
+    private MapPin to = null;
     private ArrayList<POI> POIs;
     private boolean Connected = false;
 
@@ -217,6 +218,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showCaseItemListLayout.removeAllViews();
             }
             this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
+            Button navigation = findViewById(R.id.showCase_item_list_navigation);
+            navigation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
             //update the displaying showcase in main, and load the showcase items if not loaded.
             LayoutInflater layoutInflater = LayoutInflater.from(this);
             for (Item item : mapPin.getShowCase().getItems()) {
