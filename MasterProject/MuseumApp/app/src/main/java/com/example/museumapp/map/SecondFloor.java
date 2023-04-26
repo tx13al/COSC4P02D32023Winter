@@ -285,23 +285,34 @@ public class SecondFloor extends View implements Floor {
     //remove all the edges of the showCase.
     private void removeShowCaseEdges(ShowCase showCase) {
         ArrayList<Edge> removing = new ArrayList<Edge>();
+        boolean e1 = true;
+        boolean e2 = true;
+        boolean e3 = true;
+        boolean e4 = true;
         for (Edge edge: innerEdges) {   //find all the edges of this showCase.
-            if (edge.equal(new Edge(showCase.getX(), showCase.getY(),
+            if (e1 && edge.equal(new Edge(showCase.getX(), showCase.getY(),
                     showCase.getX() + showCase.getLength(), showCase.getY()))) {
                 removing.add(edge);
+                e1 = false;
             }
-            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
+            if (e2 && edge.equal(new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
                     showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth()))) {
                 removing.add(edge);
+                e2 = false;
             }
-            if (edge.equal(new Edge(showCase.getX() + showCase.getLength(),
+            if (e3 && edge.equal(new Edge(showCase.getX() + showCase.getLength(),
                     showCase.getY() + showCase.getWidth(),
                     showCase.getX(), showCase.getY() + showCase.getWidth()))) {
                 removing.add(edge);
+                e3 = false;
             }
-            if (edge.equal(new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(),
+            if (e4 && edge.equal(new Edge(showCase.getX(), showCase.getY() + showCase.getWidth(),
                     showCase.getX(), showCase.getY()))) {
                 removing.add(edge);
+                e4 = false;
+            }
+            if ((!e1) && (!e2) && (!e3) && (!e4)) {
+                break;
             }
         }
         innerEdges.removeAll(removing);
