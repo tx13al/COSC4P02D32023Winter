@@ -3,6 +3,7 @@ package com.example.museumapp.objects;
 import java.util.List;
 
 public class ShowCase {
+    private int type;   //0 = showCase, 1 = washroom, 2 = staff, 3 = exit
     private int closetID;
     private float length;
     private float width;
@@ -11,7 +12,8 @@ public class ShowCase {
     private List<Item> items;
     private boolean isSet = false;
 
-    public ShowCase(int closetID, int floorNum, float x, float y, float length, float width, List<Item> items) {
+    public ShowCase(int type, int closetID, int floorNum, float x, float y, float length, float width, List<Item> items) {
+        this.type = type;
         this.closetID = closetID;
         this.length = length;
         this.width = width;
@@ -27,6 +29,10 @@ public class ShowCase {
         this.y = y;
         this.length = length;
         this.width = width;
+    }
+
+    public int getType() {
+        return this.type;
     }
 
     public int getClosetID() {

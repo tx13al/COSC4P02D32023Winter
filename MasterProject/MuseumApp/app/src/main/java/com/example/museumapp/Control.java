@@ -193,7 +193,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 }
                 if (sid > -1) { //adding the showCase to database successfully
                     //display the showCase in the map and switch to the related floor.
-                    ShowCase newShowCase = new ShowCase(sid, floor, x, y, length, width, null);
+                    ShowCase newShowCase = new ShowCase(0, sid, floor, x, y, length, width, null);
                     showCases.add(newShowCase);
                     if (floor == 1) {
                         displayingMapPin = firstFloor.addShowCase(newShowCase);
@@ -690,6 +690,10 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             displayMapPinItemList(display);
         }
         displayItemDialog(item);
+    }
+
+    public void addShowCase(ShowCase showCase) {
+        showCases.add(showCase);
     }
 
     @Override

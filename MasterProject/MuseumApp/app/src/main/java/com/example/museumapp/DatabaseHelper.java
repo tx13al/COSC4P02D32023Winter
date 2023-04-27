@@ -324,7 +324,8 @@ public class DatabaseHelper {
                 String SQL_command = "SELECT * FROM showcase";
                 ResultSet resultSet = statement.executeQuery(SQL_command);
                 while (resultSet.next()) {
-                    ShowCase showCase = new ShowCase(resultSet.getInt("sid"),
+                    ShowCase showCase = new ShowCase(0,
+                            resultSet.getInt("sid"),
                             resultSet.getInt("floor_no"),
                             resultSet.getFloat("x"),
                             resultSet.getFloat("y"),

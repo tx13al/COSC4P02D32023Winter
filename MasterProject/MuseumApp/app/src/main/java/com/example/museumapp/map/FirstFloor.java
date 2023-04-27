@@ -32,7 +32,6 @@ public class FirstFloor extends View implements Floor {
     private float translateX = 350.0f, translateY = 450.0f;
     // Create the pins
     private ArrayList <MapPin> pinList = null;
-    private Bitmap washroom, exit, staff;
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
@@ -284,7 +283,22 @@ public class FirstFloor extends View implements Floor {
 
     //set all washrooms and exit and staff on the map as a showCase to be selectable.
     private void initPOI() {
-
+        ShowCase washroom = new ShowCase(1, -1, 1, -72, 184.5f, 0,0, null);
+        ShowCase staff = new ShowCase(2, -2, 1, 200, 0, 0, 0, null);
+        ShowCase exit = new ShowCase(3, -3, 1, 320, 54.5f, 0, 0, null);
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) context;
+            mainActivity.addShowCase(washroom);
+            mainActivity.addShowCase(staff);
+            mainActivity.addShowCase(exit);
+        }
+        if (context instanceof Control) {
+            Control control = (Control) context;
+            control.addShowCase(washroom);
+            control.addShowCase(staff);
+            control.addShowCase(exit);
+        }
     }
 
     private void init() {
@@ -330,7 +344,19 @@ public class FirstFloor extends View implements Floor {
             pinList = new ArrayList<MapPin>();
         }
         if (showCase.getFloorNum() == 1) {  //first floor
-            Drawable pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
+            Drawable pinIcon = null;
+            if (showCase.getType() == 0) {
+                pinIcon = getResources().getDrawable(R.drawable.location); //get the image of the pins.
+            }
+            if (showCase.getType() == 1) {
+                pinIcon = getResources().getDrawable(R.drawable.washroom); //get the image of the pins.
+            }
+            if (showCase.getType() == 2) {
+                pinIcon = getResources().getDrawable(R.drawable.staff); //get the image of the pins.
+            }
+            if (showCase.getType() == 3) {
+                pinIcon = getResources().getDrawable(R.drawable.exit); //get the image of the pins.
+            }
             MapPin mapPin = new MapPin(pinIcon, showCase, this.getContext());
             addShowCaseEdges(showCase);
             pinList.add(mapPin);

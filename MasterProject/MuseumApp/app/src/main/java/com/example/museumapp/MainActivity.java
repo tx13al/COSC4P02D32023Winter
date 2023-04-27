@@ -41,15 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MapPin displayingMapPin = null;
     private MapPin from = null;
     private MapPin to = null;
-    private ArrayList<POI> POIs;
     private boolean Connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
-        POIs = createPOIs(); //get all POIs (toilets, exits, etc.)
-        displayPOIs(); //display POIs on the map
 
         //Check internet state.
         Connected = checkConnection();
@@ -482,23 +479,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //This method is used to generate all the bathrooms and exits on the map.
-    public ArrayList<POI> createPOIs() {
-        ArrayList<POI> POIs = new ArrayList<POI>();
-
-        //Manually generate exits
-        POIs.add(new POI(1, 1, 45, 60, 0));
-        POIs.add(new POI(2, 1, 350, 270, 0));
-
-        //Manually generate bathrooms
-        POIs.add(new POI(3, 1, 120, 120, 1));
-        POIs.add(new POI(4, 1, 220, 120, 1));
-        POIs.add(new POI(5, 1, 270, 200, 1));
-
-        return POIs;
-    }
-
-    public void displayPOIs() {
-
+    public void addShowCase(ShowCase showCase) {
+        showCases.add(showCase);
     }
 }

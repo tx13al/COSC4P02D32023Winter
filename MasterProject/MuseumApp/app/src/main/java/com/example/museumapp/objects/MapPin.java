@@ -44,8 +44,14 @@ public class MapPin {
         pinView = new ImageView(context);
         pinView.setImageDrawable(icon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
-        this.pinView.setX(showCase.getCenterX() - 50);
-        this.pinView.setY(showCase.getCenterY() - 100);
+        if ((showCase.getType() == 0) || (showCase.getType() == 2)) {
+            this.pinView.setX(showCase.getCenterX() - 50);
+            this.pinView.setY(showCase.getCenterY() - 100);
+        }
+        if ((showCase.getType() == 1) || (showCase.getType() == 3)) {
+            this.pinView.setX(showCase.getCenterX() - 50);
+            this.pinView.setY(showCase.getCenterY() - 50);
+        }
         this.thisCase = showCase;
         this.context = context;
         pinView.setOnClickListener(new View.OnClickListener() {
