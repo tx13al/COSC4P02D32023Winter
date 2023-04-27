@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.museumapp.objects.Item;
@@ -19,10 +20,17 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
-    private List<Item> itemList;
+    private static List<Item> itemList;
+    private static OnClickListener clickListener;
 
-    public ItemAdapter(List<Item> itemList) {
+
+    public ItemAdapter(List<Item> itemList, OnClickListener clickListener) {
         this.itemList = itemList;
+        this.clickListener = clickListener;
+
+    }
+    public interface OnClickListener {
+        void onItemClick(Item item);
     }
 
     @NonNull
@@ -36,6 +44,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
         holder.bind(item);
+        if (holder.itemDescription.getLineCount() > 3) {
+            holder.moreButton.setVisibility(View.VISIBLE);
+        } else {
+            holder.moreButton.setVisibility(View.GONE);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onItemClick(item);
+            }
+        });
+
         if (holder.itemDescription.getLineCount() > 3) {
             holder.moreButton.setVisibility(View.VISIBLE);
         } else {
@@ -59,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         notifyItemRangeInserted(startPosition, sublist.size());
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView itemImage;
         private TextView itemName;
@@ -92,6 +112,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                             moreButton.setText(R.string.less);
                         }
                     }
+
                 });
             } else {
                 moreButton.setVisibility(View.GONE);
@@ -103,5 +124,4 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     .into(itemImage);
         }
     }
-
 }
