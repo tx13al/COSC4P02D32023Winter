@@ -1,6 +1,8 @@
 package com.example.museumapp;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -147,6 +149,7 @@ public class ArtPage extends AppCompatActivity {
         itemDescriptionTextView.setText(item.getDescription());
         itemUrlTextView.setText(item.getImageUrl());
         itemDialog.show();
+        itemDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
 }
