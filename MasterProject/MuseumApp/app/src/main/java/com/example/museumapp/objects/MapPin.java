@@ -34,11 +34,13 @@ import com.example.museumapp.R;
 import org.w3c.dom.Text;
 
 public class MapPin {
+    Drawable icon;
     Context context;
     private ImageView pinView;
     private ShowCase thisCase;
 
     public MapPin(Drawable icon, ShowCase showCase, Context context) {
+        this.icon = icon;
         pinView = new ImageView(context);
         pinView.setImageDrawable(icon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
@@ -112,20 +114,19 @@ public class MapPin {
     }
 
     public void setDefault() {
-        Drawable icon = context.getResources().getDrawable(R.drawable.location);
         pinView.setImageDrawable(icon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
     }
 
     public void setStart() {
-        Drawable icon = context.getResources().getDrawable(R.drawable.start_location);
-        pinView.setImageDrawable(icon);
+        Drawable startIcon = context.getResources().getDrawable(R.drawable.start_location);
+        pinView.setImageDrawable(startIcon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
     }
 
     public void setEnd() {
-        Drawable icon = context.getResources().getDrawable(R.drawable.end_location);
-        pinView.setImageDrawable(icon);
+        Drawable endIcon = context.getResources().getDrawable(R.drawable.end_location);
+        pinView.setImageDrawable(endIcon);
         pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
     }
 }

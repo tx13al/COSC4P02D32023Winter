@@ -440,10 +440,9 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             for (ShowCase showCase : showCases) {
                 if (showCase.getClosetID() == item.getClosetID()) {
                     if (showCase.getItems() != null) {
-                        showCase.getItems().remove(item);
-                    }
-                    else {
-                        break;
+                        if (showCase.getItems().remove(item)) {
+                            break;
+                        }
                     }
                 }
             }

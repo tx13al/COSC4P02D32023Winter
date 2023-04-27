@@ -282,22 +282,22 @@ public class FirstFloor extends View implements Floor {
         initOuterEdges();
     }
 
+    //set all washrooms and exit and staff on the map as a showCase to be selectable.
+    private void initPOI() {
+
+    }
+
     private void init() {
         paint = new Paint();
         paint.setStrokeWidth(5.0f);
         paint.setColor(Color.rgb(0,24,69));
         initEdges();
+        initPOI();
     }
 
     public FirstFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
-        washroom = BitmapFactory.decodeResource(getResources(), R.drawable.washroom);
-        washroom = Bitmap.createScaledBitmap(washroom, 128, 128, false);
-        exit = BitmapFactory.decodeResource(getResources(), R.drawable.exit);
-        exit = Bitmap.createScaledBitmap(exit, 75, 75, false);
-        staff = BitmapFactory.decodeResource(getResources(), R.drawable.staff);
-        staff = Bitmap.createScaledBitmap(staff, 80, 80, false);
         init();
     }
 
@@ -408,9 +408,6 @@ public class FirstFloor extends View implements Floor {
             paint.setColor(Color.BLACK);
             paint.setStrokeWidth(5);
         }
-        canvas.drawBitmap(washroom,-130, 120,paint);
-        canvas.drawBitmap(exit,280,10,paint);
-        canvas.drawBitmap(staff, 140,-100,paint);
         canvas.restore();
     }
 

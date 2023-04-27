@@ -6,7 +6,7 @@ public class POI {
     private float x, y;
     private int floorNum;
 
-    private int type; //0 = exit, 1 = bathroom
+    private int type; //0 = exit, 1 = bathroom, 2 = staff counter, 3 = person
 
     public POI(int POI_ID, int floorNum, float x, float y, int type) {
         this.POI_ID = POI_ID;
