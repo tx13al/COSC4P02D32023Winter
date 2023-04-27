@@ -95,9 +95,10 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         logout.setOnClickListener(this);
 
         // Find the AutoCompleteTextView view
-        AutoCompleteTextView actv = Control.this.findViewById(R.id.search_bar);
+        AutoCompleteTextView actv = findViewById(R.id.control_search_bar);
         // Create a new instance of SearchBar and pass the necessary arguments
-      //  SearchBar searchBar = new SearchBar(this, actv);
+       SearchBar searchBar1 = new SearchBar(this,actv);
+
     }
 
     public void viewFirstFloor() {

@@ -90,4 +90,8 @@ public class SearchBar extends FrameLayout {
             context.startActivity(intent);
         }
     }
+
+    public void SetContext(Context context){
+        this.context = context;
+    }
 }
