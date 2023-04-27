@@ -498,7 +498,7 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         TextView itemDetailURLTextView = addItemAlertDialog.findViewById(R.id.item_detail_url_text_view);
         itemDetailURLTextView.setText(item.getItemUrl());
         addItemAlertDialog.show();
-        addItemAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        addItemAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         //OK Button.
         Button OK = addItemAlertDialog.findViewById(R.id.add_item_OK_button);
         OK.setOnClickListener(new View.OnClickListener() {

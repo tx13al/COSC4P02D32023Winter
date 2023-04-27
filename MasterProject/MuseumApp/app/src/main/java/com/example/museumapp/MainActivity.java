@@ -291,6 +291,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void navigateDialog(MapPin mapPin) {
         Dialog navigateDialog = new Dialog(this);
         navigateDialog.setContentView(R.layout.main_dialog_navigation);
+        ImageView cancel = navigateDialog.findViewById(R.id.navigation_dialog_dismiss);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateDialog.dismiss();
+            }
+        });
         Button start = navigateDialog.findViewById(R.id.navigation_start_button);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
