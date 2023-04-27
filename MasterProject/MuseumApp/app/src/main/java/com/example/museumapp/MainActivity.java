@@ -255,6 +255,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             from.setDefault();
         }
         from = mapPin;
+        if (to == from) {
+            to = null;
+            firstFloor.clearNavigation();
+            secondFloor.clearNavigation();
+        }
         from.setStart();
         //set the button for the showCase to be start.
         Button button = findViewById(R.id.showCase_item_list_navigation);
@@ -269,6 +274,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             to.setDefault();
         }
         to = mapPin;
+        if (from == to) {
+            from = null;
+            firstFloor.clearNavigation();
+            secondFloor.clearNavigation();
+        }
         to.setEnd();
         //set the button for the showCase to be start.
         Button button = findViewById(R.id.showCase_item_list_navigation);

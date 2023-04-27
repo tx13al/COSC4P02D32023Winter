@@ -521,4 +521,8 @@ public class FirstFloor extends View implements Floor {
     public ArrayList<MapPin> getPinList() {
         return pinList;
     }
+
+    public void clearNavigation() {
+        navigationEdges = null;
+    }
 }

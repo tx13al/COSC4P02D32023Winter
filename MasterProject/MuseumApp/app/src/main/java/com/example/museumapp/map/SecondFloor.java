@@ -386,4 +386,8 @@ public class SecondFloor extends View implements Floor {
     public ArrayList<MapPin> getPinList() {
         return pinList;
     }
+
+    public void clearNavigation() {
+        navigationEdges = null;
+    }
 }
