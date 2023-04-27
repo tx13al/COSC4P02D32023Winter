@@ -25,6 +25,7 @@ public class SecondFloor extends View implements Floor {
     private Paint paint;
     private ArrayList<Edge> innerEdges;
     private ArrayList<Edge> outerEdges;
+    private ArrayList<Edge> navigationEdges;
     private final ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
     private float lastX, lastY;
@@ -180,7 +181,7 @@ public class SecondFloor extends View implements Floor {
         }
     }
 
-    private void addShowCaseEdges(ShowCase showCase) {  //add all the edges of the showCase to the innerEdges.
+    public void addShowCaseEdges(ShowCase showCase) {  //add all the edges of the showCase to the innerEdges.
         Edge e1 = new Edge(showCase.getX(), showCase.getY(), showCase.getX() + showCase.getLength(), showCase.getY());
         Edge e2 = new Edge(showCase.getX() + showCase.getLength(), showCase.getY(),
                 showCase.getX() + showCase.getLength(), showCase.getY() + showCase.getWidth());
@@ -266,6 +267,11 @@ public class SecondFloor extends View implements Floor {
         for(Edge e: outerEdges) {
             canvas.drawLine(e.from_x, e.from_y, e.to_x ,e.to_y, paint);
         }
+        if (navigationEdges != null) {
+            for (Edge e: navigationEdges) {
+                canvas.drawLine(e.from_x, e.from_y, e.to_x, e.to_y, paint);
+            }
+        }
         canvas.restore();
     }
 
@@ -283,7 +289,7 @@ public class SecondFloor extends View implements Floor {
     }
 
     //remove all the edges of the showCase.
-    private void removeShowCaseEdges(ShowCase showCase) {
+    public void removeShowCaseEdges(ShowCase showCase) {
         ArrayList<Edge> removing = new ArrayList<Edge>();
         boolean e1 = true;
         boolean e2 = true;
@@ -359,6 +365,10 @@ public class SecondFloor extends View implements Floor {
         removeShowCaseEdges(caseEdges);
         mapPin.update(floor, x, y, length, width, translateX, translateY, mScaleFactor);
         addShowCaseEdges(mapPin.getShowCase());
+    }
+
+    public void setNavigationEdges(ArrayList<Edge> edges) {
+        this.navigationEdges = edges;
     }
 
     public float getTranslateX() {

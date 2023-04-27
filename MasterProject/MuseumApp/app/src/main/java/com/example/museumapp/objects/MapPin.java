@@ -110,4 +110,22 @@ public class MapPin {
     public ShowCase getShowCase() {
         return thisCase;
     }
+
+    public void setDefault() {
+        Drawable icon = context.getResources().getDrawable(R.drawable.location);
+        pinView.setImageDrawable(icon);
+        pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+    }
+
+    public void setStart() {
+        Drawable icon = context.getResources().getDrawable(R.drawable.start_location);
+        pinView.setImageDrawable(icon);
+        pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+    }
+
+    public void setEnd() {
+        Drawable icon = context.getResources().getDrawable(R.drawable.end_location);
+        pinView.setImageDrawable(icon);
+        pinView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+    }
 }

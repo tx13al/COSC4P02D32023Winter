@@ -432,6 +432,16 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         Intent intent = new Intent(this, ItemListActivity.class);
     }
 
+    private void removeAllViewsExcept(LinearLayout layout, View view) {
+        int childCount = layout.getChildCount();
+        for (int i = childCount - 1; i >= 0; i--) {
+            View child = layout.getChildAt(i);
+            if (child != view) {
+                layout.removeView(child);
+            }
+        }
+    }
+
     public void displayMapPinItemList(MapPin mapPin) {
         HorizontalScrollView showCaseItemEditListScrollView =
                 this.findViewById(R.id.showCase_item_edit_list_scrollView);
@@ -440,9 +450,6 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
             //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
             LinearLayout showCaseItemEditListLayout =   //container for the items
                     this.findViewById(R.id.showCase_item_edit_list_scrollView_linear);
-            if (displayingMapPin != null) {  //list is not empty.
-                showCaseItemEditListLayout.removeAllViews();
-            }
             this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
             //set the add button for the showCase.
             Button addItem = findViewById(R.id.showCase_add_item_button);
@@ -452,6 +459,9 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                     addItem();
                 }
             });
+            if (displayingMapPin != null) {  //list is not empty.
+                removeAllViewsExcept(showCaseItemEditListLayout, addItem);
+            }
             //update the displaying showcase in control, and load the showcase items if not loaded.
             LayoutInflater layoutInflater = LayoutInflater.from(this);
             for (Item item: mapPin.getShowCase().getItems()) {

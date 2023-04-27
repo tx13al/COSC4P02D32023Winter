@@ -26,7 +26,7 @@ public class Navigation {
         this.y2 = y2;
         this.floor1 = floor1;
         this.floor2 = floor2;
-        if(floor1 == floor2 & floor1==1) {
+        if(floor1 == floor2 & floor1 == 1) {
             HashSet<Edge> vertices = getVertices(this.firstFloor, x1, y1, x2, y2);
             int startIndex = indexOfVertex(vertices, x1, y1);
             int endIndex = indexOfVertex(vertices, x2, y2);

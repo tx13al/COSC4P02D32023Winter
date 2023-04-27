@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View floor_1, floor_2;
     private FirstFloor firstFloor;
     private SecondFloor secondFloor;
+    private ArrayList<Edge> stairs;
     private SearchBar searchBar;
     private FrameLayout mainContainer;
     private Button login, level_1, level_2, home, info, arts, setting;
@@ -73,6 +74,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floor_2 = inflater.inflate(R.layout.activity_floor_two, null);
         secondFloor = floor_2.findViewById(R.id.secondFloor);
         mainContainer.addView(floor_2);
+
+        //initialize the stairs locations
+        stairs = new ArrayList<Edge>();
+        Edge stair1 = new Edge(82, 847, 1, 163);
+        Edge stair2 = new Edge(496, 1260, 588, 296);
+        stairs.add(stair1);
 
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
@@ -206,6 +213,90 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    private void removeCaseEdges(ShowCase showCase) {
+        if (showCase.getFloorNum() == 1) {
+            firstFloor.removeShowCaseEdges(showCase);
+        }
+        if (showCase.getFloorNum() == 2) {
+            secondFloor.removeShowCaseEdges(showCase);
+        }
+    }
+
+    private void addCaseEdges(ShowCase showCase) {
+        if (showCase.getFloorNum() == 1) {
+            firstFloor.addShowCaseEdges(showCase);
+        }
+        if (showCase.getFloorNum() == 2) {
+            secondFloor.addShowCaseEdges(showCase);
+        }
+    }
+
+    private void navigate() {
+        removeCaseEdges(from.getShowCase());
+        removeCaseEdges(to.getShowCase());
+        Navigation navigation = new Navigation(firstFloor.getEdges(), secondFloor.getEdges(), stairs,
+                from.getShowCase().getX(), from.getShowCase().getY(), from.getShowCase().getFloorNum(),
+                to.getShowCase().getX(), to.getShowCase().getY(), to.getShowCase().getFloorNum());
+        addCaseEdges(from.getShowCase());
+        addCaseEdges(to.getShowCase());
+        firstFloor.setNavigationEdges(navigation.getPath1());
+        secondFloor.setNavigationEdges(navigation.getPath2());
+    }
+
+    private void setNavigationStart(MapPin mapPin) {
+        if (from != null) {
+            from.setDefault();
+        }
+        from = mapPin;
+        from.setStart();
+        if (to != null) {
+            navigate();
+        }
+    }
+
+    private void setNavigationEnd(MapPin mapPin) {
+        if (to != null) {
+            to.setDefault();
+        }
+        to = mapPin;
+        to.setEnd();
+        if (from != null) {
+            navigate();
+        }
+    }
+
+    private void navigateDialog(MapPin mapPin) {
+        Dialog navigateDialog = new Dialog(this);
+        navigateDialog.setContentView(R.layout.main_dialog_navigation);
+        Button start = navigateDialog.findViewById(R.id.navigation_start_button);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setNavigationStart(mapPin);
+                navigateDialog.dismiss();
+            }
+        });
+        Button end = navigateDialog.findViewById(R.id.navigation_end_button);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setNavigationEnd(mapPin);
+                navigateDialog.dismiss();
+            }
+        });
+        navigateDialog.show();
+    }
+
+    private void removeAllViewsExcept(LinearLayout layout, View view) {
+        int childCount = layout.getChildCount();
+        for (int i = childCount - 1; i >= 0; i--) {
+            View child = layout.getChildAt(i);
+            if (child != view) {
+                layout.removeView(child);
+            }
+        }
+    }
+
     public void displayMapPinItemList(MapPin mapPin) {
         HorizontalScrollView showCaseItemListScrollView =
                 this.findViewById(R.id.showCase_item_list_scrollView);
@@ -214,17 +305,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Make sure this Pin is not displaying. (avoid duplicate adding items to scroll view.)
             LinearLayout showCaseItemListLayout =   //container for the items
                     this.findViewById(R.id.showCase_item_list_scrollView_linear);
-            if (displayingMapPin != null) { //clear the container for another selected showCase.
-                showCaseItemListLayout.removeAllViews();
-            }
             this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
             Button navigation = findViewById(R.id.showCase_item_list_navigation);
             navigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    return;
+                    navigateDialog(mapPin);
                 }
             });
+            if (displayingMapPin != null) { //clear the container for another selected showCase.
+                removeAllViewsExcept(showCaseItemListLayout, navigation);
+            }
             //update the displaying showcase in main, and load the showcase items if not loaded.
             LayoutInflater layoutInflater = LayoutInflater.from(this);
             for (Item item : mapPin.getShowCase().getItems()) {
