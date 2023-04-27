@@ -391,9 +391,13 @@ public class FirstFloor extends View implements Floor {
             canvas.drawLine(e.from_x, e.from_y, e.to_x ,e.to_y, paint);
         }
         if (navigationEdges != null) {
+            paint.setColor(Color.BLUE);
+            paint.setStrokeWidth(10);
             for (Edge e: navigationEdges) {
                 canvas.drawLine(e.from_x, e.from_y, e.to_x, e.to_y, paint);
             }
+            paint.setColor(Color.BLACK);
+            paint.setStrokeWidth(5);
         }
         canvas.restore();
     }

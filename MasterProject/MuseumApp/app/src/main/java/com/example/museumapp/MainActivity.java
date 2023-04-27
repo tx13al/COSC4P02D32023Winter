@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //initialize the stairs locations
         stairs = new ArrayList<Edge>();
-        Edge stair1 = new Edge(82, 847, 1, 163);
+        Edge stair1 = new Edge(82, 847, 163, 1);
         Edge stair2 = new Edge(496, 1260, 588, 296);
         stairs.add(stair1);
+        stairs.add(stair2);
 
         //create floor buttons
         level_1 = findViewById(R.id.floorOneButton);
@@ -235,12 +236,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         removeCaseEdges(from.getShowCase());
         removeCaseEdges(to.getShowCase());
         Navigation navigation = new Navigation(firstFloor.getEdges(), secondFloor.getEdges(), stairs,
-                from.getShowCase().getX(), from.getShowCase().getY(), from.getShowCase().getFloorNum(),
-                to.getShowCase().getX(), to.getShowCase().getY(), to.getShowCase().getFloorNum());
+                from.getShowCase().getCenterX(), from.getShowCase().getCenterY(), from.getShowCase().getFloorNum(),
+                to.getShowCase().getCenterX(), to.getShowCase().getCenterY(), to.getShowCase().getFloorNum());
         addCaseEdges(from.getShowCase());
         addCaseEdges(to.getShowCase());
         firstFloor.setNavigationEdges(navigation.getPath1());
         secondFloor.setNavigationEdges(navigation.getPath2());
+        if (from.getShowCase().getFloorNum() == 1) {
+            viewFirstFloor();
+        }
+        if (from.getShowCase().getFloorNum() == 2) {
+            viewSecondFloor();
+        }
     }
 
     private void setNavigationStart(MapPin mapPin) {
@@ -249,6 +256,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         from = mapPin;
         from.setStart();
+        //set the button for the showCase to be start.
+        Button button = findViewById(R.id.showCase_item_list_navigation);
+        button.setBackgroundResource(R.drawable.start_location);
         if (to != null) {
             navigate();
         }
@@ -260,6 +270,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         to = mapPin;
         to.setEnd();
+        //set the button for the showCase to be start.
+        Button button = findViewById(R.id.showCase_item_list_navigation);
+        button.setBackgroundResource(R.drawable.end_location);
         if (from != null) {
             navigate();
         }
@@ -307,6 +320,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     this.findViewById(R.id.showCase_item_list_scrollView_linear);
             this.getShowCase(mapPin.getShowCase(), mapPin); //get item list updated without duplicate.
             Button navigation = findViewById(R.id.showCase_item_list_navigation);
+            navigation.setBackgroundResource(R.drawable.navigation);
+            if (mapPin == from) {
+                navigation.setBackgroundResource(R.drawable.start_location);
+            }
+            if (mapPin == to) {
+                navigation.setBackgroundResource(R.drawable.end_location);
+            }
             navigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
