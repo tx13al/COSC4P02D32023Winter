@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="6dp"
-    android:onClick="onClick"
+    android:onClick="onItemClicked"
     android:background="@color/white"
     >
 
