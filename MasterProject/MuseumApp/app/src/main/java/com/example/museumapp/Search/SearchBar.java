@@ -53,8 +53,10 @@ public class SearchBar extends FrameLayout {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                     String enteredText = textView.getText().toString();
-                    ArrayList<Item> items = DatabaseHelper.searchItemByName(enteredText);
-                    displayItems(items);
+                    if(!enteredText.isEmpty()) {
+                        ArrayList<Item> items = DatabaseHelper.searchItemByName(enteredText);
+                        displayItems(items);
+                    }
                     return true;
                 }
                 return false;
