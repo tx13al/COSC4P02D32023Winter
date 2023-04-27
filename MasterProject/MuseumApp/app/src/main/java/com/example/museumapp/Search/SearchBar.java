@@ -53,14 +53,8 @@ public class SearchBar extends FrameLayout {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                     String enteredText = textView.getText().toString();
-                    int position = ((ArrayAdapter<String>) actv.getAdapter()).getPosition(enteredText);
-                    if (position >= 0) {
-                        // The entered text is in the adapter
-                        Toast.makeText(context, "Item "+enteredText+ " found. ", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // The entered text is not in the adapter
-                        Toast.makeText(context, enteredText+" is NOT found", Toast.LENGTH_SHORT).show();
-                    }
+                    ArrayList<Item> items = DatabaseHelper.searchItemByName(enteredText);
+                    displayItems(items);
                     return true;
                 }
                 return false;
@@ -74,6 +68,7 @@ public class SearchBar extends FrameLayout {
             return;
         }
         else if (items.size() == 1) {
+            Toast.makeText(context, "Item found.", Toast.LENGTH_SHORT).show();
             if (context instanceof MainActivity) {
                 ((MainActivity) context).displayItemDialog(items.get(0));
                 return;
@@ -84,6 +79,7 @@ public class SearchBar extends FrameLayout {
             }
         }
         else { //have over 1 items. (display the list to make future selection.)
+            Toast.makeText(context, "Item found.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, ItemListActivity.class);
             ContextSingleton.getInstance().setContext(context);
             ItemListSingleton.getInstance().setItemList(items);
