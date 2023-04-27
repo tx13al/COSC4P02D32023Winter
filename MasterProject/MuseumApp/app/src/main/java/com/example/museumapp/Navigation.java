@@ -17,6 +17,13 @@ public class Navigation {
     public float pathDistance;
     public int floor1,floor2;
 
+   /*Navigation(ArrayList<Edge> firstFloor,ArrayList<Edge> secondFloor, ArrayList<Edge> stair,float x1, float y1, int floor1, float x2, float y2,int floor2):
+   firstFloor,secondFloor: all the edges of firstFloor and secondFloor
+   stair: there are two stairs on each floor, ArrayList<Edge> stair has two object show the coordinate fo each pair of stair. stair.get(0).from_x, stair.get(0).from_y
+   means the first stair coordinate in floor1; stair.get(0).to_x, stair.get(0).to_y means the correspond stair on floor2.
+   x1,x2 means the start point coordinate
+   floor1: 1 or 2, show which floor is the start pont in
+   * */
     public Navigation(ArrayList<Edge> firstFloor,ArrayList<Edge> secondFloor, ArrayList<Edge> stair,float x1, float y1, int floor1, float x2, float y2,int floor2) {
         this.firstFloor = firstFloor;
         this.secondFloor = secondFloor;
