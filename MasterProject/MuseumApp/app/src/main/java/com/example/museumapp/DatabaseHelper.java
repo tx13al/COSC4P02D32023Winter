@@ -706,7 +706,7 @@ public class DatabaseHelper {
         return removed;
     }
 
-    static class searchItemByNameThread extends Thread{
+    static class searchItemByNameThread extends Thread {
         private String name;
         private ArrayList<Item> items = new ArrayList<Item>();
 
@@ -750,7 +750,7 @@ public class DatabaseHelper {
         ArrayList<Item> items;
         searchItemByNameThread thread = new searchItemByNameThread(name);
         thread.start();
-        try{
+        try {
             thread.join();
         } catch (InterruptedException e) {
             System.err.println(e.getMessage());
@@ -803,15 +803,52 @@ public class DatabaseHelper {
     //this method can get all the items from the item list. (get all items between from and to)
     public static ArrayList<Item> getItemList(int from, int to) {
         ArrayList<Item> itemList;
-        getItemListThread getItemListThread = new getItemListThread(from, to);
-        getItemListThread.start();
+        getItemListThread thread = new getItemListThread(from, to);
+        thread.start();
         try {
-            getItemListThread.join();
+            thread.join();
         } catch (InterruptedException e){
             System.err.println(e.getMessage());
         }
-        itemList = getItemListThread.getItems();
-        getItemListThread.interrupt();
+        itemList = thread.getItems();
+        thread.interrupt();
         return itemList;
+    }
+
+    public static class itemAddToCaseThread extends Thread {
+        private Item item;
+        private ShowCase showCase;
+
+        public itemAddToCaseThread(Item item, ShowCase showCase) {
+            this.item = item;
+            this.showCase = showCase;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Connection connection = connect();
+                Statement statement = connection.createStatement();
+                String SQL_item_add_to_case = "UPDATE item SET sid = " + showCase.getClosetID() +
+                        " WHERE obj_id = '" + item.getItemID() + "'";
+                statement.executeUpdate(SQL_item_add_to_case);
+                disconnect(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+            }
+        }
+    }
+
+    //this method can set the item to be in the case.
+    public static void itemAddToCase(Item item, ShowCase showCase) {
+        itemAddToCaseThread thread = new itemAddToCaseThread(item, showCase);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        thread.interrupt();
     }
 }

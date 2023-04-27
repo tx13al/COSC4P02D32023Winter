@@ -298,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         navigateDialog.show();
+        navigateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void removeAllViewsExcept(LinearLayout layout, View view) {

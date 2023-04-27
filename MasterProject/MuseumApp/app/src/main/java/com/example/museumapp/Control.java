@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.InputType;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +22,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -428,9 +434,162 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
         itemDetailDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    //TODO
+    private void updateItem(Item item) {    //update the relationship of showCase and item.
+        //delete from previous showCase.
+        if (item.getClosetID() != 0) {
+            for (ShowCase showCase : showCases) {
+                if (showCase.getClosetID() == item.getClosetID()) {
+                    if (showCase.getItems() != null) {
+                        showCase.getItems().remove(item);
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+        }
+        //display in current showCase.
+        item.setClosetID(displayingMapPin.getShowCase().getClosetID());
+        displayingMapPin.getShowCase().getItems().add(item);
+        MapPin tmp = displayingMapPin;
+        displayingMapPin = null;
+        displayMapPinItemList(tmp);
+    }
+
+    private void itemAdding(Item item) {
+        Dialog addItemAlertDialog = new Dialog(this);
+        addItemAlertDialog.setContentView(R.layout.add_item_alert_dialog);
+        ImageView dialogDismiss = addItemAlertDialog.findViewById(R.id.main_dialog_item_detail_dismiss);
+        dialogDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                addItemAlertDialog.dismiss();
+            }
+        });
+        //display the name of the item.
+        TextView itemDetailNameTextView = addItemAlertDialog.findViewById(R.id.item_detail_name_text_view);
+        itemDetailNameTextView.setText(item.getName());
+        //if possible, display the name of start year.
+        TextView startYear = addItemAlertDialog.findViewById(R.id.start_year);
+        startYear.setVisibility(View.GONE);
+        if (item.getStartYear() != 0) {
+            startYear.setVisibility(View.VISIBLE);
+            startYear.setText("Start Year: " + item.getStartYear());
+        }
+        //if possible, display the name of end year.
+        TextView endYear = addItemAlertDialog.findViewById(R.id.end_year);
+        endYear.setVisibility(View.GONE);
+        if (item.getEndYear() != 0) {
+            endYear.setVisibility(View.VISIBLE);
+            endYear.setText("End Year: " + item.getEndYear());
+        }
+        //display the image of the item.
+        ImageView imageView = addItemAlertDialog.findViewById(R.id.item_detail_image_view);
+        Picasso.get()
+                .load(item.getImageUrl())
+                .resize(600, 0)
+                .centerCrop()
+                .into(imageView);
+        //display the description.
+        TextView itemDetailDescriptionTextView =
+                addItemAlertDialog.findViewById(R.id.item_detail_description_text_view);
+        itemDetailDescriptionTextView.setText(item.getDescription());
+        //display the URL and set a onclick for the browser.
+        TextView itemDetailURLTextView = addItemAlertDialog.findViewById(R.id.item_detail_url_text_view);
+        itemDetailURLTextView.setText(item.getItemUrl());
+        addItemAlertDialog.show();
+        addItemAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //OK Button.
+        Button OK = addItemAlertDialog.findViewById(R.id.add_item_OK_button);
+        OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper.itemAddToCase(item, displayingMapPin.getShowCase());
+                updateItem(item);
+                addItemAlertDialog.dismiss();
+            }
+        });
+    }
+
     private void addItem() {
-        Intent intent = new Intent(this, ItemListActivity.class);
+        Dialog addItemDialog = new Dialog(this);
+        addItemDialog.setContentView(R.layout.adding_item);
+        ImageView addItemDialogCancel = addItemDialog.findViewById(R.id.add_item_Cancel);
+        addItemDialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addItemDialog.dismiss();
+            }
+        });
+        //set the auto complete text view.
+        AutoCompleteTextView addItemDialogACTV = addItemDialog.findViewById(R.id.add_item_search_bar);
+        ArrayList<String> arr = DatabaseHelper.getAllNoDuplicateNames(); //Create ArrayAdapter
+        ArrayAdapter<String> completion = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, arr);
+        addItemDialogACTV.setAdapter(completion);
+        addItemDialogACTV.setThreshold(1);
+        addItemDialogACTV.setInputType(InputType.TYPE_CLASS_TEXT);
+        //click listener for list items.
+        addItemDialogACTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = (String) adapterView.getItemAtPosition(i);
+                Toast.makeText(Control.this, "Item "+selectedItem+ " found. ", Toast.LENGTH_SHORT).show();
+                ArrayList<Item> items = DatabaseHelper.searchItemByName(selectedItem);
+                if (items.size() == 0) {
+                    return;
+                }
+                else {
+                    //scrollview settings.
+                    ScrollView scrollView = addItemDialog.findViewById(R.id.add_item_scrollview);
+                    scrollView.setVisibility(View.VISIBLE);
+                    LinearLayout addItemListLayout = addItemDialog.findViewById(R.id.add_item_list);
+                    addItemListLayout.removeAllViews();
+                    LayoutInflater layoutInflater = LayoutInflater.from(Control.this);
+                    //get the height of 75dp.
+                    int heightInDp = 75;
+                    int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            heightInDp, getResources().getDisplayMetrics());
+                    for (Item item: items) {
+                        //Dynamically set linear layout for each item and add them to the scroll.
+                        View itemView = layoutInflater.inflate(R.layout.search_bar_item_layout,
+                                addItemListLayout, false);
+                        //Image setting
+                        ImageView imageView = itemView.findViewById(R.id.search_bar_item_image);
+                        Picasso.get()
+                                .load(item.getImageUrl())
+                                .resize(0, heightInPx)
+                                .centerCrop()
+                                .into(imageView);
+                        //Text setting
+                        TextView text = itemView.findViewById(R.id.search_bar_item_name);
+                        text.setText(item.getName());
+                        itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                itemAdding(item);
+                            }
+                        });
+                        addItemListLayout.addView(itemView);
+                    }
+                }
+            }
+        });
+
+        // Set an editor action listener
+        addItemDialogACTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                    String enteredText = textView.getText().toString();
+                    ArrayList<Item> items = DatabaseHelper.searchItemByName(enteredText);
+                    return true;
+                }
+                return false;
+            }
+        });
+        addItemDialog.show();
+        addItemDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void removeAllViewsExcept(LinearLayout layout, View view) {

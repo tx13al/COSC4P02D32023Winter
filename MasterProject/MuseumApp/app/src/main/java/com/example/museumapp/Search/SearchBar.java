@@ -64,7 +64,7 @@ public class SearchBar extends FrameLayout {
 
     private void displayItems (ArrayList<Item> items) { //display the items in another activity.
         if (items.size() == 0) {
-            Toast.makeText(context, "No item found!!!", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "No item found!!!", Toast.LENGTH_SHORT).show();
             return;
         }
         else if (items.size() == 1) {
