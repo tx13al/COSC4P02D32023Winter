@@ -460,6 +460,7 @@ public class FirstFloor extends View implements Floor {
                 break;
             }
         }
+        innerEdges.removeAll(removing);
     }
 
     public void deleteShowCaseFromMap (MapPin mapPin) {
