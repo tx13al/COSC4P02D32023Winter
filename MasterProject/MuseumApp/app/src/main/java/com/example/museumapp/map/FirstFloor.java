@@ -1,6 +1,8 @@
 package com.example.museumapp.map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +32,7 @@ public class FirstFloor extends View implements Floor {
     private float translateX = 350.0f, translateY = 450.0f;
     // Create the pins
     private ArrayList <MapPin> pinList = null;
+    private Bitmap washroom, exit, staff;
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
@@ -289,6 +292,12 @@ public class FirstFloor extends View implements Floor {
     public FirstFloor(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
+        washroom = BitmapFactory.decodeResource(getResources(), R.drawable.washroom);
+        washroom = Bitmap.createScaledBitmap(washroom, 128, 128, false);
+        exit = BitmapFactory.decodeResource(getResources(), R.drawable.exit);
+        exit = Bitmap.createScaledBitmap(exit, 75, 75, false);
+        staff = BitmapFactory.decodeResource(getResources(), R.drawable.staff);
+        staff = Bitmap.createScaledBitmap(staff, 80, 80, false);
         init();
     }
 
@@ -399,6 +408,9 @@ public class FirstFloor extends View implements Floor {
             paint.setColor(Color.BLACK);
             paint.setStrokeWidth(5);
         }
+        canvas.drawBitmap(washroom,-130, 120,paint);
+        canvas.drawBitmap(exit,280,10,paint);
+        canvas.drawBitmap(staff, 140,-100,paint);
         canvas.restore();
     }
 
