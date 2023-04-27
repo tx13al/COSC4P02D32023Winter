@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/navigation_dialog_constraint_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_popup">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/navigation_dialog_top_bar_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/navigation_dialog_constraint_layout"
+        app:layout_constraintEnd_toEndOf="@id/navigation_dialog_constraint_layout"
+        app:layout_constraintTop_toTopOf="@id/navigation_dialog_constraint_layout">
+
+        <ImageView
+            android:id="@+id/navigation_dialog_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_close_black_48dp" />
+
+        <ImageView
+            android:id="@+id/museum_title"
+            android:layout_width="75dp"
+            android:layout_height="80dp"
+            android:src="@drawable/logo"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/navigation_dialog_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/navigation_dialog_constraint_layout"
+        app:layout_constraintStart_toStartOf="@id/navigation_dialog_constraint_layout"
+        app:layout_constraintTop_toBottomOf="@+id/navigation_dialog_top_bar_constraint_layout">
+
+        <LinearLayout
+            android:id="@+id/navigation_dialog_scroll_view_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:id="@+id/navigation_dialog_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:text="You want to set this show case as start point or end point?"
+                android:textSize="20dp"/>
+            <LinearLayout
+                android:id="@+id/navigation_dialog_buttons_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/navigation_start_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_weight="1"
+                    android:text="start">
+                </Button>
+                <Button
+                    android:id="@+id/navigation_end_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_weight="1"
+                    android:text="end">
+
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
