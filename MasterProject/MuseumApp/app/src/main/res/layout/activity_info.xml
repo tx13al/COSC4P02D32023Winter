@@ -215,6 +215,31 @@
         android:autoLink="web"
         android:id="@+id/web"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See Below for a User Manual on How to Operate this App"
+        app:layout_constraintTop_toBottomOf="@id/web"
+        android:textSize="22sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        android:id="@+id/manual"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="https://tinyurl.com/3dkdth2a"
+        app:layout_constraintTop_toBottomOf="@id/manual"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:lineSpacingExtra="5dp"
+        android:autoLink="web"
+        android:id="@+id/manual_link"
+        />
 
 
 
