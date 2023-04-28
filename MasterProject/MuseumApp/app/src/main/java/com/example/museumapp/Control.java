@@ -249,8 +249,9 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     showCaseItemListScrollView.setVisibility(View.INVISIBLE);
-                    deleteShowCaseFromMap(displayingMapPin);
                     DatabaseHelper.deleteShowCase(displayingMapPin);
+                    deleteShowCaseFromMap(displayingMapPin);
+                    showCases.remove(displayingMapPin.getShowCase());
                     dialogInterface.dismiss();
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -1,6 +1,8 @@
 package com.example.museumapp;
 
 import com.example.museumapp.objects.ShowCase;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ShowCaseSingleton {
@@ -15,7 +17,11 @@ public class ShowCaseSingleton {
     }
 
     public ArrayList<ShowCase> getShowCases() {
-        return showCases;
+        ArrayList<ShowCase> tmp;
+        tmp = showCases;
+        showCases = null;
+        return tmp;
+
     }
 
     public void setShowCases(ArrayList<ShowCase> showCases) {
