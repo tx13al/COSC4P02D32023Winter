@@ -138,7 +138,7 @@ public class ArtPage extends AppCompatActivity {
             endYear.setText("End Year: " + item.getEndYear());
         }
         itemDescriptionTextView.setText(item.getDescription());
-        itemUrlTextView.setText(item.getImageUrl());
+        itemUrlTextView.setText(item.getItemUrl());
         itemDialog.show();
         itemDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
