@@ -32,16 +32,15 @@ public class ArtPage extends AppCompatActivity {
     private int pageSize = 5;
     private Button loadMoreBtn;
     private ItemAdapter adapter;
-    private ItemAdapter.OnClickListener clickListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_art);
-        setTitle("");
         itemList = DatabaseHelper.getItemList(0,1760);
         adapter = new ItemAdapter(itemList, this::showItemDialog);
+        setContentView(R.layout.activity_art);
+        setTitle("");
         itemContainer = findViewById(R.id.item_list);
         itemContainer.setAdapter(adapter);
         itemContainer.setLayoutManager(new LinearLayoutManager(this));
@@ -49,12 +48,10 @@ public class ArtPage extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
                 if (loadingIndicator.getVisibility() != View.VISIBLE && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                     loadPage();
                 }
@@ -70,9 +67,6 @@ public class ArtPage extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        //load page
-        loadPage();
     }
 
     @Override
@@ -88,29 +82,25 @@ public class ArtPage extends AppCompatActivity {
         finish();
     }
 
-
     private void loadPage() {
         loadingIndicator.setVisibility(View.VISIBLE);
-
         int start = currentPage * pageSize;
         int end = Math.min(start + pageSize, itemList.size());
 
-        ArrayList<Item> sublist = new ArrayList<>(itemList.subList(start, end));
+        if (end > start) {
+            ArrayList<Item> sublist = new ArrayList<>(itemList.subList(start, end));
 
-        if (currentPage == 0) {
-            adapter.updateItemList(new ArrayList<>(itemList.subList(0, 5)));
-        } else {
-            adapter.addItems(sublist);
+            if (currentPage == 0) {
+                adapter.updateItemList(sublist);
+            } else {
+                adapter.addItems(sublist);
+            }
         }
-
-        if (end == itemList.size()) {
-            loadMoreBtn.setVisibility(View.GONE);
-        }
-
-        currentPage++;
 
         loadingIndicator.setVisibility(View.GONE);
+        currentPage++;
     }
+
 
     private void showItemDialog(Item item) {
         Dialog itemDialog = new Dialog(this);

@@ -475,6 +475,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 home.setTextColor(getColor(R.color.unselected));
                 arts.setTextColor(getColor(R.color.unselected));
                 setting.setTextColor(getColor(R.color.selected));
+                Intent moreIntent = new Intent(MainActivity.this, SettingsPage.class);
+                startActivity(moreIntent);
+                setting.setTextColor(getColor(R.color.unselected));
+                home.setTextColor(getColor(R.color.selected));
                 break;
         }
     }

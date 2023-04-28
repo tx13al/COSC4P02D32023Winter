@@ -42,6 +42,9 @@
         <activity android:name=".ArtPage"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".SettingsPage"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

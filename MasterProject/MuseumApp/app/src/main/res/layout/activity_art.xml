@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white" />
         <ImageView
-            android:id="@+id/search_bar_item_list_header"
+            android:id="@+id/logo_image_are_page"
             android:layout_width="0dp"
             android:layout_height="50dp"
             app:layout_constraintTop_toTopOf="parent"
