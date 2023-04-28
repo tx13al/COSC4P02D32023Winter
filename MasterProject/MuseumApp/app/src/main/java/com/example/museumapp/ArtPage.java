@@ -1,9 +1,11 @@
 package com.example.museumapp;
 
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +32,6 @@ public class ArtPage extends AppCompatActivity {
     private ProgressBar loadingIndicator;
     private int currentPage = 0;
     private int pageSize = 5;
-    private Button loadMoreBtn;
     private ItemAdapter adapter;
 
 
@@ -141,5 +142,4 @@ public class ArtPage extends AppCompatActivity {
         itemDialog.show();
         itemDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
-
 }
