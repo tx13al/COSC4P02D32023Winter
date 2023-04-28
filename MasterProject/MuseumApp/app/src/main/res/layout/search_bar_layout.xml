@@ -13,7 +13,9 @@
             android:id="@+id/search_bar_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search...">
+            android:hint="Search..."
+            android:padding="16dp"
+            >
         </EditText>
 
     </LinearLayout>

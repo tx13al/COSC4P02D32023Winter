@@ -67,9 +67,13 @@
             android:layout_height="48dp"
             android:hint="Search Exhibit"
             app:iconifiedByDefault="false"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="@+id/add_item_constraint2"
             app:layout_constraintStart_toStartOf="@+id/add_item_constraint2"
             app:layout_constraintTop_toTopOf="@+id/add_item_constraint2"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:searchIcon="@drawable/location" />
 
         <RelativeLayout

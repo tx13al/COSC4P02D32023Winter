@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
+                android:padding="5dp"
                 android:text="You want to set this show case as start point or end point?"
                 android:textSize="20dp"/>
             <LinearLayout
@@ -72,6 +73,11 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="50dp"
                     android:layout_weight="1"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/shape_round_button_blue"
+                    android:textColor="@color/white"
                     android:text="start">
                 </Button>
                 <Button
@@ -80,6 +86,10 @@
                     android:layout_height="50dp"
                     android:layout_marginEnd="50dp"
                     android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_round_button_blue"
+                    android:textColor="@color/white"
                     android:text="end">
 
                 </Button>
