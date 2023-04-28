@@ -256,6 +256,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             to = null;
             firstFloor.clearNavigation();
             secondFloor.clearNavigation();
+            if (from.getShowCase().getFloorNum() == 1) {
+                viewFirstFloor();
+            }
+            if (from.getShowCase().getFloorNum() == 2) {
+                viewSecondFloor();
+            }
         }
         from.setStart();
         //set the button for the showCase to be start.
@@ -275,6 +281,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             from = null;
             firstFloor.clearNavigation();
             secondFloor.clearNavigation();
+            if (from.getShowCase().getFloorNum() == 1) {
+                viewFirstFloor();
+            }
+            if (from.getShowCase().getFloorNum() == 2) {
+                viewSecondFloor();
+            }
         }
         to.setEnd();
         //set the button for the showCase to be start.
