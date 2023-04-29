@@ -33,6 +33,10 @@ public class FirstFloor extends View implements Floor {
     // Create the pins
     private ArrayList <MapPin> pinList = null;
 
+    private boolean offline = false;
+
+    private Bitmap washroom, exit, staff;
+
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
         @Override
@@ -282,7 +286,7 @@ public class FirstFloor extends View implements Floor {
     }
 
     //set all washrooms and exit and staff on the map as a showCase to be selectable.
-    private void initPOI() {
+    public void initPOI() {
         ShowCase washroom = new ShowCase(1, -1, 1, -72, 184.5f, 0,0, null);
         ShowCase staff = new ShowCase(2, -2, 1, 200, 0, 0, 0, null);
         ShowCase exit = new ShowCase(3, -3, 1, 320, 54.5f, 0, 0, null);
@@ -299,6 +303,16 @@ public class FirstFloor extends View implements Floor {
             control.addShowCase(staff);
             control.addShowCase(exit);
         }
+    }
+
+    public void drawStaticPOIs () {
+        washroom = BitmapFactory.decodeResource(getResources(), R.drawable.washroom);
+        washroom = Bitmap.createScaledBitmap(washroom, 128, 128, false);
+        exit = BitmapFactory.decodeResource(getResources(), R.drawable.exit);
+        exit = Bitmap.createScaledBitmap(exit, 75, 75, false);
+        staff = BitmapFactory.decodeResource(getResources(), R.drawable.staff);
+        staff = Bitmap.createScaledBitmap(staff, 80, 80, false);
+        offline = true;
     }
 
     private void init() {
@@ -433,6 +447,11 @@ public class FirstFloor extends View implements Floor {
             }
             paint.setColor(Color.BLACK);
             paint.setStrokeWidth(5);
+        }
+        if (offline) {
+            canvas.drawBitmap(washroom,-130, 120,paint);
+            canvas.drawBitmap(exit,280,10,paint);
+            canvas.drawBitmap(staff, 140,-100,paint);
         }
         canvas.restore();
     }

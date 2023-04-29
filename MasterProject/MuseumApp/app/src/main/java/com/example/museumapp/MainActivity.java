@@ -46,7 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
+        try {
+            showCases = ShowCaseSingleton.getInstance().getShowCases();  //get all cases from previous activity.
+        } catch (NullPointerException e) {
+            System.out.println("Null Pointer trying to retrieve cases from previous activity");
+            showCases = new ArrayList<ShowCase>();
+        }
 
         //Check internet state.
         Connected = checkConnection();
@@ -95,9 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         info = findViewById(R.id.info);
         info.setOnClickListener(this);
 
-        //create arts button
-        arts = findViewById(R.id.art);
-        arts.setOnClickListener(this);
 
         //create setting button
         setting = findViewById(R.id.settings);
@@ -117,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             login.setOnClickListener(new Login(MainActivity.this));
             // Create a new instance of SearchBar and pass the necessary arguments
             searchBar = new SearchBar(this, actv);
+            //create arts button
+            arts = findViewById(R.id.art);
+            arts.setOnClickListener(this);
+        } else {
+            firstFloor.drawStaticPOIs();
         }
     }
 
@@ -472,14 +479,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             //press art button to browse all the art
             case R.id.art:
-                info.setTextColor(getColor(R.color.unselected));
-                home.setTextColor(getColor(R.color.unselected));
-                arts.setTextColor(getColor(R.color.selected));
-                setting.setTextColor(getColor(R.color.unselected));
-                Intent artIntent = new Intent(MainActivity.this, ArtPage.class);
-                startActivity(artIntent);
-                arts.setTextColor(getColor(R.color.unselected));
-                home.setTextColor(getColor(R.color.selected));
+                if (checkConnection()) {
+                    info.setTextColor(getColor(R.color.unselected));
+                    home.setTextColor(getColor(R.color.unselected));
+                    arts.setTextColor(getColor(R.color.selected));
+                    setting.setTextColor(getColor(R.color.unselected));
+                    Intent artIntent = new Intent(MainActivity.this, ArtPage.class);
+                    startActivity(artIntent);
+                    arts.setTextColor(getColor(R.color.unselected));
+                    home.setTextColor(getColor(R.color.selected));
+                }
                 break;
             //press setting button to show settings page. Change font size
             case R.id.settings:
@@ -496,6 +505,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void addShowCase(ShowCase showCase) {
-        showCases.add(showCase);
+        try {
+            showCases.add(showCase);
+        } catch (NullPointerException e) {
+            System.out.println("Null pointer - trying to add null showcase");
+        }
     }
 }
