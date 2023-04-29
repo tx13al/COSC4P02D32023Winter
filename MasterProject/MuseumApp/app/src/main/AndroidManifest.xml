@@ -45,6 +45,9 @@
         <activity android:name=".SettingsPage"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".StaffMorePage"
+            android:parentActivityName=".Control">
+        </activity>
     </application>
 
 </manifest>

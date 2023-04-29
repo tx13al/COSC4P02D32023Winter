@@ -746,6 +746,9 @@ public class Control extends AppCompatActivity implements View.OnClickListener{
                 add.setTextColor(getColor(R.color.navy_blue));
                 change.setTextColor(getColor(R.color.navy_blue));
                 more.setTextColor(getColor(R.color.red));
+                Intent moreIntent = new Intent(Control.this, StaffMorePage.class);
+                startActivity(moreIntent);
+                more.setTextColor(getColor(R.color.navy_blue));
                 break;
         }
     }
