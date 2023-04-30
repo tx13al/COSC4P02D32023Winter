@@ -6,7 +6,7 @@ Instructor: Naser Ezzati-Jivan
 | Name | Brock ID | Email | Roles |
 | --- | --- | --- | --- |
 | Vincent Zhang | 6697114 | vz18iu@brocku.ca | Dev team |
-| Hi Leung | 6799969 | hl19wl@brocku.ca | Dev team |
+| Hi Leung | 6799969 | hl19wl@brocku.ca | Dev team, Main writer |
 | Louis Wang | 6116271 | lw16bn@brocku.ca | Dev team|
 | Yujia Zuo | 6567150 | yz18fa@brocku.ca | Scrum Master, Dev team |
 | Hang Li | 7319957 | hl21bi@brocku.ca | Product Owner, Dev team |
