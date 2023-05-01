@@ -27,5 +27,10 @@ Clone the repository to your device and run using Android studio. We are all cur
 Please refer to the user manuals either on GitHub or within the application for how to use the application.
 
 ## Credits
+For the database:
+- https://yfujiki.medium.com/how-to-store-use-sensitive-information-in-android-development-bc352892ece7 for how to secure database credentials 
+- https://medium.com/cyber-explorer/how-to-connect-an-android-project-to-a-postgresql-database-663cb0f5ba19 for how to set-up JDBC
+- https://stackoverflow.com/questions/16666619/postgresql-connection-with-database-in-java-fail for troubleshooting JDBC connection issues
 
 ## License
+N/A
